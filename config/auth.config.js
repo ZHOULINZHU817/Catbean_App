@@ -1,0 +1,87 @@
+export default {
+	productionTask: [{
+			title: "生产报工",
+			name: "productionReport",
+			auth: '',
+			cuIcon: "/static/images/index_icon1.png",
+		},
+		{
+			title: "物料交接",
+			name: "",
+			auth: '',
+			cuIcon: "/static/images/index_icon2.png",
+		},
+		{
+			title: "创建质检任务",
+			name: "qualityBusinessCreate",
+			auth: '',
+			cuIcon: "/static/images/index_icon3.png",
+		},
+		{
+			title: "质检任务执行 ",
+			name: "qualityBusiness",
+			auth: '',
+			cuIcon: "/static/images/index_icon4.png",
+		},
+		{
+			title: "保养 ",
+			name: "deviceMaintain",
+			auth: '',
+			cuIcon: "/static/images/index_icon5.png",
+		},
+		{
+			title: "维修 ",
+			name: "deviceRepair",
+			auth: '',
+			cuIcon: "/static/images/index_icon14.png",
+		},
+	],
+	wareHouseLogistics: [{
+			title: "创建收货单",
+			name: "createReceivingNote",
+			auth: '',
+			cuIcon: "/static/images/index_icon6.png",
+		},
+		{
+			title: "收货",
+			name: "takeDelivery",
+			auth: '',
+			cuIcon: "/static/images/index_icon7.png",
+		},
+		{
+			title: "入库确认",
+			name: "confirmWareHouse",
+			auth: '',
+			cuIcon: "/static/images/index_icon8.png",
+		},
+		{
+			title: "出库确认 ",
+			name: "confirmWareHouseOut",
+			auth: '',
+			cuIcon: "/static/images/index_icon9.png",
+		},
+		{
+			title: "投料出库 ",
+			name: "feedWarehouseOut",
+			cuIcon: "/static/images/index_icon10.png",
+		},
+		{
+			title: "移库",
+			name: "moveTheStorehouse",
+			auth: '',
+			cuIcon: "/static/images/index_icon11.png",
+		},
+		{
+			title: "物料状态变更 ",
+			name: "materialStatusChange",
+			auth: '',
+			cuIcon: "/static/images/index_icon12.png",
+		},
+		{
+			title: "库存查询 ",
+			name: "inventoryQuery",
+			auth: '',
+			cuIcon: "/static/images/index_icon13.png",
+		},
+	],
+}

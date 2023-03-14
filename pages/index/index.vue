@@ -241,6 +241,8 @@
 </template>
 
 <script>
+import ApiClinet from "@/services/api-clinet";
+	import ApiConfig from "@/config/api.config";
 
 	export default {
 
@@ -256,6 +258,14 @@
 
 		onLoad() {
 			this.loadData();
+			ApiClinet.post(ApiConfig.APP_BASE_API.TTNEWSREAD_APP_TASK, {
+					page: 1,
+					length: 1,
+				}, {
+					loading: false
+				}).then((res)=> {
+
+				})
 		},
 		methods: {
 			/**
