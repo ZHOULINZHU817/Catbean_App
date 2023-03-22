@@ -13,7 +13,7 @@
 			<view class="titleNview-placing"></view>
 			<!-- 背景色区域 -->
 			<view class="titleNview-background" :style="{backgroundColor:titleNViewBackground}"></view>
-			<swiper class="carousel" circular @change="swiperChange">
+			<swiper class="carousel" circular autoplay @change="swiperChange">
 				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToDetailPage({title: '轮播广告'})">
 					<image :src="item.src" />
 				</swiper-item>
@@ -258,14 +258,14 @@ import ApiClinet from "@/services/api-clinet";
 
 		onLoad() {
 			this.loadData();
-			ApiClinet.post(ApiConfig.APP_BASE_API.TTNEWSREAD_APP_TASK, {
-					page: 1,
-					length: 1,
-				}, {
-					loading: false
-				}).then((res)=> {
+			// ApiClinet.post(ApiConfig.APP_BASE_API.TTNEWSREAD_APP_TASK, {
+			// 		page: 1,
+			// 		length: 1,
+			// 	}, {
+			// 		loading: false
+			// 	}).then((res)=> {
 
-				})
+			// 	})
 		},
 		methods: {
 			/**
@@ -277,7 +277,7 @@ import ApiClinet from "@/services/api-clinet";
 				this.titleNViewBackground = carouselList[0].background;
 				this.swiperLength = carouselList.length;
 				this.carouselList = carouselList;
-				
+				console.log('carouselList+++', carouselList)
 				let goodsList = await this.$api.json('goodsList');
 				this.goodsList = goodsList || [];
 			},

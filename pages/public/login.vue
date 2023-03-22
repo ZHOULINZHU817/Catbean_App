@@ -11,7 +11,7 @@
 			</view>
 			<view class="input-content">
 				<view class="input-item">
-					<text class="tit">手机号码</text>
+					<!-- <text class="tit">手机号码</text> -->
 					<input 
 						type="number" 
 						:value="mobile" 
@@ -22,7 +22,7 @@
 					/>
 				</view>
 				<view class="input-item">
-					<text class="tit">密码</text>
+					<!-- <text class="tit">密码</text> -->
 					<input 
 						type="mobile" 
 						value="" 
@@ -38,12 +38,9 @@
 			</view>
 			<button class="confirm-btn" @click="toLogin" :disabled="logining">登录</button>
 			<view class="forget-section">
-				忘记密码?
+				<text class="login-btn" @click="toRegist">注册</text>
+				<text class="login-btn" @click="forgetPassword">忘记密码?</text>
 			</view>
-		</view>
-		<view class="register-section">
-			还没有账号?
-			<text @click="toRegist">马上注册</text>
 		</view>
 	</view>
 </template>
@@ -74,7 +71,9 @@
 				uni.navigateBack();
 			},
 			toRegist(){
-				this.$api.msg('去注册');
+				uni.navigateTo({
+					url: `/pages/public/signIn`
+				})
 			},
 			async toLogin(){
 				this.logining = true;
@@ -228,6 +227,9 @@
 		color: $font-color-spec;
 		text-align: center;
 		margin-top: 40upx;
+		.login-btn{
+			padding:0 150upx;
+		}
 	}
 	.register-section{
 		position:absolute;
