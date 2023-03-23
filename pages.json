@@ -71,7 +71,7 @@
 		{
 			"path": "pages/public/login",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "登录",
 				"navigationStyle": "custom",
 				"app-plus": {
 					"titleNView": false,
@@ -82,12 +82,18 @@
 		{
 			"path": "pages/public/signIn",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "注册",
 				"navigationStyle": "custom",
 				"app-plus": {
 					"titleNView": false,
 					"animationType": "slide-in-bottom"
 				}
+			}
+		},
+		{
+			"path": "pages/public/forgetPassword",
+			"style": {
+				"navigationBarTitleText": "找回密码"
 			}
 		},
 		{

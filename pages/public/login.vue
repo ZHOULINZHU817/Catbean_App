@@ -75,6 +75,11 @@
 					url: `/pages/public/signIn`
 				})
 			},
+			forgetPassword(){
+				uni.navigateTo({
+					url: `/pages/public/forgetPassword`
+				})
+			},
 			async toLogin(){
 				this.logining = true;
 				const {mobile, password} = this;
