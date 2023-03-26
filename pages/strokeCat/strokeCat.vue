@@ -52,6 +52,9 @@
 		methods: {
 			onNavigationBarButtonTap() {
                 this.$api.msg('点击')
+                uni.navigateTo({
+                    url:'/pages/panicBuy/panicBuyOrder?state=0'
+                })
             },
             changeText(){
                 this.btnText = "立即抢购";
