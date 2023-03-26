@@ -1,86 +1,188 @@
 <template>
-	<view>
-		<view class="user-section">
-			<image class="bg" src="/static/user-bg.jpg"></image>
-			<text class="bg-upload-btn yticon icon-paizhao"></text>
-			<view class="portrait-box">
-				<image class="portrait" :src="userInfo.portrait || '/static/missing-face.png'"></image>
-				<text class="pt-upload-btn yticon icon-paizhao"></text>
-			</view>
-		</view>
-	</view>
+  <view class="container">
+    <view class="wrapper">
+      <view class="input-content">
+        <view class="input-item">
+          <text class="tit">昵称:</text>
+          <input
+            :value="userName"
+            placeholder="请输入昵称"
+            maxlength="11"
+            data-key="userName"
+            @input="inputChange"
+          />
+        </view>
+        <view class="input-item">
+          <text class="tit">QQ号:</text>
+          <input
+            :value="userName"
+            placeholder="请输入QQ号"
+            maxlength="11"
+            data-key="userName"
+            @input="inputChange"
+          />
+        </view>
+        <view class="input-item">
+          <text class="tit">微信号:</text>
+          <input
+            :value="userName"
+            placeholder="请输入微信号"
+            maxlength="11"
+            data-key="userName"
+            @input="inputChange"
+          />
+        </view>
+        <view class="input-item">
+          <text class="tit">手机号:</text>
+          <input
+            :value="userName"
+            placeholder="请输入手机号"
+            maxlength="11"
+            data-key="userName"
+            @input="inputChange"
+          />
+        </view>
+      </view>
+    </view>
+    <view class="password-fot">
+      <button class="confirm-btn" @click="savePassword" :disabled="logining">确认提交</button>
+    </view>
+  </view>
 </template>
 
 <script>
-	import {  
-	    mapState,  
-	    mapMutations  
-	} from 'vuex';  
-	export default {
-		data() {
-			return {
-				
-			};
-		},
-		computed:{
-			...mapState(['userInfo']),
-		}
-	}
+
+export default {
+  data() {
+    return {
+      userName:"",
+      inputUserPhone:"13789333333",
+      logining: false,
+    };
+  },
+  onLoad() {},
+  methods: {
+
+    inputChange(e) {
+      const key = e.currentTarget.dataset.key;
+      this[key] = e.detail.value;
+    },
+    navBack() {
+      uni.navigateBack();
+    },
+    savePassword() {
+      this.logining = true;
+      this.$api.msg("去注册");
+    },
+  },
+};
 </script>
 
-<style lang="scss">
-	page{
-		background: $page-color-base;
-	}
-	.user-section{
-		display:flex;
-		align-items:center;
-		justify-content: center;
-		height: 460upx;
-		padding: 40upx 30upx 0;
-		position:relative;
-		.bg{
-			position:absolute;
-			left: 0;
-			top: 0;
-			width: 100%;
-			height: 100%;
-			filter: blur(1px);
-			opacity: .7;
-		}
-		.portrait-box{
-			width: 200upx;
-			height: 200upx;
-			border:6upx solid #fff;
-			border-radius: 50%;
-			position:relative;
-			z-index: 2;
-		}
-		.portrait{
-			position: relative;
-			width: 100%;
-			height: 100%;
-			border-radius: 50%;
-		}
-		.yticon{
-			position:absolute;
-			line-height: 1;
-			z-index: 5;
-			font-size: 48upx;
-			color: #fff;
-			padding: 4upx 6upx;
-			border-radius: 6upx;
-			background: rgba(0,0,0,.4);
-		}
-		.pt-upload-btn{
-			right: 0;
-			bottom: 10upx;
-		}
-		.bg-upload-btn{
-			right: 20upx;
-			bottom: 16upx;
-		}
-	}
+<style lang='scss'>
+page {
+  background: #fff;
+}
+.container {
+//   padding-top: 115px;
+  position: relative;
+  width: 100vw;
+  height: 90vh;
+  background: #fff;
+}
+.wrapper {
+  position: relative;
+  z-index: 90;
+  background: #fff;
+  padding-bottom: 220upx;
+}
 
+.input-content {
+  padding: 0 60upx 60upx 60upx;
+}
+.input-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+//   padding: 0 30upx;
+//   background: $page-color-light;
+  height: 146upx;
+//   border-radius: 4px;
+  border-bottom: 1upx solid #F6F6F6;
+//   margin-bottom: 50upx;
+  &:last-child {
+    margin-bottom: 0;
+  }
+  .tit {
+    height: 50upx;
+    line-height: 56upx;
+    font-size: 30upx;
+    color: #000000;
+    font-weight: 400;
+  }
+  input {
+    height: 60upx;
+    font-size: 28upx;
+    color: $font-color-dark;
+    width: 100%;
+  }
+}
+.password-fot{
+  position: fixed;
+  bottom: 50upx;
+  width:100%;
+  text-align: center;
+  z-index:100;
+  background: #fff;
+  
+}
+.confirm-btn {
+  width: 630upx;
+  height: 76upx;
+  line-height: 76upx;
+  border-radius: 50px;
+  margin-top: 70upx;
+  background: #FF68A6;
+  color: #fff;
+  font-size: $font-lg;
+  &:after {
+    border-radius: 100px;
+  }
+}
 
+/***新加样式** */
+.pass-position{
+	position: relative;
+}
+.pass-icon {
+  position: absolute;
+  right: 30upx;
+  top: 50%;
+}
+.icon {
+  width: 32rpx;
+  height: 32rpx;
+}
+.phone-code {
+  position: relative;
+  .code {
+    position: absolute;
+    right: 0upx;
+    top: 53%;
+    color: #000;
+    font-size:28upx;
+  }
+}
+.pay-pic{
+    display: flex;
+    padding: 30upx 0;
+    height:300upx;
+  .pay-pic-item{
+    flex: 1;
+    height:200upx;
+    .context{
+      margin-top:20upx;
+    }
+  }
+}
 </style>

@@ -98,7 +98,7 @@
 			<view class="history-section">
 				<list-cell iconColor="#5fcda2" title="常用功能" navigateType="null" border="1"></list-cell>
 				<view class="order-section">
-					<view class="order-item"  @click="navTo('/pages/payment/set')" hover-class="common-hover"  :hover-stay-time="50">
+					<view class="order-item"  @click="navTo('/pages/set/set')" hover-class="common-hover"  :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/set_1.jpg"></image>
 						<text>账户设置</text>
 					</view>
@@ -114,11 +114,11 @@
 						<image class="user-icon-pic" src="/static/user/set_4.jpg"></image>
 						<text>支付密码</text>
 					</view>
-					<view class="order-item" @click="navTo('/pages/payment/password')" hover-class="common-hover"  :hover-stay-time="50">
+					<view class="order-item" @click="navTo('/pages/payment/set')" hover-class="common-hover"  :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/set_5.jpg"></image>
 						<text>收款账号</text>
 					</view>
-					<view class="order-item" @click="navTo('/pages/payment/password')" hover-class="common-hover"  :hover-stay-time="50">
+					<view class="order-item" @click="navTo('/pages/userinfo/userinfo')" hover-class="common-hover"  :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/set_6.jpg"></image>
 						<text>设置</text>
 					</view>

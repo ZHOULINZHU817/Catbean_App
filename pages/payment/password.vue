@@ -2,7 +2,7 @@
   <view class="container">
     <view class="wrapper">
       <view class="input-content">
-        <view class="input-item">
+        <view class="input-item pass-position">
           <input
             type="number"
             :value="inputUserPhone"
@@ -12,6 +12,7 @@
             disabled
             @input="inputChange"
           />
+          <view class="phone-tips">*手机号码不可修改</view>
         </view>
         <view class="input-item phone-code">
           <input
@@ -152,9 +153,9 @@ page {
   justify-content: center;
 //   padding: 0 30upx;
 //   background: $page-color-light;
-  height: 120upx;
+  height: 126upx;
 //   border-radius: 4px;
-  border-bottom: 1upx solid #8b8989;
+  border-bottom: 1upx solid #F6F6F6;
 //   margin-bottom: 50upx;
   &:last-child {
     margin-bottom: 0;
@@ -167,7 +168,7 @@ page {
   }
   input {
     height: 60upx;
-    font-size: $font-base + 2upx;
+    font-size: 28upx;
     color: $font-color-dark;
     width: 100%;
   }
@@ -184,7 +185,7 @@ page {
   line-height: 76upx;
   border-radius: 50px;
   margin-top: 70upx;
-  background: $uni-color-primary;
+  background: #FF68A6;
   color: #fff;
   font-size: $font-lg;
   &:after {
@@ -209,9 +210,17 @@ page {
   position: relative;
   .code {
     position: absolute;
-    right: 30upx;
+    right: 0upx;
     top: 30%;
     color: #000;
+    font-size: 28upx;
   }
+}
+.phone-tips{
+    position: absolute;
+    right: 0upx;
+    top: 30%;
+    color: #999999;
+    font-size: 28upx;
 }
 </style>

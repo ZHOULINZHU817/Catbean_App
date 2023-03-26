@@ -65,15 +65,11 @@
         <view class="pay-pic">
           <view class="pay-pic-item">
             <view>微信收款码</view>
-            <view>
-               <uploadFile class="context" v-model="uploadAttachment" mediaType="all"></uploadFile>
-            </view>
+            <uploadFile class="context" v-model="uploadAttachment" mediaType="all"></uploadFile>
           </view>
           <view class="pay-pic-item">
             <view>支付宝收款码</view>
-            <view>
-              <uploadFile class="context" v-model="uploadAttachment" mediaType="all"></uploadFile>
-            </view>
+            <uploadFile class="context" v-model="uploadAttachment" mediaType="all"></uploadFile>
           </view>
         </view>
         <view class="input-item phone-code">
@@ -92,9 +88,10 @@
 			v-else>{{ codeTxt }}</view>
         </view>
       </view>
-      <view class="password-fot">
-        <button class="confirm-btn" @click="savePassword" :disabled="logining">确认</button>
-      </view>
+    </view>
+    <view class="password-fot">
+      <button class="confirm-btn" @click="savePassword" :disabled="logining">确认提交</button>
+      <view class="password-fot-tips"><span>*</span>请确认绑定的收款账户信息及正确的真实姓</view>
     </view>
   </view>
 </template>
@@ -105,7 +102,7 @@ export default {
   data() {
     return {
       userName:"",
-      inputUserPhone:"1233333333",
+      inputUserPhone:"13789333333",
       code:'',
       codeTxt: "获取验证码",
       logining: false,
@@ -186,18 +183,17 @@ page {
   position: relative;
   width: 100vw;
   height: 90vh;
-  overflow: hidden;
   background: #fff;
 }
 .wrapper {
   position: relative;
   z-index: 90;
   background: #fff;
-  padding-bottom: 40upx;
+  padding-bottom: 220upx;
 }
 
 .input-content {
-  padding: 0 60upx;
+  padding: 0 60upx 60upx 60upx;
 }
 .input-item {
   display: flex;
@@ -206,9 +202,9 @@ page {
   justify-content: center;
 //   padding: 0 30upx;
 //   background: $page-color-light;
-  height: 120upx;
+  height: 146upx;
 //   border-radius: 4px;
-  border-bottom: 1upx solid #8b8989;
+  border-bottom: 1upx solid #F6F6F6;
 //   margin-bottom: 50upx;
   &:last-child {
     margin-bottom: 0;
@@ -216,21 +212,32 @@ page {
   .tit {
     height: 50upx;
     line-height: 56upx;
-    font-size: $font-sm + 2upx;
-    color: $font-color-base;
+    font-size: 30upx;
+    color: #000000;
+    font-weight: 400;
   }
   input {
     height: 60upx;
-    font-size: $font-base + 2upx;
+    font-size: 28upx;
     color: $font-color-dark;
     width: 100%;
   }
 }
 .password-fot{
   position: fixed;
-  bottom: 20upx;
+  bottom: 0upx;
   width:100%;
   text-align: center;
+  z-index:100;
+  background: #fff;
+  .password-fot-tips{
+    font-size:24upx;
+    color:#999999;
+    padding:30upx 0;
+    span{
+      color:#F71616;
+    }
+  }
 }
 .confirm-btn {
   width: 630upx;
@@ -238,7 +245,7 @@ page {
   line-height: 76upx;
   border-radius: 50px;
   margin-top: 70upx;
-  background: $uni-color-primary;
+  background: #FF68A6;
   color: #fff;
   font-size: $font-lg;
   &:after {
@@ -263,17 +270,22 @@ page {
   position: relative;
   .code {
     position: absolute;
-    right: 30upx;
-    top: 30%;
+    right: 0upx;
+    top: 53%;
     color: #000;
+    font-size:28upx;
   }
 }
 .pay-pic{
     display: flex;
-    height: 300upx;
+    padding: 30upx 0;
+    height:300upx;
   .pay-pic-item{
     flex: 1;
     height:200upx;
+    .context{
+      margin-top:20upx;
+    }
   }
 }
 </style>

@@ -17,10 +17,7 @@
                     <div class="cover">
                         <img v-if="param.defaultposter" class="defaultposter" :src="param.defaultposter" mode="aspectFit" />
                         <div class="poster" v-else>
-                            <div class="add">
-                                <div class="vline"></div>
-                                <div class="hline"></div>
-                            </div>
+                            <img class="add" src="@/static/user/photo.jpg" />
                             <span>{{param.label}}</span>
                         </div>
                     </div>
@@ -295,7 +292,7 @@
 	/* padding-right:20rpx; */
     overflow: hidden;
     position: relative;
-	border: 1upx dashed #333333;
+	border: 1upx dashed #979797;
 }
 
 .photo-uplaod .core .pic {
@@ -387,8 +384,8 @@
 
 .photo-uplaod .core .cover .add {
     position: relative;
-    width: 50rpx;
-    height: 50rpx;
+    width: 56rpx;
+    height: 42rpx;
 }
 
 .photo-uplaod .core .cover .defaultposter {
