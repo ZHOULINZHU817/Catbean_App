@@ -151,6 +151,18 @@
 			}
 		},
 		{
+			"path": "pages/user/friend",
+			"style": {
+				"navigationBarTitleText": "我的好友"
+			}
+		}, 
+		{
+			"path": "pages/user/certification",
+			"style": {
+				"navigationBarTitleText": "实名认证"
+			}
+		},
+		{
 			"path": "pages/detail/detail",
 			"style": {
 				"navigationBarTitleText": "",

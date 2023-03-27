@@ -106,7 +106,7 @@
 						<image class="user-icon-pic" src="/static/user/set_2.jpg"></image>
 						<text>地址管理</text>
 					</view>
-					<view class="order-item" @click="navTo('/pages/order/order?state=2')" hover-class="common-hover"  :hover-stay-time="50">
+					<view class="order-item" @click="navTo('/pages/user/certification')" hover-class="common-hover"  :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/set_3.jpg"></image>
 						<text>实名认证</text>
 					</view>
@@ -118,9 +118,9 @@
 						<image class="user-icon-pic" src="/static/user/set_5.jpg"></image>
 						<text>收款账号</text>
 					</view>
-					<view class="order-item" @click="navTo('/pages/userinfo/userinfo')" hover-class="common-hover"  :hover-stay-time="50">
+					<view class="order-item" @click="navTo('/pages/user/friend')" hover-class="common-hover"  :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/set_6.jpg"></image>
-						<text>设置</text>
+						<text>我的好友</text>
 					</view>
 				</view>
 			</view>

@@ -25,10 +25,9 @@
 		<view class="default-row padding-lr-30">
 			<view class="flex row-center">
                <view class="tit flex1">设为默认</view>
-			   <switch :checked="addressData.defaultable == 'Y'" color="#D80C18" @change="switchChange" />
+			   <switch :checked="addressData.defaultable == 'Y'" color="#FF478C" @change="switchChange" />
 			</view>
 			<view class="remind">提醒：每次下单会默认推荐使用该地址</view>
-			<view class="address-outside">配送地区仅限中国大陆地区，以下区域除外：海南、宁夏、内蒙古、青海、西藏、新疆、甘肃。</view>
 		</view>
 		<button class="add-btn" @click="confirm">保存</button>
 	</view>
@@ -115,14 +114,14 @@
 		
 		.tit{
 			flex-shrink: 0;
-			width: 120upx;
-			font-size: 26upx;
-			color: $font-color-dark;
+			width: 160upx;
+			font-size: 28upx;
+			color: #000000;
 		}
 		.input{
 			flex: 1;
-			font-size: 26upx;
-			color: $font-color-dark;
+			font-size: 28upx;
+			color: #999999;
 		}
 		.icon-shouhuodizhi{
 			font-size: 36upx;
@@ -146,6 +145,8 @@
 		margin-top: 16upx;
 		.tit{
 			flex: 1;
+			font-size: 28upx;
+			color: #000000;
 		}
 		switch{
 			transform: translateX(16upx) scale(.7);
@@ -167,17 +168,16 @@
 		position: fixed;
 		left: 30upx;
 		right: 30upx;
-		bottom: 16upx;
+		bottom: 60upx;
 		z-index: 95;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 690upx;
-		height: 80upx;
-		font-size: 26upx;
-		color: #fff;
-		background-color:  #D80C18;
-		border-radius: 60upx;
-		box-shadow: 1px 2px 5px rgba(219, 63, 96, 0.4);		
+		width: 632upx;
+		height: 92upx;
+		font-size: 30upx;
+		color: #fff;	
+		background-image: linear-gradient(90deg, rgba(255, 104, 166, 1) 0,rgba(255, 71, 140, 1) 100%);
+		border-radius: 46upx;
 	}
 </style>

@@ -1,23 +1,23 @@
 <template>
 	<view class="content b-t">
-		<view class="list b-b" v-for="(item, index) in addressList" :key="index" @click="checkAddress(item)">
+		<view class="list" v-for="(item, index) in addressList" :key="index" @click="checkAddress(item)">
 			<view class="wrapper">
-				<view class="address-box">
-					<text v-if="item.default" class="tag">默认</text>
-					<text class="address">{{item.addressName}} {{item.area}}</text>
-				</view>
 				<view class="u-box">
 					<text class="name">{{item.name}}</text>
 					<text class="mobile">{{item.mobile}}</text>
+					<text v-if="item.default" class="tag">默认</text>
+				</view>
+				<view class="address-box">
+					<text class="address">{{item.addressName}} {{item.area}}</text>
 				</view>
 			</view>
 			<text class="yticon icon-bianji" @click.stop="addAddress('edit', item)"></text>
 		</view>
-		<text style="display:block;padding: 16upx 30upx 10upx;lihe-height: 1.6;color: #fa436a;font-size: 24upx;">
+		<!-- <text style="display:block;padding: 16upx 30upx 10upx;lihe-height: 1.6;color: #fa436a;font-size: 24upx;">
 			重要：添加和修改地址回调仅增加了一条数据做演示，实际开发中将回调改为请求后端接口刷新一下列表即可
-		</text>
+		</text> -->
 		
-		<button class="add-btn" @click="addAddress('add')">新增地址</button>
+		<button class="add-btn" @click="addAddress('add')"><text class="yticon icon-jia1"></text>添加收货地址</button>
 	</view>
 </template>
 
@@ -77,9 +77,11 @@
 <style lang='scss'>
 	page{
 		padding-bottom: 120upx;
+		background-color: #F6F6F6;
 	}
 	.content{
 		position: relative;
+		padding:24upx 24upx 0 24upx;
 	}
 	.list{
 		display: flex;
@@ -87,6 +89,8 @@
 		padding: 20upx 30upx;;
 		background: #fff;
 		position: relative;
+		border-radius: 16upx;
+		margin-bottom: 20upx;
 	}
 	.wrapper{
 		display: flex;
@@ -96,27 +100,28 @@
 	.address-box{
 		display: flex;
 		align-items: center;
-		.tag{
-			font-size: 24upx;
-			color: $base-color;
-			margin-right: 10upx;
-			background: #fffafb;
-			border: 1px solid #ffb4c7;
-			border-radius: 4upx;
-			padding: 4upx 10upx;
-			line-height: 1;
-		}
 		.address{
-			font-size: 30upx;
-			color: $font-color-dark;
+			font-size: 26upx;
+			color:#333333;
 		}
 	}
 	.u-box{
 		font-size: 28upx;
-		color: $font-color-light;
-		margin-top: 16upx;
+		color: #999999;
+		margin-bottom: 16upx;
 		.name{
 			margin-right: 30upx;
+			font-size: 30upx;
+			color:#000000;
+		}
+		.tag{
+			font-size: 20upx;
+			color: #fff;
+			margin-left: 10upx;
+			background: #FF478C;
+			border-radius: 4upx;
+			padding: 4upx 10upx;
+			line-height: 1;
 		}
 	}
 	.icon-bianji{
@@ -132,17 +137,16 @@
 		position: fixed;
 		left: 30upx;
 		right: 30upx;
-		bottom: 16upx;
+		bottom: 60upx;
 		z-index: 95;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 690upx;
-		height: 80upx;
-		font-size: 32upx;
-		color: #fff;
-		background-color: $base-color;
-		border-radius: 10upx;
-		box-shadow: 1px 2px 5px rgba(219, 63, 96, 0.4);		
+		width: 632upx;
+		height: 92upx;
+		font-size: 30upx;
+		color: #fff;	
+		background-image: linear-gradient(90deg, rgba(255, 104, 166, 1) 0,rgba(255, 71, 140, 1) 100%);
+		border-radius: 46upx;	
 	}
 </style>
