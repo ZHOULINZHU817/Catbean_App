@@ -6,57 +6,44 @@
 			<switch checked color="#fa436a" @change="switchChange" />
 		</view>
 		<view class="list-title">个人信息</view>
-		<view class="list-cell b-b m-t" @click="navTo('个人资料')" hover-class="cell-hover" :hover-stay-time="50">
+		<view class="list-cell b-b m-t" @click="navTo('/pages/userinfo/userinfo')" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">图像</text>
+			<img src="/static/user/friend.jpg"/>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
-		<view class="list-cell b-b" @click="navTo('收货地址')" hover-class="cell-hover" :hover-stay-time="50">
+		<view class="list-cell b-b" @click="navTo('/pages/userinfo/userinfo')" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">昵称</text>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
-		<view class="list-cell b-b" @click="navTo('收货地址')" hover-class="cell-hover" :hover-stay-time="50">
+		<view class="list-cell b-b" @click="navTo('/pages/userinfo/userinfo')" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">微信号</text>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
-		<view class="list-cell b-b" @click="navTo('收货地址')" hover-class="cell-hover" :hover-stay-time="50">
+		<view class="list-cell b-b" @click="navTo('/pages/userinfo/userinfo')" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">QQ号</text>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
-		<view class="list-cell b-b" @click="navTo('收货地址')" hover-class="cell-hover" :hover-stay-time="50">
+		<view class="list-cell b-b" @click="navTo('/pages/userinfo/userinfo')" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">手机号</text>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
-		<view class="list-cell b-b" @click="navTo('收货地址')" hover-class="cell-hover" :hover-stay-time="50">
+		<view class="list-cell b-b" @click="navTo('/pages/payment/set')" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">收款账号</text>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
-		<view class="list-cell" @click="navTo('实名认证')" hover-class="cell-hover" :hover-stay-time="50">
+		<view class="list-cell b-b" @click="navTo('/pages/payment/password')" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">支付密码</text>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
-		<view class="list-cell" @click="navTo('实名认证')" hover-class="cell-hover" :hover-stay-time="50">
+		<view class="list-cell b-b" @click="navTo('/pages/payment/password')" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">修改密码</text>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
-		<view class="list-cell" @click="navTo('实名认证')" hover-class="cell-hover" :hover-stay-time="50">
+		<view class="list-cell b-b" @click="navTo('实名认证')" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">注销账户</text>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
 
-		
-		<!-- <view class="list-cell m-t b-b" @click="navTo('清除缓存')" hover-class="cell-hover" :hover-stay-time="50">
-			<text class="cell-tit">清除缓存</text>
-			<text class="cell-more yticon icon-you"></text>
-		</view>
-		<view class="list-cell b-b" @click="navTo('关于Dcloud')" hover-class="cell-hover" :hover-stay-time="50">
-			<text class="cell-tit">关于Dcloud</text>
-			<text class="cell-more yticon icon-you"></text>
-		</view>
-		<view class="list-cell">
-			<text class="cell-tit">检查更新</text>
-			<text class="cell-tip">当前版本 1.0.3</text>
-			<text class="cell-more yticon icon-you"></text>
-		</view> -->
 		<view class="list-cell log-out-btn" @click="toLogout">
 			<text class="cell-tit">退出登录</text>
 		</view>
@@ -78,6 +65,9 @@
 
 			navTo(url){
 				this.$api.msg(`跳转到${url}`);
+				uni.navigateTo({  
+					url
+				}) 
 			},
 			//退出登录
 			toLogout(){
@@ -114,7 +104,7 @@
 	}
 	.list-cell{
 		display:flex;
-		align-items:baseline;
+		align-items:center;
 		padding: 20upx $page-row-spacing;
 		line-height:60upx;
 		position:relative;
@@ -133,12 +123,12 @@
 		}
 		&.b-b:after{
 			left: 30upx;
+			right:30upx;
 		}
 		&.m-t{
 			margin-top: 16upx; 
 		}
 		.cell-more{
-			align-self: baseline;
 			font-size:$font-lg;
 			color:$font-color-light;
 			margin-left:10upx;

@@ -2,6 +2,12 @@
   <view class="container">
     <view class="wrapper">
       <view class="input-content">
+        <view class="pay-pic">
+          <view class="pay-pic-item">
+            <view>图像:</view>
+            <uploadFile class="context" v-model="uploadAttachment" mediaType="all"></uploadFile>
+          </view>
+        </view>
         <view class="input-item">
           <text class="tit">昵称:</text>
           <input
@@ -58,6 +64,7 @@ export default {
       userName:"",
       inputUserPhone:"13789333333",
       logining: false,
+      uploadAttachment:[]
     };
   },
   onLoad() {},
