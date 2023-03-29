@@ -20,28 +20,21 @@
 		
 		<view 
 			class="cover-container"
-			:style="[{
-				transform: coverTransform,
-				transition: coverTransition
-			}]"
-			@touchstart="coverTouchstart"
-			@touchmove="coverTouchmove"
-			@touchend="coverTouchend"
 		>
 			<view class="tj-sction">
-				<view class="tj-item">
+				<view class="tj-item"  @click="navTo('/pages/cat/catbean')">
 					<text class="num">128.8</text>
-					<text>猫豆</text>
+					<text>猫豆</text> 
 				</view>
-				<view class="tj-item">
+				<view class="tj-item"  @click="navTo('/pages/shareProfit/shareProfit')">
 					<text class="num">0</text>
 					<text>分润</text>
 				</view>
-				<view class="tj-item">
+				<view class="tj-item" @click="navTo('/pages/rewards/rewards')">
 					<text class="num">20</text>
 					<text>奖励金</text>
 				</view>
-				<view class="tj-item">
+				<view class="tj-item" @click="navTo('/pages/shareValue/shareValue')">
 					<text class="num">20</text>
 					<text>分享值</text>
 				</view>
@@ -124,14 +117,6 @@
 					</view>
 				</view>
 			</view>
-			<!-- <view class="history-section icon">
-				<list-cell icon="icon-iconfontweixin" iconColor="#e07472" title="账户设置"  @eventClick="navTo('/pages/payment/set')"></list-cell>
-				<list-cell icon="icon-dizhi" iconColor="#5fcda2" title="地址管理" @eventClick="navTo('/pages/address/address')"></list-cell>
-				<list-cell icon="icon-share" iconColor="#9789f7" title="实名认证"></list-cell>
-				<list-cell icon="icon-pinglun-copy" iconColor="#ee883b" title="支付密码" @eventClick="navTo('/pages/payment/password')"></list-cell>
-				<list-cell icon="icon-shoucang_xuanzhongzhuangtai" iconColor="#54b4ef" title="收款账号"></list-cell>
-				<list-cell icon="icon-shezhi1" iconColor="#e07472" title="设置" border="" @eventClick="navTo('/pages/set/set')"></list-cell>
-			</view> -->
 		</view>
 			
 		
@@ -156,26 +141,6 @@
 		},
 		onLoad(){
 		},
-		// #ifndef MP
-		// onNavigationBarButtonTap(e) {
-		// 	const index = e.index;
-		// 	if (index === 0) {
-		// 		this.navTo('/pages/set/set');
-		// 	}else if(index === 1){
-		// 		// #ifdef APP-PLUS
-		// 		const pages = getCurrentPages();
-		// 		const page = pages[pages.length - 1];
-		// 		const currentWebview = page.$getAppWebview();
-		// 		currentWebview.hideTitleNViewButtonRedDot({
-		// 			index
-		// 		});
-		// 		// #endif
-		// 		uni.navigateTo({
-		// 			url: '/pages/notice/notice'
-		// 		})
-		// 	}
-		// },
-		// #endif
         computed: {
 			...mapState(['hasLogin','userInfo'])
 		},

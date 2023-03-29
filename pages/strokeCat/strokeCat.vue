@@ -38,7 +38,7 @@
         },
 		data() {
 			return {
-			   endTime:new Date("2023/03/23 17:57:00").getTime() / 1000 +  ' ',
+			   endTime:new Date("2023/04/23 17:57:00").getTime() / 1000 +  ' ',
 			    //  console.log(endTime)=>得到毫秒  1658030420 可在方法里面放入后台数据,new Date('放后台数据').getTime() / 1000 +  ' ',但要记得调用方法
 			   endText:'活动已结束',
                btnText: "预约",

@@ -219,7 +219,7 @@
 		{
 			"path": "pages/notice/notice",
 			"style": {
-				"navigationBarTitleText": "通知"
+				"navigationBarTitleText": "消息中心"
 			}
 		},
 		{
@@ -236,6 +236,68 @@
 			"style": {
 				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "商品列表"
+			}
+		},
+		{
+			"path": "pages/cat/catbean",
+			"style": {
+				"navigationBarBackgroundColor": "#FFE7F4",
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "猫豆"
+			}
+		},
+		{
+			"path": "pages/cat/beangiven",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "猫豆转赠"
+			}
+		},
+		{
+			"path": "pages/cat/withdraw",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "猫豆提现",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [
+							{
+								"text":"提现记录",
+                                "type":"none",
+                                "color":"#000",
+                                "fontSize":"14px"
+							}
+						]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/cat/withDrawManner",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "提现记录"
+			}
+		},
+		{
+			"path": "pages/shareProfit/shareProfit",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "分润"
+			}
+		},
+		{
+			"path": "pages/rewards/rewards",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "奖励金"
+			}
+		},
+		{
+			"path": "pages/shareValue/shareValue",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "分享值"
 			}
 		}
 	],
