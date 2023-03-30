@@ -410,7 +410,7 @@
 		height: 0;
 		content: '';
 		transform: scaleY(.5);
-		border-bottom: 1px solid $border-color-base;
+		border-bottom: 1px solid #F6F6F6;
 	}
 
 	.b-b:after {
