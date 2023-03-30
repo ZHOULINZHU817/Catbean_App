@@ -22,53 +22,30 @@
 					<empty v-if="tabItem.loaded === true && tabItem.orderList.length === 0"></empty>
 					
 					<!-- 订单列表 -->
-					<view 
-						v-for="(item,index) in tabItem.orderList" :key="index"
-						class="order-item"
-					>
-						<view class="i-top b-b">
-							<text class="time">{{item.time}}</text>
-							<text class="state" :style="{color: item.stateTipColor}">{{item.stateTip}}</text>
-							<text 
-								v-if="item.state===9" 
-								class="del-btn yticon icon-iconfontshanchu1"
-								@click="deleteOrder(index)"
-							></text>
-						</view>
-						
-						<scroll-view v-if="item.goodsList.length > 1" class="goods-box" scroll-x>
-							<view
-								v-for="(goodsItem, goodsIndex) in item.goodsList" :key="goodsIndex"
-								class="goods-item"
-							>
-								<image class="goods-img" :src="goodsItem.image" mode="aspectFill"></image>
-							</view>
-						</scroll-view>
+					<view class="order-content">
 						<view 
-							v-if="item.goodsList.length === 1" 
-							class="goods-box-single"
-							v-for="(goodsItem, goodsIndex) in item.goodsList" :key="goodsIndex"
+							v-for="(item,index) in tabItem.orderList" :key="index"
+							class="order-item"
 						>
-							<image class="goods-img" :src="goodsItem.image" mode="aspectFill"></image>
-							<view class="right">
-								<text class="title clamp">{{goodsItem.title}}</text>
-								<text class="attr-box">{{goodsItem.attr}}  x {{goodsItem.number}}</text>
-								<text class="price">{{goodsItem.price}}</text>
+							<view class="order-item-f">
+								<view class="order-item-fl"><text>订单编号：</text>{{item.orderCode}}</view>
+								<view class="order-item-fr" :style="{color:item.stateTipColor}">{{item.stateTip}}</view>
 							</view>
-						</view>
-						
-						<view class="price-box">
-							共
-							<text class="num">7</text>
-							件商品 实付款
-							<text class="price">143.7</text>
-						</view>
-						<view class="action-box b-t" v-if="item.state != 9">
-							<button class="action-btn" @click="cancelOrder(item)">取消订单</button>
-							<button class="action-btn recom">立即支付</button>
+							<view v-if="item.state =='1'" class="order-item-text"><text>预约时间：</text>{{item.handlerDate}}</view>
+							<view class="order-item-text"><text>场次：</text>{{item.session}}</view>
+							<view class="order-item-text"><text>价格：</text>{{item.price}}</view>
+							<view v-if="item.state !='1'" class="order-item-text"><text>流拍次数：</text>{{item.passedIn}}</view>
+							<view v-if="item.state !='1'" class="order-item-text"><text>违约次数：</text>{{item.contractNum}}</view>
+							<view v-if="item.state !='1'" class="order-item-text"><text>抢中时间：</text>{{item.yDate}}</view>
+							<view v-if="item.state=='3' || item.state=='4' || item.state=='5'" class="order-item-text"><text>转卖人：</text>{{item.person}}</view>
+							<view v-if="item.state=='2'" class="order-item-text margin-b-20"><text>可转卖倒计时：</text>{{item.countdown}}</view>
+							<view v-if="item.state=='2'" class="order-item-btn">
+								<view class="flex1"></view>
+								<view class="order-item-btn1">提货</view>
+								<view class="order-item-btn2">转卖</view>
+							</view>
 						</view>
 					</view>
-					 
 					<uni-load-more :status="tabItem.loadingType"></uni-load-more>
 					
 				</scroll-view>
@@ -80,7 +57,7 @@
 <script>
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 	import empty from "@/components/empty";
-	import Json from '@/Json';
+	// import Json from '@/Json';
 	export default {
 		components: {
 			uniLoadMore,
@@ -89,32 +66,97 @@
 		data() {
 			return {
 				tabCurrentIndex: 0,
-				navList: [{
+				panicBuyList: [
+					{
+						state: 1, 
+						orderCode:"1236789004321", //订单编号
+						session:'12:00',
+						price:'90',
+						passedIn: 3,
+						contractNum: 5,
+						yDate:"2023年02月02日",
+						person:'18897686654',
+						countdown:'23:00:00',
+						handlerDate:"2023年02月02日",
+					},
+					{
+						state: 2, 
+						orderCode:"1236789004321", //订单编号
+						session:'12:00',
+						price:'90',
+						passedIn: 3,
+						contractNum: 5,
+						yDate:"2023年02月02日",
+						person:'18897686654',
+						countdown:'23:00:00',
+					},
+					{
+						state: 3, 
+						orderCode:"1236789004321", //订单编号
+						session:'12:00',
+						price:'90',
+						passedIn: 3,
+						contractNum: 5,
+						yDate:"2023年02月02日",
+						person:'18897686654',
+						countdown:'23:00:00',
+					},
+					{
+						state: 4, 
+						orderCode:"1236789004321", //订单编号
+						session:'12:00',
+						price:'90',
+						passedIn: 3,
+						contractNum: 5,
+						yDate:"2023年02月02日",
+						person:'18897686654',
+						countdown:'23:00:00',
+					},
+					{
+						state: 5, 
+						orderCode:"1236789004321", //订单编号
+						session:'12:00',
+						price:'90',
+						passedIn: 3,
+						contractNum: 5,
+						yDate:"2023年02月02日",
+						person:'18897686654',
+						countdown:'23:00:00',
+					}
+				],
+				navList: [
+					{
 						state: 0,
-						text: '已预约',
+						text: '全部',
 						loadingType: 'more',
 						orderList: []
 					},
 					{
 						state: 1,
-						text: '抢购中',
+						text: '已预约',
 						loadingType: 'more',
 						orderList: []
 					},
 					{
 						state: 2,
-						text: '转卖中',
+						text: '抢购中',
 						loadingType: 'more',
 						orderList: []
 					},
 					{
 						state: 3,
-						text: '已违约',
+						text: '转卖中',
 						loadingType: 'more',
 						orderList: []
 					},
 					{
 						state: 4,
+						text: '已违约',
+						loadingType: 'more',
+						orderList: []
+					},
+					{
+						state: 5,
 						text: '已完成',
 						loadingType: 'more',
 						orderList: []
@@ -144,6 +186,7 @@
 			//获取订单列表
 			loadData(source){
 				//这里是将订单挂载到tab列表下
+				//1 1已预约2抢购中3转卖中4已违约5已完成
 				let index = this.tabCurrentIndex;
 				let navItem = this.navList[index];
 				let state = navItem.state;
@@ -157,12 +200,12 @@
 					return;
 				}
 				
-				navItem.loadingType = 'loading';
+				navItem.loadingType = 'noMore';
 				
 				setTimeout(()=>{
-					let orderList = Json.orderList.filter(item=>{
+					let orderList = this.panicBuyList.filter(item=>{
 						//添加不同状态下订单的表现形式
-						item = Object.assign(item, this.orderStateExp(item.state));
+						item = Object.assign(item, this.orderStatusNameExp(item.state));
 						//演示数据所以自己进行状态筛选
 						if(state === 0){
 							//0为全部订单
@@ -170,15 +213,16 @@
 						}
 						return item.state === state
 					});
+					navItem.orderList = [];
 					orderList.forEach(item=>{
 						navItem.orderList.push(item);
 					})
-                    console.log('navItem', navItem)
+                    console.log('navItem', navItem, orderList)
 					//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
 					this.$set(navItem, 'loaded', true);
 					
 					//判断是否还有数据， 有改为 more， 没有改为noMore 
-					navItem.loadingType = 'more';
+					navItem.loadingType = 'noMore';
 				}, 600);	
 			}, 
 
@@ -191,53 +235,27 @@
 			tabClick(index){
 				this.tabCurrentIndex = index;
 			},
-			//删除订单
-			deleteOrder(index){
-				uni.showLoading({
-					title: '请稍后'
-				})
-				setTimeout(()=>{
-					this.navList[this.tabCurrentIndex].orderList.splice(index, 1);
-					uni.hideLoading();
-				}, 600)
-			},
-			//取消订单
-			cancelOrder(item){
-				uni.showLoading({
-					title: '请稍后'
-				})
-				setTimeout(()=>{
-					let {stateTip, stateTipColor} = this.orderStateExp(9);
-					item = Object.assign(item, {
-						state: 9,
-						stateTip, 
-						stateTipColor
-					})
-					
-					//取消订单后删除待付款中该项
-					let list = this.navList[1].orderList;
-					let index = list.findIndex(val=>val.id === item.id);
-					index !== -1 && list.splice(index, 1);
-					
-					uni.hideLoading();
-				}, 600)
-			},
-
 			//订单状态文字和颜色
-			orderStateExp(state){
+			orderStatusNameExp(state){
 				let stateTip = '',
-					stateTipColor = '#fa436a';
+					stateTipColor = '#FF478C';
 				switch(+state){
 					case 1:
-						stateTip = '待付款'; break;
-					case 2:
-						stateTip = '待发货'; break;
-					case 9:
-						stateTip = '订单已关闭'; 
-						stateTipColor = '#909399';
+						stateTip = '已预约'; 
 						break;
-						
-					//更多自定义
+					case 2:
+						stateTip = '已抢中'; 
+						break;
+					case 3:
+						stateTip = '转卖中'; 
+						break;
+					case 4:
+						stateTip = '已违约'; 
+						break;	
+					case 5:
+						stateTip = '已完成'; 
+						stateTipColor = '#666666';
+						break;
 				}
 				return {stateTip, stateTipColor};
 			}
@@ -253,6 +271,7 @@
 	
 	.swiper-box{
 		height: calc(100% - 40px);
+		
 	}
 	.list-scroll-content{
 		height: 100%;
@@ -294,147 +313,57 @@
 	.uni-swiper-item{
 		height: auto;
 	}
+	.order-content{
+		padding: 24upx;
+	}
 	.order-item{
 		display: flex;
 		flex-direction: column;
-		padding-left: 30upx;
 		background: #fff;
-		margin-top: 16upx;
-		.i-top{
+		border-radius: 16upx;
+		padding: 10upx 24upx;
+		margin-bottom: 20upx;
+		.order-item-f{
 			display: flex;
-			align-items: center;
-			height: 80upx;
-			padding-right:30upx;
-			font-size: $font-base;
-			color: $font-color-dark;
-			position: relative;
-			.time{
-				flex: 1;
-			}
-			.state{
-				color: $base-color;
-			}
-			.del-btn{
-				padding: 10upx 0 10upx 36upx;
-				font-size: $font-lg;
-				color: $font-color-light;
-				position: relative;
-				&:after{
-					content: '';
-					width: 0;
-					height: 30upx;
-					border-left: 1px solid $border-color-dark;
-					position: absolute;
-					left: 20upx;
-					top: 50%;
-					transform: translateY(-50%);
+			margin-bottom: 44upx;
+			.order-item-fl{
+				flex:1;
+				font-size:28upx;
+				color:#000000;
+				text{
+					font-weight: 700;
 				}
 			}
-		}
-		/* 多条商品 */
-		.goods-box{
-			height: 160upx;
-			padding: 20upx 0;
-			white-space: nowrap;
-			.goods-item{
-				width: 120upx;
-				height: 120upx;
-				display: inline-block;
-				margin-right: 24upx;
-			}
-			.goods-img{
-				display: block;
-				width: 100%;
-				height: 100%;
+			.order-item-fr{
+				font-size: 28upx;
 			}
 		}
-		/* 单条商品 */
-		.goods-box-single{
-			display: flex;
-			padding: 20upx 0;
-			.goods-img{
-				display: block;
-				width: 120upx;
-				height: 120upx;
-			}
-			.right{
-				flex: 1;
-				display: flex;
-				flex-direction: column;
-				padding: 0 30upx 0 24upx;
-				overflow: hidden;
-				.title{
-					font-size: $font-base + 2upx;
-					color: $font-color-dark;
-					line-height: 1;
-				}
-				.attr-box{
-					font-size: $font-sm + 2upx;
-					color: $font-color-light;
-					padding: 10upx 12upx;
-				}
-				.price{
-					font-size: $font-base + 2upx;
-					color: $font-color-dark;
-					&:before{
-						content: '￥';
-						font-size: $font-sm;
-						margin: 0 2upx 0 8upx;
-					}
-				}
-			}
-		}
-		
-		.price-box{
-			display: flex;
-			justify-content: flex-end;
-			align-items: baseline;
-			padding: 20upx 30upx;
-			font-size: $font-sm + 2upx;
-			color: $font-color-light;
-			.num{
-				margin: 0 8upx;
-				color: $font-color-dark;
-			}
-			.price{
-				font-size: $font-lg;
-				color: $font-color-dark;
-				&:before{
-					content: '￥';
-					font-size: $font-sm;
-					margin: 0 2upx 0 8upx;
-				}
-			}
-		}
-		.action-box{
-			display: flex;
-			justify-content: flex-end;
-			align-items: center;
-			height: 100upx;
-			position: relative;
-			padding-right: 30upx;
-		}
-		.action-btn{
-			width: 160upx;
-			height: 60upx;
-			margin: 0;
-			margin-left: 24upx;
-			padding: 0;
-			text-align: center;
+		.order-item-text{
+			font-size: 28upx;
+			color:#333333;
 			line-height: 60upx;
-			font-size: $font-sm + 2upx;
-			color: $font-color-dark;
-			background: #fff;
-			border-radius: 100px;
-			&:after{
-				border-radius: 100px;
+			text{
+				color:#999999;
 			}
-			&.recom{
-				background: #fff9f9;
-				color: $base-color;
-				&:after{
-					border-color: #f7bcc8;
-				}
+		}
+		.order-item-btn{
+			display: flex;
+			padding:28upx 0;
+			border-top:1upx solid #f6f6f6;
+			.order-item-btn1{
+				background-image: linear-gradient(90deg,rgba(255, 104, 166, 1) 0,rgba(255, 71, 140, 1) 100%);
+				border-radius: 32upx;
+				padding: 8upx 30upx 8upx 30upx;
+				color:#ffffff;
+				font-size:26upx;
+				margin-right: 20upx;
+			}
+			.order-item-btn2{
+				border-radius: 32upx;
+				padding: 8upx 30upx 8upx 30upx;
+				color:#999999;
+				font-size:26upx;
+				background-color: #EBEBEB;
 			}
 		}
 	}

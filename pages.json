@@ -133,6 +133,12 @@
 			}
 		},
 		{
+			"path": "pages/strokeCat/rule",
+			"style": {
+				"navigationBarTitleText": "规则"
+			}
+		},
+		{
 			"path": "pages/panicBuy/panicBuyOrder",
 			"style": {
 				"navigationBarTitleText": "抢购订单"
