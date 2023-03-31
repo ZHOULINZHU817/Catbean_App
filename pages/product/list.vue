@@ -198,7 +198,7 @@
 				//测试数据没有写id，用title代替
 				let id = item.title;
 				uni.navigateTo({
-					url: `/pages/product/product?id=${id}`
+					url: `/pages/product/detail?id=${id}`
 				})
 			},
 			stopPrevent(){}

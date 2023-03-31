@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<!-- 空白页 -->
-		<view v-if="!hasLogin || empty===true" class="empty">
+		<view v-if="empty===true" class="empty">
 			<image src="/static/emptyCart.jpg" mode="aspectFit"></image>
 			<view v-if="hasLogin" class="empty-tips">
 				空空如也
@@ -21,7 +21,8 @@
 						:class="{'b-b': index!==cartList.length-1}"
 					>
 						<view class="image-wrapper">
-							<image :src="item.image" 
+							<image 
+							    :src="item.image" 
 								:class="[item.loaded]"
 								mode="aspectFill" 
 								lazy-load 
@@ -35,21 +36,31 @@
 							></view>
 						</view>
 						<view class="item-right">
-							<text class="clamp title">{{item.title}}</text>
-							<text class="attr">{{item.attr_val}}</text>
-							<text class="price">¥{{item.price}}</text>
-							<uni-number-box 
-								class="step"
-								:min="1" 
-								:max="item.stock"
-								:value="item.number>item.stock?item.stock:item.number"
-								:isMax="item.number>=item.stock?true:false"
-								:isMin="item.number===1"
-								:index="index"
-								@eventChange="numberChange"
-							></uni-number-box>
+							<view class="item-right-t h-120">
+								<text class="clamp title">{{item.title}}</text>
+							    <text class="yticon icon-iconfontshanchu1" @click="deleteCartItem(index)"></text>
+							</view>
+							<view class="item-right-t attr">{{item.attr_val}}</view>
+							<view class="item-right-t item-right-price">
+								<view class="price">
+									<text>¥</text>
+									{{item.price}}
+									<text>.00</text>
+									</view>
+								<uni-number-box 
+									class="step"
+									:min="1" 
+									:max="item.stock"
+									:value="item.number>item.stock?item.stock:item.number"
+									:isMax="item.number>=item.stock?true:false"
+									:isMin="item.number===1"
+									:index="index"
+									@eventChange="numberChange"
+								></uni-number-box>
+							</view>
+							<!-- <text class="attr">{{item.attr_val}}</text> -->
 						</view>
-						<text class="del-btn yticon icon-fork" @click="deleteCartItem(index)"></text>
+						
 					</view>
 				</block>
 			</view>
@@ -66,12 +77,14 @@
 					</view>
 				</view>
 				<view class="total-box">
-					<text class="price">¥{{total}}</text>
-					<text class="coupon">
+					<text class="price">合计：
+						<text>¥{{total}}</text>
+					</text>
+					<!-- <text class="coupon">
 						已优惠
 						<text>74.35</text>
 						元
-					</text>
+					</text> -->
 				</view>
 				<button type="primary" class="no-border confirm-btn" @click="createOrder">去结算</button>
 			</view>
@@ -219,6 +232,9 @@
 </script>
 
 <style lang='scss'>
+page{
+	background: #F6F6F6;
+}
 	.container{
 		padding-bottom: 134upx;
 		/* 空白页 */
@@ -251,13 +267,18 @@
 		}
 	}
 	/* 购物车列表项 */
+	.cart-list{
+		margin: 24upx;
+		background-color: #fff;
+		border-radius: 16upx;
+	}
 	.cart-item{
 		display:flex;
 		position:relative;
-		padding:30upx 40upx;
+		padding:30upx 24upx;
 		.image-wrapper{
-			width: 230upx;
-			height: 230upx;
+			width: 180upx;
+			height: 180upx;
 			flex-shrink: 0;
 			position:relative;
 			image{
@@ -277,27 +298,67 @@
 			border-radius: 50px;
 		}
 		.item-right{
-			display:flex;
-			flex-direction: column;
+			// display:flex;
+			// flex-direction: column;
 			flex: 1;
 			overflow: hidden;
 			position:relative;
 			padding-left: 30upx;
+			.item-right-t{
+				display: flex;
+			}
+			// .h-120{
+			// 	height:90upx;
+			// }
 			.title,.price{
-				font-size:$font-base + 2upx;
-				color: $font-color-dark;
-				height: 40upx;
-				line-height: 40upx;
+				font-size:28upx;
+				color: #000000;
+				flex:1;
 			}
 			.attr{
-				font-size: $font-sm + 2upx;
-				color: $font-color-light;
-				height: 50upx;
-				line-height: 50upx;
+				font-size: 24upx;
+				color: #666666;
+				margin-bottom: 60upx;
 			}
 			.price{
-				height: 50upx;
-				line-height:50upx;
+				color: #FF478C;
+				font-weight: 700;
+				font-size:32upx;
+				text{
+					font-size:26upx;
+				}
+			}
+			.item-right-price{
+				/deep/.uni-numbox{
+					position: relative;
+					left:0;
+					height:40upx;
+					width:186upx;
+					background: #ffffff;
+					.uni-numbox-minus{
+							background: #ffffff;
+							line-height:40upx;
+							// border: 1upx solid #EBEBEB;
+							.yticon{
+								font-size: 28upx;
+							}
+					}
+					.uni-numbox-value{
+							background: #F5F5F5;
+							height:40upx;
+							border-radius: 8upx;
+							// border-top: 1upx solid #EBEBEB;
+							// border-bottom: 1upx solid #EBEBEB;
+					}
+					.uni-numbox-plus{
+							background: #ffffff;
+							line-height:40upx;
+							// border: 1upx solid #EBEBEB;
+							.yticon{
+								font-size: 28upx;
+							}
+					}
+				}	
 			}
 		}
 		.del-btn{
@@ -310,7 +371,7 @@
 	/* 底部栏 */
 	.action-section{
 		/* #ifdef H5 */
-		margin-bottom:100upx;
+		// margin-bottom:100upx;
 		/* #endif */
 		position:fixed;
 		left: 30upx;
@@ -361,8 +422,13 @@
 			text-align:right;
 			padding-right: 40upx;
 			.price{
-				font-size: $font-lg;
-				color: $font-color-dark;
+				font-size:28upx;
+				color: #333333;
+				text{
+					font-size:32upx;
+					color: #FF478C;
+					font-weight: 700;
+				}
 			}
 			.coupon{
 				font-size: $font-sm;
@@ -374,18 +440,28 @@
 		}
 		.confirm-btn{
 			padding: 0 38upx;
-			margin: 0;
-			border-radius: 100px;
-			height: 76upx;
-			line-height: 76upx;
-			font-size: $font-base + 2upx;
-			background: $uni-color-primary;
-			box-shadow: 1px 2px 5px rgba(217, 60, 93, 0.72)
+			// margin: 0;
+			// border-radius: 100px;
+			height: 70upx;
+			line-height: 70upx;
+			font-size: 28upx;
+			// background: #FF478C;
+			// box-shadow: 1px 2px 5px rgba(217, 60, 93, 0.72)
+
+			background-image: linear-gradient(
+				90deg,
+				rgba(255, 104, 166, 1) 0,
+				rgba(255, 71, 140, 1) 100%
+			);
+			border-radius: 38upx;
+			color:#fff;
+			font-weight: 700;
+			// padding: 8px 27px 8px 27px;
 		}
 	}
 	/* 复选框选中状态 */
 	.action-section .checkbox.checked,
 	.cart-item .checkbox.checked{
-		color: $uni-color-primary;
+		color: #FF478C;
 	}
 </style>

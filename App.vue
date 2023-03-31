@@ -390,10 +390,12 @@
 	}
 
 	.clamp {
-		overflow: hidden;
+		word-break: break-all;
 		text-overflow: ellipsis;
-		white-space: nowrap;
-		display: block;
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2; /* 这里是超出几行省略 */
+		overflow: hidden;
 	}
 
 	.common-hover {
@@ -442,10 +444,10 @@
 
 	/* input 样式 */
 	.input-placeholder {
-		color: #999999;
+		color: #B8B8B8;
 	}
 
 	.placeholder {
-		color: #999999;
+		color: #B8B8B8;
 	}
 </style>

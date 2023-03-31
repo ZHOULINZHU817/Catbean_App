@@ -1,13 +1,19 @@
 <template>
 	<view class="container">
-		<view class="left-bottom-sign"></view>
+		<!-- <view class="left-bottom-sign"></view>
 		<view class="back-btn yticon icon-zuojiantou-up" @click="navBack"></view>
-		<view class="right-top-sign"></view>
+		<view class="right-top-sign"></view> -->
 		<!-- 设置白色背景防止软键盘把下部绝对定位元素顶上来盖住输入框等 -->
 		<view class="wrapper">
-			<view class="left-top-sign">LOGIN</view>
+			<!-- <view class="left-top-sign">LOGIN</view>
 			<view class="welcome">
 				欢迎回来！
+			</view> -->
+			<view class="cat-logo">
+				<img class="cat-logo-img" src="@/static/cat.png"/>
+			</view>
+			<view class="cat-logo">
+				<view class="cat-logo-title">欢迎来到布偶猫舍</view>
 			</view>
 			<view class="input-content">
 				<view class="input-item">
@@ -26,7 +32,7 @@
 					<input 
 						type="mobile" 
 						value="" 
-						placeholder="8-18位不含特殊字符的数字、字母组合"
+						placeholder="请输入密码"
 						placeholder-class="input-empty"
 						maxlength="20"
 						password 
@@ -38,7 +44,7 @@
 			</view>
 			<button class="confirm-btn" @click="toLogin" :disabled="logining">登录</button>
 			<view class="forget-section">
-				<text class="login-btn" @click="toRegist">注册</text>
+				<!-- <text class="login-btn" @click="toRegist">注册</text> -->
 				<text class="login-btn" @click="forgetPassword">忘记密码?</text>
 			</view>
 		</view>
@@ -115,10 +121,10 @@
 		background: #fff;
 	}
 	.container{
-		padding-top: 115px;
+		padding-top: 100upx;
 		position:relative;
 		width: 100vw;
-		height: 100vh;
+		height: 90vh;
 		overflow: hidden;
 		background: #fff;
 	}
@@ -193,10 +199,11 @@
 		align-items:flex-start;
 		justify-content: center;
 		padding: 0 30upx;
-		background:$page-color-light;
+		// background:$page-color-light;
 		height: 120upx;
 		border-radius: 4px;
-		margin-bottom: 50upx;
+		border-bottom: 1px solid #F6F6F6;
+		// margin-bottom: 50upx;
 		&:last-child{
 			margin-bottom: 0;
 		}
@@ -214,26 +221,32 @@
 		}	
 	}
 
+
 	.confirm-btn{
 		width: 630upx;
 		height: 76upx;
 		line-height: 76upx;
 		border-radius: 50px;
-		margin-top: 70upx;
-		background: $uni-color-primary;
+		margin-top: 80upx;
+		background-image: linear-gradient(
+			90deg,
+			rgba(255, 104, 166, 1) 0,
+			rgba(255, 71, 140, 1) 100%
+		);
 		color: #fff;
-		font-size: $font-lg;
+		font-size:28upx;
+		font-weight: 700;
 		&:after{
 			border-radius: 100px;
 		}
 	}
 	.forget-section{
-		font-size: $font-sm+2upx;
-		color: $font-color-spec;
-		text-align: center;
+		font-size: 28upx;
+		color: #666666;
+		text-align: right;
 		margin-top: 40upx;
 		.login-btn{
-			padding:0 150upx;
+			padding:0 80upx;
 		}
 	}
 	.register-section{
@@ -248,5 +261,23 @@
 			color: $font-color-spec;
 			margin-left: 10upx;
 		}
+	}
+	.cat-logo{
+		display: flex;
+		justify-content: center;
+		.cat-logo-img{
+			height: 80upx;
+		    width:80upx;
+			margin-bottom: 22upx;
+		}
+		.cat-logo-title{
+			font-size:34upx;
+			color:#000000;
+			font-weight: 700;
+			margin-bottom: 60upx;
+		}
+	}
+	/deep/.uni-input-placeholder{
+		color: #B8B8B8;
 	}
 </style>

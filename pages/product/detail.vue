@@ -15,22 +15,34 @@
 		</view>
 		
 		<view class="introduce-section">
-			<text class="title">恒源祥2019春季长袖白色t恤 新款春装</text>
 			<view class="price-box">
 				<text class="price-tip">¥</text>
 				<text class="price">341.6</text>
 				<text class="m-price">¥488</text>
-				<text class="coupon-tip">7折</text>
+				<!-- <text class="coupon-tip">7折</text> -->
 			</view>
-			<view class="bot-row">
+			<text class="title">恒源祥2019春季长袖白色t恤 新款春装</text>
+			<!-- <view class="bot-row">
 				<text>销量: 108</text>
 				<text>库存: 4690</text>
 				<text>浏览量: 768</text>
-			</view>
+			</view> -->
+		</view>
+		<view class="buy-row">
+			<view class="buy-row-title">购买数量</view>
+			<uni-number-box 
+					class="step"
+					:min="1" 
+					:max="obj.stock"
+					:value="obj.number>obj.stock?obj.stock:obj.number"
+					:isMax="obj.number>=obj.stock?true:false"
+					:isMin="obj.number===1"
+					@eventChange="numberChange">
+					</uni-number-box>
 		</view>
 		
 		<!--  分享 -->
-		<view class="share-section" @click="share">
+		<!-- <view class="share-section" @click="share">
 			<view class="share-icon">
 				<text class="yticon icon-xingxing"></text>
 				 返
@@ -42,9 +54,9 @@
 				<text class="yticon icon-you"></text>
 			</view>
 			
-		</view>
+		</view> -->
 		
-		<view class="c-list">
+		<!-- <view class="c-list">
 			<view class="c-row b-b" @click="toggleSpec">
 				<text class="tit">购买类型</text>
 				<view class="con">
@@ -75,10 +87,10 @@
 					<text>假一赔十 ·</text>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		
 		<!-- 评价 -->
-		<view class="eva-section">
+		<!-- <view class="eva-section">
 			<view class="e-header">
 				<text class="tit">评价</text>
 				<text>(86)</text>
@@ -96,7 +108,7 @@
 					</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		
 		<view class="detail-desc">
 			<view class="d-header">
@@ -111,30 +123,29 @@
 				<text class="yticon icon-xiatubiao--copy"></text>
 				<text>首页</text>
 			</navigator>
-			<navigator url="/pages/cart/cart" open-type="switchTab" class="p-b-btn">
+			<view @click="goCart" class="p-b-btn">
 				<text class="yticon icon-gouwuche"></text>
 				<text>购物车</text>
-			</navigator>
-			<view class="p-b-btn" :class="{active: favorite}" @click="toFavorite">
+			</view>
+			<!-- <view class="p-b-btn" :class="{active: favorite}" @click="toFavorite">
 				<text class="yticon icon-shoucang"></text>
 				<text>收藏</text>
-			</view>
+			</view> -->
 			
 			<view class="action-btn-group">
+				<button type="primary" class=" action-btn no-border add-cart-btn" @click="goCart">加入购物车</button>
 				<button type="primary" class=" action-btn no-border buy-now-btn" @click="buy">立即购买</button>
-				<button type="primary" class=" action-btn no-border add-cart-btn">加入购物车</button>
 			</view>
 		</view>
 		
 		
 		<!-- 规格-模态层弹窗 -->
-		<view 
+		<!-- <view 
 			class="popup spec" 
 			:class="specClass"
 			@touchmove.stop.prevent="stopPrevent"
 			@click="toggleSpec"
 		>
-			<!-- 遮罩层 -->
 			<view class="mask"></view>
 			<view class="layer attr-content" @click.stop="stopPrevent">
 				<view class="a-t">
@@ -166,21 +177,23 @@
 				</view>
 				<button class="btn" @click="toggleSpec">完成</button>
 			</view>
-		</view>
+		</view> -->
 		<!-- 分享 -->
-		<share 
+		<!-- <share 
 			ref="share" 
 			:contentHeight="580"
 			:shareList="shareList"
-		></share>
+		></share> -->
 	</view>
 </template>
 
 <script>
 	import share from '@/components/share';
+	import uniNumberBox from '@/components/uni-number-box.vue'
 	export default{
 		components: {
-			share
+			share,
+			uniNumberBox
 		},
 		data() {
 			return {
@@ -209,63 +222,67 @@
 						<img style="width:100%;display:block;" src="https://gd1.alicdn.com/imgextra/i1/479184430/O1CN01Tnm1rU1iaz4aVKcwP_!!479184430.jpg_400x400.jpg" />
 					</div>
 				`,
-				specList: [
-					{
-						id: 1,
-						name: '尺寸',
-					},
-					{	
-						id: 2,
-						name: '颜色',
-					},
-				],
-				specChildList: [
-					{
-						id: 1,
-						pid: 1,
-						name: 'XS',
-					},
-					{
-						id: 2,
-						pid: 1,
-						name: 'S',
-					},
-					{
-						id: 3,
-						pid: 1,
-						name: 'M',
-					},
-					{
-						id: 4,
-						pid: 1,
-						name: 'L',
-					},
-					{
-						id: 5,
-						pid: 1,
-						name: 'XL',
-					},
-					{
-						id: 6,
-						pid: 1,
-						name: 'XXL',
-					},
-					{
-						id: 7,
-						pid: 2,
-						name: '白色',
-					},
-					{
-						id: 8,
-						pid: 2,
-						name: '珊瑚粉',
-					},
-					{
-						id: 9,
-						pid: 2,
-						name: '草木绿',
-					},
-				]
+				// specList: [
+				// 	{
+				// 		id: 1,
+				// 		name: '尺寸',
+				// 	},
+				// 	{	
+				// 		id: 2,
+				// 		name: '颜色',
+				// 	},
+				// ],
+				// specChildList: [
+				// 	{
+				// 		id: 1,
+				// 		pid: 1,
+				// 		name: 'XS',
+				// 	},
+				// 	{
+				// 		id: 2,
+				// 		pid: 1,
+				// 		name: 'S',
+				// 	},
+				// 	{
+				// 		id: 3,
+				// 		pid: 1,
+				// 		name: 'M',
+				// 	},
+				// 	{
+				// 		id: 4,
+				// 		pid: 1,
+				// 		name: 'L',
+				// 	},
+				// 	{
+				// 		id: 5,
+				// 		pid: 1,
+				// 		name: 'XL',
+				// 	},
+				// 	{
+				// 		id: 6,
+				// 		pid: 1,
+				// 		name: 'XXL',
+				// 	},
+				// 	{
+				// 		id: 7,
+				// 		pid: 2,
+				// 		name: '白色',
+				// 	},
+				// 	{
+				// 		id: 8,
+				// 		pid: 2,
+				// 		name: '珊瑚粉',
+				// 	},
+				// 	{
+				// 		id: 9,
+				// 		pid: 2,
+				// 		name: '草木绿',
+				// 	},
+				// ]
+				obj:{
+					stock: 6,
+					number:2
+				}
 			};
 		},
 		async onLoad(options){
@@ -278,16 +295,16 @@
 			
 			
 			//规格 默认选中第一条
-			this.specList.forEach(item=>{
-				for(let cItem of this.specChildList){
-					if(cItem.pid === item.id){
-						this.$set(cItem, 'selected', true);
-						this.specSelected.push(cItem);
-						break; //forEach不能使用break
-					}
-				}
-			})
-			this.shareList = await this.$api.json('shareList');
+			// this.specList.forEach(item=>{
+			// 	for(let cItem of this.specChildList){
+			// 		if(cItem.pid === item.id){
+			// 			this.$set(cItem, 'selected', true);
+			// 			this.specSelected.push(cItem);
+			// 			break; //forEach不能使用break
+			// 		}
+			// 	}
+			// })
+			// this.shareList = await this.$api.json('shareList');
 		},
 		methods:{
 			//规格弹窗开关
@@ -338,7 +355,16 @@
 					url: `/pages/order/createOrder`
 				})
 			},
-			stopPrevent(){}
+			goCart(){
+				uni.navigateTo({
+					url: `/pages/cart/cart`
+				})
+			},
+			stopPrevent(){},
+			//数量
+			numberChange(data){
+				console.log(data.number);
+			},
 		},
 
 	}
@@ -384,7 +410,7 @@
 		
 		.title{
 			font-size: 32upx;
-			color: $font-color-dark;
+			color: #000000;
 			height: 50upx;
 			line-height: 50upx;
 		}
@@ -394,14 +420,16 @@
 			height: 64upx;
 			padding: 10upx 0;
 			font-size: 26upx;
-			color:$uni-color-primary;
+			color:#FF478C;
 		}
 		.price{
-			font-size: $font-lg + 2upx;
+			font-size: 32upx;
+			font-weight: 700;
 		}
 		.m-price{
 			margin:0 12upx;
-			color: $font-color-light;
+			color: #999999;
+			font-size:24upx;
 			text-decoration: line-through;
 		}
 		.coupon-tip{
@@ -583,6 +611,50 @@
 			}
 		}
 	}
+	/**购买数量** */
+	.buy-row{
+		height:110upx;
+		width:100%;
+		background-color: #ffffff;
+		margin-top: 20upx;
+		display: flex;
+		align-items: center;
+		padding: 0 28upx;
+		.buy-row-title{
+			flex: 1;
+			font-size: 28upx;
+			color: #333333;
+		}
+		/deep/.uni-numbox{
+           position: relative;
+		   left:0;
+		   height:52upx;
+		   width:186upx;
+		   background: #ffffff;
+		   .uni-numbox-minus{
+				background: #ffffff;
+				line-height:52upx;
+				 border: 1upx solid #EBEBEB;
+				 .yticon{
+					 font-size: 28upx;
+				 }
+		   }
+		   .uni-numbox-value{
+				background: #ffffff;
+				height:52upx;
+				border-top: 1upx solid #EBEBEB;
+				border-bottom: 1upx solid #EBEBEB;
+		   }
+		   .uni-numbox-plus{
+				background: #ffffff;
+				line-height:52upx;
+				border: 1upx solid #EBEBEB;
+				.yticon{
+					 font-size: 28upx;
+				 }
+		   }
+     	}	
+	}
 	/*  详情 */
 	.detail-desc{
 		background: #fff;
@@ -615,156 +687,6 @@
 		}
 	}
 	
-	/* 规格选择弹窗 */
-	.attr-content{
-		padding: 10upx 30upx;
-		.a-t{
-			display: flex;
-			image{
-				width: 170upx;
-				height: 170upx;
-				flex-shrink: 0;
-				margin-top: -40upx;
-				border-radius: 8upx;;
-			}
-			.right{
-				display: flex;
-				flex-direction: column;
-				padding-left: 24upx;
-				font-size: $font-sm + 2upx;
-				color: $font-color-base;
-				line-height: 42upx;
-				.price{
-					font-size: $font-lg;
-					color: $uni-color-primary;
-					margin-bottom: 10upx;
-				}
-				.selected-text{
-					margin-right: 10upx;
-				}
-			}
-		}
-		.attr-list{
-			display: flex;
-			flex-direction: column;
-			font-size: $font-base + 2upx;
-			color: $font-color-base;
-			padding-top: 30upx;
-			padding-left: 10upx;
-		}
-		.item-list{
-			padding: 20upx 0 0;
-			display: flex;
-			flex-wrap: wrap;
-			text{
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				background: #eee;
-				margin-right: 20upx;
-				margin-bottom: 20upx;
-				border-radius: 100upx;
-				min-width: 60upx;
-				height: 60upx;
-				padding: 0 20upx;
-				font-size: $font-base;
-				color: $font-color-dark;
-			}
-			.selected{
-				background: #fbebee;
-				color: $uni-color-primary;
-			}
-		}
-	}
-	
-	/*  弹出层 */
-	.popup {
-		position: fixed;
-		left: 0;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		z-index: 99;
-		
-		&.show {
-			display: block;
-			.mask{
-				animation: showPopup 0.2s linear both;
-			}
-			.layer {
-				animation: showLayer 0.2s linear both;
-			}
-		}
-		&.hide {
-			.mask{
-				animation: hidePopup 0.2s linear both;
-			}
-			.layer {
-				animation: hideLayer 0.2s linear both;
-			}
-		}
-		&.none {
-			display: none;
-		}
-		.mask{
-			position: fixed;
-			top: 0;
-			width: 100%;
-			height: 100%;
-			z-index: 1;
-			background-color: rgba(0, 0, 0, 0.4);
-		}
-		.layer {
-			position: fixed;
-			z-index: 99;
-			bottom: 0;
-			width: 100%;
-			min-height: 40vh;
-			border-radius: 10upx 10upx 0 0;
-			background-color: #fff;
-			.btn{
-				height: 66upx;
-				line-height: 66upx;
-				border-radius: 100upx;
-				background: $uni-color-primary;
-				font-size: $font-base + 2upx;
-				color: #fff;
-				margin: 30upx auto 20upx;
-			}
-		}
-		@keyframes showPopup {
-			0% {
-				opacity: 0;
-			}
-			100% {
-				opacity: 1;
-			}
-		}
-		@keyframes hidePopup {
-			0% {
-				opacity: 1;
-			}
-			100% {
-				opacity: 0;
-			}
-		}
-		@keyframes showLayer {
-			0% {
-				transform: translateY(120%);
-			}
-			100% {
-				transform: translateY(0%);
-			}
-		}
-		@keyframes hideLayer {
-			0% {
-				transform: translateY(0);
-			}
-			100% {
-				transform: translateY(120%);
-			}
-		}
-	}
 	
 	/* 底部操作菜单 */
 	.page-bottom{
@@ -814,7 +736,7 @@
 			box-shadow: 0 20upx 40upx -16upx #fa436a;
 			box-shadow: 1px 2px 5px rgba(219, 63, 96, 0.4);
 			background: linear-gradient(to right, #ffac30,#fa436a,#F56C6C);
-			margin-left: 20upx;
+			margin-left: 100upx;
 			position:relative;
 			&:after{
 				content: '';
@@ -839,5 +761,6 @@
 			}
 		}
 	}
+	
 	
 </style>

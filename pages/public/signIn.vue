@@ -1,12 +1,7 @@
 <template>
   <view class="container">
-    <view class="left-bottom-sign"></view>
-    <view class="back-btn yticon icon-zuojiantou-up" @click="navBack"></view>
-    <view class="right-top-sign"></view>
     <!-- 设置白色背景防止软键盘把下部绝对定位元素顶上来盖住输入框等 -->
     <view class="wrapper">
-      <view class="left-top-sign">LOGIN</view>
-      <view class="welcome"> 欢迎注册 </view>
       <view class="input-content">
         <view class="input-item">
           <input
@@ -187,10 +182,10 @@ page {
   background: #fff;
 }
 .container {
-  padding-top: 115px;
+  padding-top: 100upx;
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 90vh;
   overflow: hidden;
   background: #fff;
 }
@@ -200,63 +195,6 @@ page {
   background: #fff;
   padding-bottom: 40upx;
 }
-.back-btn {
-  position: absolute;
-  left: 40upx;
-  z-index: 9999;
-  padding-top: var(--status-bar-height);
-  top: 40upx;
-  font-size: 40upx;
-  color: $font-color-dark;
-}
-.left-top-sign {
-  font-size: 120upx;
-  color: $page-color-base;
-  position: relative;
-  left: -16upx;
-}
-.right-top-sign {
-  position: absolute;
-  top: 80upx;
-  right: -30upx;
-  z-index: 95;
-  &:before,
-  &:after {
-    display: block;
-    content: "";
-    width: 400upx;
-    height: 80upx;
-    background: #b4f3e2;
-  }
-  &:before {
-    transform: rotate(50deg);
-    border-radius: 0 50px 0 0;
-  }
-  &:after {
-    position: absolute;
-    right: -198upx;
-    top: 0;
-    transform: rotate(-50deg);
-    border-radius: 50px 0 0 0;
-    /* background: pink; */
-  }
-}
-.left-bottom-sign {
-  position: absolute;
-  left: -270upx;
-  bottom: -320upx;
-  border: 100upx solid #d0d1fd;
-  border-radius: 50%;
-  padding: 180upx;
-}
-.welcome {
-  position: relative;
-  left: 50upx;
-  top: -90upx;
-  font-size: 46upx;
-  color: #555;
-  text-shadow: 1px 0px 1px rgba(0, 0, 0, 0.3);
-}
 .input-content {
   padding: 0 60upx;
 }
@@ -265,11 +203,11 @@ page {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  padding: 0 30upx;
+  // padding: 0 30upx;
 //   background: $page-color-light;
   height: 120upx;
 //   border-radius: 4px;
-  border-bottom: 1upx solid #8b8989;
+  border-bottom: 1upx solid #F6F6F6;
 //   margin-bottom: 50upx;
   &:last-child {
     margin-bottom: 0;
@@ -293,10 +231,15 @@ page {
   height: 76upx;
   line-height: 76upx;
   border-radius: 50px;
-  margin-top: 70upx;
-  background: $uni-color-primary;
+  margin-top: 80upx;
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 104, 166, 1) 0,
+    rgba(255, 71, 140, 1) 100%
+  );
   color: #fff;
-  font-size: $font-lg;
+  font-size:28upx;
+  font-weight: 700;
   &:after {
     border-radius: 100px;
   }
@@ -327,8 +270,9 @@ page {
 }
 .pass-icon {
   position: absolute;
-  right: 30upx;
+  right: 0;
   top: 50%;
+  transform: translate(0,-50%);
 }
 .icon {
   width: 32rpx;
@@ -338,9 +282,12 @@ page {
   position: relative;
   .code {
     position: absolute;
-    right: 30upx;
+    right: 0;
     top: 30%;
-    color: #000;
+    color: #666666;
   }
+}
+/deep/.uni-input-placeholder{
+  color: #B8B8B8;
 }
 </style>

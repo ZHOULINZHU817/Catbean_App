@@ -168,7 +168,7 @@ export default {
         },
         {
           state: 3,
-          text: "待评价",
+          text: "已完成",
           loadingType: "more",
           orderList: [],
         },
