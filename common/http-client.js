@@ -64,7 +64,6 @@ class HttpClient {
 				}
 			};
 			requestOptions.requestId = new Date().getTime();
-			
 			uni.request(requestOptions);
 		});
 
