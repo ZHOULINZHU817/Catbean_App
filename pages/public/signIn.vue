@@ -6,55 +6,62 @@
         <view class="input-item">
           <input
             type="number"
-            :value="inputUserPhone"
+            :value="form.phone"
             placeholder="请输入手机号码"
             maxlength="11"
-            data-key="inputUserPhone"
+            data-key="phone"
             @input="inputChange"
           />
         </view>
         <view class="input-item phone-code">
           <input
-            type="mobile"
-            value=""
+            type="number"
+            :value="form.code"
             placeholder="请输入验证码"
             placeholder-class="input-empty"
             maxlength="20"
+            data-key="code"
             @input="inputChange"
-            @confirm="toLogin"
           />
-          <view class="code" v-if="codeTxt == '获取验证码'" @click="getPhoneCode">{{ codeTxt }}</view>
-		  <view class="code"
-			placeholder-style="-webkit-user-select:auto;font-size: 32rpx;font-weight: 400;color: #B3B5BA;line-height: 44rpx;"
-			v-else>{{ codeTxt }}</view>
+          <view
+            class="code"
+            v-if="codeTxt == '获取验证码'"
+            @click="getPhoneCode"
+            >{{ codeTxt }}</view
+          >
+          <view
+            class="code"
+            placeholder-style="-webkit-user-select:auto;font-size: 32rpx;font-weight: 400;color: #B3B5BA;line-height: 44rpx;"
+            v-else
+            >{{ codeTxt }}</view
+          >
         </view>
         <view class="input-item pass-position">
           <input
-            type="mobile"
-            value=""
+            type="text"
+            :value="form.pwd"
             placeholder="数字字⺟组合最少6位数"
             placeholder-class="input-empty"
             maxlength="20"
             :password="isShowPassword"
-            data-key="password"
+            data-key="pwd"
             @input="inputChange"
-            @confirm="toLogin"
           />
           <i class="pass-icon" @click="changeIcon">
             <image class="icon" :src="iconSrc" mode=""></image>
           </i>
         </view>
-		<view class="input-item">
+        <view class="input-item">
           <input
             type="number"
-            :value="invitationCode"
+            :value="form.inviteCode"
             placeholder="请输入邀请码（选填）"
-            data-key="invitationCode"
+            data-key="inviteCode"
             @input="inputChange"
           />
         </view>
       </view>
-      <button class="confirm-btn" @click="toLogin" :disabled="logining">
+      <button class="confirm-btn" @click="toRegist" :disabled="logining">
         注册
       </button>
     </view>
@@ -63,35 +70,49 @@
 
 <script>
 import { mapMutations } from "vuex";
+import ApiClinet from "@/services/api-clinet";
+import ApiConfig from "@/config/api.config";
 
 export default {
   data() {
     return {
-      inputUserPhone: "",
-      password: "",
-	  invitationCode: "", //邀请码
       logining: false,
       isShowPassword: true,
       iconSrc: "../../static/tab/close.png", //图标眼睛
       codeTxt: "获取验证码",
+      form: {
+        phone: "", //手机号
+        pwd: "", //密码
+        inviteCode: "", //邀请码
+      },
     };
   },
-  onLoad() {},
+  onLoad() {
+    var backbutton = document.getElementsByClassName('uni-page-head-hd')[0]
+    if(backbutton) backbutton.style.display = 'none';
+  },
   methods: {
     ...mapMutations(["login"]),
     inputChange(e) {
       const key = e.currentTarget.dataset.key;
-      this[key] = e.detail.value;
+      this.form[key] = e.detail.value;
     },
     navBack() {
       uni.navigateBack();
     },
     toRegist() {
       this.$api.msg("去注册");
+      ApiClinet.post(ApiConfig.APP_BASE_API.register, this.form, {
+					loading: true
+				}).then((res) => {
+					if (res.data.code === '0') {
+					   
+					}
+				})
     },
     async toLogin() {
       this.logining = true;
-      const { mobile, password } = this;
+      const { mobile, pwd } = this;
       /* 数据验证模块
 				if(!this.$api.match({
 					mobile,
@@ -103,7 +124,7 @@ export default {
 				*/
       const sendData = {
         mobile,
-        password,
+        pwd,
       };
       const result = await this.$api.json("userInfo");
       if (result.status === 1) {
@@ -115,7 +136,7 @@ export default {
       }
     },
     changeIcon() {
-      if (this.password) {
+      if (this.form.pwd) {
         this.isShowPassword = !this.isShowPassword;
         this.isShowPassword
           ? (this.iconSrc = "../../static/tab/close.png")
@@ -129,49 +150,38 @@ export default {
      */
     getPhoneCode() {
       var rePhone = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
-      if (!this.inputUserPhone) {
+      if (!this.form.phone) {
         this.$api.msg("请先输入手机号");
         return;
       }
-      if (!rePhone.test(this.inputUserPhone)) {
+      if (!rePhone.test(this.form.phone)) {
         this.$api.msg("请输入正确的手机号");
         return;
       }
       this.codeTxt = "验证码发送中...";
-	  this.$api.msg("验证码发送成功");
-            let time = 60;
-            const set = setInterval(() => {
-              this.codeTxt = time-- + "s重新获取";
-              this.pass = false;
-              if (time < 0) {
-                clearInterval(set);
-                this.pass = true;
-                this.codeTxt = "获取验证码";
-              }
-            }, 1000);
-    //   http
-    //     .post(changePhone.sendPhone, {
-    //       userPhone: this.userPhone || this.inputUserPhone,
-    //       code: this.imgVerCode,
-    //     })
-    //     .then((res) => {
-    //       if (res && res.success) {
-    //         this.$api.msg("验证码发送成功");
-    //         let time = 60;
-    //         const set = setInterval(() => {
-    //           this.codeTxt = time-- + "s重新获取";
-    //           this.pass = false;
-    //           if (time < 0) {
-    //             clearInterval(set);
-    //             this.pass = true;
-    //             this.codeTxt = "获取验证码";
-    //           }
-    //         }, 1000);
-    //       } else {
-    //         this.$api.msg("验证码发送失败");
-    //         this.codeTxt = "获取验证码";
-    //       }
-    //     });
+       ApiClinet.get(ApiConfig.APP_BASE_API.code, {phone: this.form.phone}, {
+					loading: true
+				}).then((res) => {
+					if (res.data.code === '0') {
+					    this.$api.msg("验证码发送成功");
+              let time = 60;
+              const set = setInterval(() => {
+                this.codeTxt = time-- + "s重新获取";
+                this.pass = false;
+                if (time < 0) {
+                  clearInterval(set);
+                  this.pass = true;
+                  this.codeTxt = "获取验证码";
+                }
+              }, 1000);
+					}else{
+              this.$api.msg("验证码发送失败");
+              this.codeTxt = "获取验证码";
+          }
+				}).catch(()=>{
+            this.$api.msg("验证码发送失败");
+            this.codeTxt = "获取验证码";
+        })
     },
   },
 };
@@ -204,11 +214,11 @@ page {
   align-items: flex-start;
   justify-content: center;
   // padding: 0 30upx;
-//   background: $page-color-light;
+  //   background: $page-color-light;
   height: 120upx;
-//   border-radius: 4px;
-  border-bottom: 1upx solid #F6F6F6;
-//   margin-bottom: 50upx;
+  //   border-radius: 4px;
+  border-bottom: 1upx solid #f6f6f6;
+  //   margin-bottom: 50upx;
   &:last-child {
     margin-bottom: 0;
   }
@@ -238,7 +248,7 @@ page {
     rgba(255, 71, 140, 1) 100%
   );
   color: #fff;
-  font-size:28upx;
+  font-size: 28upx;
   font-weight: 700;
   &:after {
     border-radius: 100px;
@@ -265,14 +275,14 @@ page {
 }
 
 /***新加样式** */
-.pass-position{
-	position: relative;
+.pass-position {
+  position: relative;
 }
 .pass-icon {
   position: absolute;
   right: 0;
   top: 50%;
-  transform: translate(0,-50%);
+  transform: translate(0, -50%);
 }
 .icon {
   width: 32rpx;
@@ -287,7 +297,7 @@ page {
     color: #666666;
   }
 }
-/deep/.uni-input-placeholder{
-  color: #B8B8B8;
+/deep/.uni-input-placeholder {
+  color: #b8b8b8;
 }
 </style>

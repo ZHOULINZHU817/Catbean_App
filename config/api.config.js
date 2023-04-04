@@ -13,6 +13,17 @@ export default {
 
     //基础API
     APP_BASE_API: {
+
+       /**猫超API*** */
+       bannerList:`${ANDROID_URL}/app/banner/list`, //登陆
+       register:`${ANDROID_URL}/app/member/register`, //注册
+       code:`${ANDROID_URL}/common/code`, //获取验证码
+       login:`${ANDROID_URL}/app/member/login`, //登陆
+
+
+   
+
+        /***没用的api*** */
 		PARAMETER:`${ANDROID_URL}/app/parameter/code`,
         CUSTOM: `${ANDROID_URL}/baseUser/custom`,
         LOGIN_URL: `${ANDROID_URL}/baseUser/login`, //登陆

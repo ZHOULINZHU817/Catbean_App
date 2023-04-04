@@ -242,7 +242,7 @@
 </template>
 
 <script>
-import ApiClinet from "@/services/api-clinet";
+	import ApiClinet from "@/services/api-clinet";
 	import ApiConfig from "@/config/api.config";
 
 	export default {
@@ -274,6 +274,11 @@ import ApiClinet from "@/services/api-clinet";
 			 * 分次请求未作整合
 			 */
 			async loadData() {
+				ApiClinet.get(ApiConfig.APP_BASE_API.bannerList, {}).then((res) => {
+					if (res.data.code === '0') {
+					   
+					}
+				})
 				let carouselList = await this.$api.json('carouselList');
 				// this.titleNViewBackground = carouselList[0].background;
 				this.swiperLength = carouselList.length;
