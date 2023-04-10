@@ -14,8 +14,8 @@
 			<!-- 背景色区域 -->
 			<view class="titleNview-background" :style="{backgroundColor:titleNViewBackground}"></view>
 			<swiper class="carousel" circular autoplay @change="swiperChange">
-				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item" @click="navToDetailPage({title: '轮播广告'})">
-					<image :src="item.src" />
+				<swiper-item v-for="(item, index) in carouselList" :key="index" class="carousel-item">
+					<image :title="item.title" :src="item.image" />
 				</swiper-item>
 			</swiper>
 			<!-- 自定义swiper指示器 -->
@@ -235,6 +235,7 @@
 				<text class="title clamp">{{item.title}}</text>
 				<text class="price">￥{{item.price}}</text>
 			</view>
+			<view v-if="showTotal" class="showTotal">没有更多数据了~</view>
 		</view>
 		
 
@@ -253,39 +254,47 @@
 				swiperCurrent: 0,
 				swiperLength: 0,
 				carouselList: [],
-				goodsList: []
+				goodsList: [],
+				showTotal: false,
+				params: {
+					page: 0,
+					size: 10
+				}
 			};
 		},
 
 		onLoad() {
-			this.loadData();
-			// ApiClinet.post(ApiConfig.APP_BASE_API.TTNEWSREAD_APP_TASK, {
-			// 		page: 1,
-			// 		length: 1,
-			// 	}, {
-			// 		loading: false
-			// 	}).then((res)=> {
-
-			// 	})
+			this.bannerList();
+			this.productList();
 		},
 		methods: {
 			/**
 			 * 请求静态数据只是为了代码不那么乱
 			 * 分次请求未作整合
 			 */
-			async loadData() {
+			async bannerList() {
 				ApiClinet.get(ApiConfig.APP_BASE_API.bannerList, {}).then((res) => {
-					if (res.data.code === '0') {
-					   
+					if (res.data.code == '200') {
+					    this.swiperLength = res.data.data.length;
+						this.carouselList = res.data.data || [];
 					}
 				})
-				let carouselList = await this.$api.json('carouselList');
+				// let carouselList = await this.$api.json('carouselList');
 				// this.titleNViewBackground = carouselList[0].background;
-				this.swiperLength = carouselList.length;
-				this.carouselList = carouselList;
-				console.log('carouselList+++', carouselList)
+				// this.swiperLength = carouselList.length;
+				// this.carouselList = carouselList;
+				// console.log('carouselList+++', carouselList)
+				
+			},
+			async productList(){
 				let goodsList = await this.$api.json('goodsList');
 				this.goodsList = goodsList || [];
+				ApiClinet.get(ApiConfig.APP_BASE_API.productList, this.params).then((res) => {
+					if (res.data.code == '200') {
+						this.goodsList = res.data.records || [];
+					    this.total = Math.ceil(res.data.total / this.params.size);
+					}
+				})
 			},
 			//轮播图切换修改背景色
 			swiperChange(e) {
@@ -304,7 +313,18 @@
 		},
 		onNavigationBarSearchInputConfirmed: async function(e) {
 			console.log("22", e)
+			this.params.name = e.text;
+			this.params.page = 0;
+			this.productList();
 		},
+		onReachBottom() {
+		    if (this.params.page >= this.total) {
+				this.showTotal=true//已经滑到底的提醒
+				return false;
+			}
+			this.params.page ++;
+			this.productList()
+		}
 	}
 </script>
 
@@ -740,6 +760,11 @@
 			font-weight: 700;
 			padding:0 10upx;
 		}
+	}
+	.showTotal{
+		text-align: center;
+		line-height: 60upx;
+		font-size:28upx;
 	}
 	
 

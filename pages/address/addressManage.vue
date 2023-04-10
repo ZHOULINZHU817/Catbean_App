@@ -3,11 +3,11 @@
 		<view class="padding-lr-30 bg-white">
             <view class="row b-b">
 				<text class="tit">收货人</text>
-				<input class="input" type="text" v-model="addressData.receiverName" placeholder="收货人姓名" placeholder-class="placeholder" />
+				<input class="input" type="text" v-model="addressData.receiver" placeholder="收货人姓名" placeholder-class="placeholder" />
 			</view>
 			<view class="row b-b">
 				<text class="tit">手机号码</text>
-				<input class="input" type="number" v-model="addressData.receiverPhoneNumber" placeholder="收货人手机号码" placeholder-class="placeholder" />
+				<input class="input" type="number" v-model="addressData.phone" placeholder="收货人手机号码" placeholder-class="placeholder" />
 			</view>
 			<view class="row b-b">
 				<text class="tit">所在地区</text>
@@ -25,7 +25,7 @@
 		<view class="default-row padding-lr-30">
 			<view class="flex row-center">
                <view class="tit flex1">设为默认</view>
-			   <switch :checked="addressData.defaultable == 'Y'" color="#FF478C" @change="switchChange" />
+			   <switch :checked="addressData.first" color="#FF478C" @change="switchChange" />
 			</view>
 			<view class="remind">提醒：每次下单会默认推荐使用该地址</view>
 		</view>
@@ -35,6 +35,8 @@
 
 <script>
 	import wangdingPickerAddress from '@/components/wangding-pickerAddress/wangding-pickerAddress.vue';
+	import ApiClinet from "@/services/api-clinet";
+	import ApiConfig from "@/config/api.config";
 	export default {
 		components:{
             wangdingPickerAddress
@@ -59,12 +61,16 @@
 		},
 		methods: {
 			switchChange(e){
-				this.addressData.defaultable = e.detail.value ? 'Y': 'N';
+				this.addressData.first = e.detail.value;
 			},
 			
 			//地图选择地址
 			addressChange(data) {
+				console.log('data', data)
                 let name = data.data.join('');
+				this.addressData.province = data.data[0]
+				this.addressData.city = data.data[1]
+				this.addressData.area = data.data[2]
 				this.$set(this.addressData, 'addressName', name);
 				this.$set(this.addressData, 'address', null);
             },
@@ -72,16 +78,16 @@
 			//提交
 			confirm(){
 				let data = this.addressData;
-				if(!data.receiverName){
+				if(!data.receiver){
 					this.$api.msg('请填写收货人姓名');
 					return;
 				}
-				if(!/(^1[3|4|5|7|8][0-9]{9}$)/.test(data.receiverPhoneNumber)){
+				if(!/(^1[3|4|5|7|8][0-9]{9}$)/.test(data.phone)){
 					this.$api.msg('请输入正确的手机号码');
 					return;
 				}
 				if(!data.addressName && this.manageType != 'edit'){
-					this.$api.msg('请在地图选择所在位置');
+					this.$api.msg('请选择所在位置');
 					return;
 				}
 				if(this.addressData.addressName){
@@ -89,9 +95,23 @@
 				}
 				delete this.addressData.addressName;
 				if(this.manageType == 'edit'){
-                    
+                    ApiClinet.put(ApiConfig.APP_BASE_API.address, this.addressData).then((res) => {
+						if (res.data.code == '200') {
+						 this.$api.msg('地址修改成功')
+						 uni.navigateTo({
+							url: `/pages/address/address`
+						 })
+						}
+					})
 				}else{
-                   
+                    ApiClinet.post(ApiConfig.APP_BASE_API.address, this.addressData).then((res) => {
+						if (res.data.code == '200') {
+						 this.$api.msg('地址添加成功')
+						 uni.navigateTo({
+							url: `/pages/address/address`
+						 })
+						}
+					})
 				}
 				
 			},

@@ -190,6 +190,10 @@
 <script>
 	import share from '@/components/share';
 	import uniNumberBox from '@/components/uni-number-box.vue'
+
+	import ApiClinet from "@/services/api-clinet";
+	// import ApiConfig from "@/config/api.config";
+	import { ANDROID_URL } from '@/config/app.config'
 	export default{
 		components: {
 			share,
@@ -292,7 +296,7 @@
 			if(id){
 				this.$api.msg(`点击了${id}`);
 			}
-			
+			this.getGoodDetail(id)
 			
 			//规格 默认选中第一条
 			// this.specList.forEach(item=>{
@@ -307,6 +311,13 @@
 			// this.shareList = await this.$api.json('shareList');
 		},
 		methods:{
+			getGoodDetail(id){
+				ApiClinet.get(`${ANDROID_URL}/api/app/product/${id}`, {}).then((res) => {
+					if (res.data.code === '0') {
+					   
+					}
+				})
+			},
 			//规格弹窗开关
 			toggleSpec() {
 				if(this.specClass === 'show'){

@@ -124,10 +124,14 @@
 </template>  
 <script>  
 	import listCell from '@/components/mix-list-cell';
-    import {  
-        mapState 
-    } from 'vuex';  
-	let startY = 0, moveY = 0, pageAtTop = true;
+    // import {  
+    //     mapState 
+    // } from 'vuex';  
+	// let startY = 0, moveY = 0, pageAtTop = true;
+	import store from '@/store'
+	import ApiClinet from "@/services/api-clinet";
+	import ApiConfig from "@/config/api.config";
+
     export default {
 		components: {
 			listCell
@@ -137,14 +141,24 @@
 				coverTransform: 'translateY(0px)',
 				coverTransition: '0s',
 				moving: false,
+				userInfo: store.getters.userInfo
 			}
 		},
 		onLoad(){
+			this.getNoticeMsg()
 		},
-        computed: {
-			...mapState(['hasLogin','userInfo'])
-		},
+        // computed: {
+		// 	// ...mapState(['hasLogin','userInfo'])
+		// },
         methods: {
+			/**获取消息红点* */
+			getNoticeMsg() {
+				ApiClinet.get(ApiConfig.APP_BASE_API.noticeMsg, {}).then((res) => {
+					if (res.data.code == '200') {
+					   
+					}
+				})
+			},
             goNews(){
 				uni.navigateTo({
 					url: '/pages/notice/notice'
@@ -160,59 +174,44 @@
 			 * navigator标签现在默认没有转场动画，所以用view
 			 */
 			navTo(url){
-				if(!this.hasLogin){
-					url = '/pages/public/login';
-				}
+				// if(!this.hasLogin){
+				// 	url = '/pages/public/login';
+				// }
 				uni.navigateTo({  
 					url
 				})  
 			}, 
 	
-			/**
-			 *  会员卡下拉和回弹
-			 *  1.关闭bounce避免ios端下拉冲突
-			 *  2.由于touchmove事件的缺陷（以前做小程序就遇到，比如20跳到40，h5反而好很多），下拉的时候会有掉帧的感觉
-			 *    transition设置0.1秒延迟，让css来过渡这段空窗期
-			 *  3.回弹效果可修改曲线值来调整效果，推荐一个好用的bezier生成工具 http://cubic-bezier.com/
-			 */
-			coverTouchstart(e){
-				if(pageAtTop === false){
-					return;
-				}
-				this.coverTransition = 'transform .1s linear';
-				startY = e.touches[0].clientY;
-			},
-			coverTouchmove(e){
-				moveY = e.touches[0].clientY;
-				let moveDistance = moveY - startY;
-				if(moveDistance < 0){
-					this.moving = false;
-					return;
-				}
-				this.moving = true;
-				if(moveDistance >= 80 && moveDistance < 100){
-					moveDistance = 80;
-				}
+			// /**
+			//  *  会员卡下拉和回弹
+			//  *  1.关闭bounce避免ios端下拉冲突
+			//  *  2.由于touchmove事件的缺陷（以前做小程序就遇到，比如20跳到40，h5反而好很多），下拉的时候会有掉帧的感觉
+			//  *    transition设置0.1秒延迟，让css来过渡这段空窗期
+			//  *  3.回弹效果可修改曲线值来调整效果，推荐一个好用的bezier生成工具 http://cubic-bezier.com/
+			//  */
+			// coverTouchstart(e){
+			// 	if(pageAtTop === false){
+			// 		return;
+			// 	}
+			// 	this.coverTransition = 'transform .1s linear';
+			// 	startY = e.touches[0].clientY;
+			// },
+			// coverTouchmove(e){
+			// 	moveY = e.touches[0].clientY;
+			// 	let moveDistance = moveY - startY;
+			// 	if(moveDistance < 0){
+			// 		this.moving = false;
+			// 		return;
+			// 	}
+			// 	this.moving = true;
+			// 	if(moveDistance >= 80 && moveDistance < 100){
+			// 		moveDistance = 80;
+			// 	}
 		
-				if(moveDistance > 0 && moveDistance <= 80){
-					this.coverTransform = `translateY(${moveDistance}px)`;
-				}
-			},
-			coverTouchend(){
-				if(this.moving === false){
-					return;
-				}
-				this.moving = false;
-				this.coverTransition = 'transform 0.3s cubic-bezier(.21,1.93,.53,.64)';
-				this.coverTransform = 'translateY(0px)';
-			},
-			/******新代码********** */
-			goCatbean() {
-				this.$api.msg('猫豆页面')
-			},
-			shareProfit(){
-				this.$api.msg('分润页面')
-			}
+			// 	if(moveDistance > 0 && moveDistance <= 80){
+			// 		this.coverTransform = `translateY(${moveDistance}px)`;
+			// 	}
+			// },
 
         }  
     }  

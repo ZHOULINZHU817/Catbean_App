@@ -34,7 +34,7 @@ class ApiClient {
 			response
 				.then((res) => {
 					if (res.statusCode == 200) {
-						if (res.data.code == "40401" || res.data.code == '40103') {
+						if (res.data.code == "401" || res.data.code == '40103') {
 							uni.showToast({
 								mask:true,
 								title: "请重新登录",
@@ -42,9 +42,9 @@ class ApiClient {
 								icon: "none",
 							});
 
-							// uni.redirectTo({
-							// 	url: '../public/login'
-							// })
+							uni.redirectTo({
+								url: '../public/login'
+							})
 							// uni.redirectTo({
 							// 	url: '../../public/login'
 							// })
@@ -176,7 +176,7 @@ class ApiClient {
 		const header = {
 			// timestamp: timestamp,
 			"Content-Type": "application/json",
-			"x-access-token": AuthService.getToken() ? AuthService.getToken() : "",
+			"token": AuthService.getToken() ? AuthService.getToken() : "",
 			// sign: new Base().tools.CreateSign(
 			//   options.data,
 			//   nonce,

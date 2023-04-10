@@ -16,7 +16,7 @@
 				uni.getStorage({
 					key: 'userInfo',
 					success: (res) => {
-						this.login(res.data);
+						// this.login(res.data);
 					}
 				});
 			}

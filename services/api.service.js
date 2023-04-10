@@ -35,7 +35,7 @@ export const UserService = {
 					provider: AppConfig.PROVIDER,
 					success: function (res) {
 						uni.request({
-							url: ApiConfig.APP_BASE_API.LOGIN_URL,
+							url: ApiConfig.APP_BASE_API.login,
 							method: "POST",
 							data: {
 								code: res.code,
@@ -50,12 +50,15 @@ export const UserService = {
 						});
 					},
 				});
-			});
+			}); 
 		} else {
 			//其他登陆方式
-			return ApiClinet.post(ApiConfig.APP_BASE_API.LOGIN_URL, params);
+			return ApiClinet.post(ApiConfig.APP_BASE_API.login, params);
 		}
 	},
+
+
+
 	getMenus(params){
 		return ApiClinet.post(ApiConfig.APP_BASE_API.GET_MENUS, params);
 	},

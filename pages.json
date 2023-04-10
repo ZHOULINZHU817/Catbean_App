@@ -285,7 +285,8 @@
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "猫超商城",
 		"navigationBarBackgroundColor": "#fff",
-		"backgroundColor": "#f8f8f8"
+		"backgroundColor": "#f8f8f8",
+		"onReachBottomDistance": 200
 	},
 	"tabBar": {
 		"color": "#C0C4CC",

@@ -10,7 +10,7 @@ export default {
 	FILE_UPLOAD_ANDWELL:'https://supplyx.goocidata.com/fileserver/upload/',
 	//ANDROID_URL: "http://172.21.0.13:8083/supplyx-mes",//内网测试环境
 	//ANDROID_URL: "https://mom.goocidata.com/supplyx-mes",//内网预发版环境
-	ANDROID_URL: "http://mc.hongfeigg.com/api",//开发环境 
+	ANDROID_URL: "https://mc.hongfeigg.com",//开发环境 
 	// ANDROID_URL: "http://172.21.0.13:8086/supplyx-mes",//操作日志测试环境
 	//ANDROID_URL: "http://81.70.220.41:30888/supplyx-mes",//预发版环境
 	FINE_REPORT:'https://mom.goocidata.com',  //帆软地址

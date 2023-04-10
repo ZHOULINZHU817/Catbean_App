@@ -53,7 +53,6 @@
         </view>
         <view class="input-item">
           <input
-            type="number"
             :value="form.inviteCode"
             placeholder="请输入邀请码（选填）"
             data-key="inviteCode"
@@ -69,7 +68,6 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
 import ApiClinet from "@/services/api-clinet";
 import ApiConfig from "@/config/api.config";
 
@@ -88,11 +86,9 @@ export default {
     };
   },
   onLoad() {
-    var backbutton = document.getElementsByClassName('uni-page-head-hd')[0]
-    if(backbutton) backbutton.style.display = 'none';
+    
   },
   methods: {
-    ...mapMutations(["login"]),
     inputChange(e) {
       const key = e.currentTarget.dataset.key;
       this.form[key] = e.detail.value;
@@ -101,39 +97,17 @@ export default {
       uni.navigateBack();
     },
     toRegist() {
-      this.$api.msg("去注册");
       ApiClinet.post(ApiConfig.APP_BASE_API.register, this.form, {
 					loading: true
 				}).then((res) => {
-					if (res.data.code === '0') {
-					   
-					}
-				})
-    },
-    async toLogin() {
-      this.logining = true;
-      const { mobile, pwd } = this;
-      /* 数据验证模块
-				if(!this.$api.match({
-					mobile,
-					password
-				})){
-					this.logining = false;
-					return;
-				}
-				*/
-      const sendData = {
-        mobile,
-        pwd,
-      };
-      const result = await this.$api.json("userInfo");
-      if (result.status === 1) {
-        this.login(result.data);
-        uni.navigateBack();
-      } else {
-        this.$api.msg(result.msg);
-        this.logining = false;
-      }
+					if (res.data.code == '200') {
+					   this.$api.msg('注册成功！')
+					}else{
+             this.$api.msg(res.data.msg)
+          }
+				}).catch(err=>{
+          
+        })
     },
     changeIcon() {
       if (this.form.pwd) {
@@ -162,7 +136,7 @@ export default {
        ApiClinet.get(ApiConfig.APP_BASE_API.code, {phone: this.form.phone}, {
 					loading: true
 				}).then((res) => {
-					if (res.data.code === '0') {
+					if (res.data.code == '200') {
 					    this.$api.msg("验证码发送成功");
               let time = 60;
               const set = setInterval(() => {

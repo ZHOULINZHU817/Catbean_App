@@ -12,6 +12,8 @@
 				</view>
 			</view>
 			<text class="yticon icon-bianji" @click.stop="addAddress('edit', item)"></text>
+			<text class="yticon icon-iconfontshanchu1" @click.stop="deleteAddress(item)"></text>
+			<view></view>
 		</view>
 		<!-- <text style="display:block;padding: 16upx 30upx 10upx;lihe-height: 1.6;color: #fa436a;font-size: 24upx;">
 			重要：添加和修改地址回调仅增加了一条数据做演示，实际开发中将回调改为请求后端接口刷新一下列表即可
@@ -22,6 +24,8 @@
 </template>
 
 <script>
+    import ApiClinet from "@/services/api-clinet";
+	import ApiConfig from "@/config/api.config";
 	export default {
 		data() {
 			return {
@@ -48,6 +52,8 @@
 		onLoad(option){
 			console.log(option.source);
 			this.source = option.source;
+
+			this.getAddressList();
 		},
 		methods: {
 			//选择地址
@@ -69,6 +75,16 @@
 				this.addressList.unshift(data);
 				
 				console.log(data, type);
+			},
+			deleteAddress(){
+
+			},
+			getAddressList(){
+				ApiClinet.get(ApiConfig.APP_BASE_API.addressList, {}).then((res) => {
+					if (res.data.code == '200') {
+					   this.addressList = res.data.data || [];
+					}
+				})
 			}
 		}
 	}
@@ -124,7 +140,7 @@
 			line-height: 1;
 		}
 	}
-	.icon-bianji{
+	.icon-bianji, .icon-iconfontshanchu1{
 		display: flex;
 		align-items: center;
 		height: 80upx;

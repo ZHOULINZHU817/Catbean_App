@@ -1,35 +1,16 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import modules from './modules';
+import getters from './getters';
+import { createLogger } from '../plugins/vue-logger';
+import AppConfig from "../config/app.config.js";
+Vue.use(Vuex);
 
-Vue.use(Vuex)
+const debug = AppConfig.PROCESS=='dev' ? true : false;
 
-const store = new Vuex.Store({
-	state: {
-		hasLogin: false,
-		userInfo: {},
-	},
-	mutations: {
-		login(state, provider) {
-
-			state.hasLogin = true;
-			state.userInfo = provider;
-			uni.setStorage({//缓存用户登陆状态
-			    key: 'userInfo',  
-			    data: provider  
-			}) 
-			console.log(state.userInfo);
-		},
-		logout(state) {
-			state.hasLogin = false;
-			state.userInfo = {};
-			uni.removeStorage({  
-                key: 'userInfo'  
-            })
-		}
-	},
-	actions: {
-	
-	}
-})
-
-export default store
+export default new Vuex.Store({
+  modules,
+  getters,
+  strict: debug,
+  plugins: debug ? [createLogger()] : []
+});

@@ -20,25 +20,23 @@
 					<!-- <text class="tit">手机号码</text> -->
 					<input 
 						type="number" 
-						:value="mobile" 
+						:value="phone" 
 						placeholder="请输入手机号码"
 						maxlength="11"
-						data-key="mobile"
+						data-key="phone"
 						@input="inputChange"
 					/>
 				</view>
 				<view class="input-item">
 					<!-- <text class="tit">密码</text> -->
 					<input 
-						type="mobile" 
-						value="" 
+						:value="pwd" 
 						placeholder="请输入密码"
 						placeholder-class="input-empty"
 						maxlength="20"
 						password 
-						data-key="password"
+						data-key="pwd"
 						@input="inputChange"
-						@confirm="toLogin"
 					/>
 				</view>
 			</view>
@@ -59,8 +57,8 @@
 	export default{
 		data(){
 			return {
-				mobile: '',
-				password: '',
+				phone: '',
+				pwd: '',
 				logining: false
 			}
 		},
@@ -68,7 +66,7 @@
 			
 		},
 		methods: {
-			...mapMutations(['login']),
+			// ...mapMutations(['login']),
 			inputChange(e){
 				const key = e.currentTarget.dataset.key;
 				this[key] = e.detail.value;
@@ -87,8 +85,8 @@
 				})
 			},
 			async toLogin(){
-				this.logining = true;
-				const {mobile, password} = this;
+				// this.logining = true;
+				const {phone, pwd} = this;
 				/* 数据验证模块
 				if(!this.$api.match({
 					mobile,
@@ -98,18 +96,26 @@
 					return;
 				}
 				*/
+
 				const sendData = {
-					mobile,
-					password
+					phone,
+					pwd
 				};
-				const result = await this.$api.json('userInfo');
-				if(result.status === 1){
-					this.login(result.data);
-                    uni.navigateBack();  
-				}else{
-					this.$api.msg(result.msg);
-					this.logining = false;
-				}
+				// this.login(sendData);
+				// const result = await this.$api.json('userInfo');
+				// if(result.status === 1){
+				// 	this.login(sendData);
+                    
+				// }else{
+				// 	this.$api.msg(result.msg);
+				// 	this.logining = false;
+				// }
+
+				this.$store.dispatch("auth/login", sendData).then(res => {
+					uni.switchTab({
+						url: '/pages/index/index'
+					})
+				})
 			}
 		},
 
