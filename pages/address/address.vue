@@ -3,12 +3,12 @@
 		<view class="list" v-for="(item, index) in addressList" :key="index" @click="checkAddress(item)">
 			<view class="wrapper">
 				<view class="u-box">
-					<text class="name">{{item.name}}</text>
-					<text class="mobile">{{item.mobile}}</text>
-					<text v-if="item.default" class="tag">默认</text>
+					<text class="name">{{item.receiver}}</text>
+					<text class="mobile">{{item.phone}}</text>
+					<text v-if="item.first" class="tag">默认</text>
 				</view>
 				<view class="address-box">
-					<text class="address">{{item.addressName}} {{item.area}}</text>
+					<text class="address">{{item.address}}</text>
 				</view>
 			</view>
 			<text class="yticon icon-bianji" @click.stop="addAddress('edit', item)"></text>
@@ -32,19 +32,14 @@
 				source: 0,
 				addressList: [
 					{
-						name: '刘晓晓',
-						mobile: '18666666666',
-						addressName: '贵族皇仕牛排(东城店)',
-						address: '北京市东城区',
-						area: 'B区',
-						default: true
-					},{
-						name: '刘大大',
-						mobile: '18667766666',
-						addressName: '龙回1区12号楼',
-						address: '山东省济南市历城区',
-						area: '西单元302',
-						default: false,
+						receiver: '刘晓晓',
+						phone: '18666666666',
+						address: '河南省信阳市羊山新区101',
+						area: '羊山新区',
+						province:'河南省',
+						city:'信阳市',
+						first: true,
+						id:'1'
 					}
 				]
 			}
@@ -76,8 +71,13 @@
 				
 				console.log(data, type);
 			},
-			deleteAddress(){
-
+			deleteAddress(params){
+				ApiClinet.delete(`${ApiConfig.APP_BASE_API.address}?id=${params.id}`).then((res) => {
+					if (res.data.code == '200') {
+					   this.$api.msg('删除成功！')
+					   this.getAddressList();
+					}
+				})
 			},
 			getAddressList(){
 				ApiClinet.get(ApiConfig.APP_BASE_API.addressList, {}).then((res) => {

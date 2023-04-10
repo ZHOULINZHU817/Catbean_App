@@ -42,9 +42,9 @@ class ApiClient {
 								icon: "none",
 							});
 
-							uni.redirectTo({
-								url: '../public/login'
-							})
+							// uni.redirectTo({
+							// 	url: '../public/login'
+							// })
 							// uni.redirectTo({
 							// 	url: '../../public/login'
 							// })

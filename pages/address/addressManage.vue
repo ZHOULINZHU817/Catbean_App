@@ -53,6 +53,7 @@
 			if(option.type==='edit'){
 				title = '编辑收货地址';
 				this.addressData = JSON.parse(option.data);
+				this.addressData.addressName = `${this.addressData.province}${this.addressData.city}${this.addressData.area}`;
 			}
 			this.manageType = option.type;
 			uni.setNavigationBarTitle({
