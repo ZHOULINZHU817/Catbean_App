@@ -156,7 +156,7 @@
 		{
 			"path": "pages/order/order",
 			"style": {
-				"navigationBarTitleText": "我的订单",
+				"navigationBarTitleText": "猫超订单",
 				"app-plus": {
 					"bounce": "none"
 				}
@@ -279,6 +279,20 @@
 				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "分享值"
 			}
+		},
+		{
+			"path": "pages/share/share",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "分享好友"
+			}
+		},
+		{
+			"path": "pages/callCenter/callCenter",
+			"style": {
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "客服"
+			}
 		}
 	],
 	"globalStyle": {
@@ -313,5 +327,8 @@
 				"text": "我的"
 			}
 		]
+	},
+	"easycom": {
+	    "^w-(.*)": "@/uni_modules/wmf-code/components/w-$1/w-$1.vue"//二维码条形码的配置 如果是npm方式使用 @uni-ui/code-ui/components/w-$1/index.vue
 	}
 }

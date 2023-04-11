@@ -51,11 +51,17 @@
 </template>
 
 <script>
+	import ApiClinet from "@/services/api-clinet";
+	import ApiConfig from "@/config/api.config";
 	export default {
 		data() {
 			return {
-				 userInfo: JSON.parse(uni.getStorageSync('userInfo'))
+				 userInfo: {},
 			};
+		},
+		onShow(){
+			/**获取个人信息* */
+			this.memberInfo();
 		},
 		methods:{
 			navTo(url){
@@ -84,6 +90,13 @@
 			switchChange(e){
 				let statusTip = e.detail.value ? '打开': '关闭';
 				this.$api.msg(`${statusTip}消息推送`);
+			},
+			memberInfo() {
+				ApiClinet.get(ApiConfig.APP_BASE_API.memberDetail).then((res) => {
+					if (res.data.code == '200') {
+					   this.userInfo = res.data.data;
+					}
+				})
 			},
 
 		}

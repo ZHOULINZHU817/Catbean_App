@@ -17,11 +17,11 @@
 		<view class="introduce-section">
 			<view class="price-box">
 				<text class="price-tip">¥</text>
-				<text class="price">341.6</text>
-				<text class="m-price">¥488</text>
+				<text class="price">{{detailObj.price}}</text>
+				<!-- <text class="m-price">¥488</text> -->
 				<!-- <text class="coupon-tip">7折</text> -->
 			</view>
-			<text class="title">恒源祥2019春季长袖白色t恤 新款春装</text>
+			<text class="title">{{detailObj.name}}-{{detailObj.detail}}</text>
 			<!-- <view class="bot-row">
 				<text>销量: 108</text>
 				<text>库存: 4690</text>
@@ -33,10 +33,10 @@
 			<uni-number-box 
 					class="step"
 					:min="1" 
-					:max="obj.stock"
-					:value="obj.number>obj.stock?obj.stock:obj.number"
-					:isMax="obj.number>=obj.stock?true:false"
-					:isMin="obj.number===1"
+					:max="detailObj.stock"
+					:value="detailObj.number>detailObj.stock?detailObj.stock:detailObj.number"
+					:isMax="detailObj.number>=detailObj.stock?true:false"
+					:isMin="detailObj.number===1"
 					@eventChange="numberChange">
 					</uni-number-box>
 		</view>
@@ -114,7 +114,10 @@
 			<view class="d-header">
 				<text>图文详情</text>
 			</view>
-			<rich-text :nodes="desc"></rich-text>
+			<!-- <rich-text :nodes="desc"></rich-text> -->
+			<view v-for="(item,index) in imgList" :key="index">
+				<image style="width:100%;" :src="item.src" class="loaded" mode="widthFix"></image>
+			</view>
 		</view>
 		
 		<!-- 底部操作菜单 -->
@@ -123,17 +126,17 @@
 				<text class="yticon icon-xiatubiao--copy"></text>
 				<text>首页</text>
 			</navigator>
-			<view @click="goCart" class="p-b-btn">
+			<!-- <view @click="goCart" class="p-b-btn">
 				<text class="yticon icon-gouwuche"></text>
 				<text>购物车</text>
-			</view>
+			</view> -->
 			<!-- <view class="p-b-btn" :class="{active: favorite}" @click="toFavorite">
 				<text class="yticon icon-shoucang"></text>
 				<text>收藏</text>
 			</view> -->
 			
 			<view class="action-btn-group">
-				<button type="primary" class=" action-btn no-border add-cart-btn" @click="goCart">加入购物车</button>
+				<!-- <button type="primary" class=" action-btn no-border add-cart-btn" @click="goCart">加入购物车</button> -->
 				<button type="primary" class=" action-btn no-border buy-now-btn" @click="buy">立即购买</button>
 			</view>
 		</view>
@@ -193,7 +196,7 @@
 
 	import ApiClinet from "@/services/api-clinet";
 	// import ApiConfig from "@/config/api.config";
-	import { ANDROID_URL } from '@/config/app.config'
+	import AppConfig from "@/config/app.config";
 	export default{
 		components: {
 			share,
@@ -207,15 +210,7 @@
 				favorite: true,
 				shareList: [],
 				imgList: [
-					{
-						src: 'https://gd3.alicdn.com/imgextra/i3/0/O1CN01IiyFQI1UGShoFKt1O_!!0-item_pic.jpg_400x400.jpg'
-					},
-					{
-						src: 'https://gd3.alicdn.com/imgextra/i3/TB1RPFPPFXXXXcNXpXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg'
-					},
-					{
-						src: 'https://gd2.alicdn.com/imgextra/i2/38832490/O1CN01IYq7gu1UGShvbEFnd_!!38832490.jpg_400x400.jpg'
-					}
+					
 				],
 				desc: `
 					<div style="width:100%">
@@ -283,20 +278,15 @@
 				// 		name: '草木绿',
 				// 	},
 				// ]
-				obj:{
-					stock: 6,
-					number:2
-				}
+				detailObj: {
+					number: 1
+				},
 			};
 		},
 		async onLoad(options){
-			
 			//接收传值,id里面放的是标题，因为测试数据并没写id 
-			let id = options.id;
-			if(id){
-				this.$api.msg(`点击了${id}`);
-			}
-			this.getGoodDetail(id)
+			this.id = options.id;
+			this.getGoodDetail(this.id)
 			
 			//规格 默认选中第一条
 			// this.specList.forEach(item=>{
@@ -312,69 +302,78 @@
 		},
 		methods:{
 			getGoodDetail(id){
-				ApiClinet.get(`${ANDROID_URL}/api/app/product/${id}`, {}).then((res) => {
-					if (res.data.code === '0') {
-					   
+				ApiClinet.get(`${AppConfig.ANDROID_URL}/api/app/product/${id}`, {}).then((res) => {
+					if (res.data.code == '200') {
+					   this.detailObj = res.data.data;
+					   this.$set(this.detailObj, 'number', 1)
+					   let listImg = this.detailObj.images && this.detailObj.images.split(',');
+					   listImg.map(item=>{
+						 let obj = {};
+						 obj.src = item;
+						 this.imgList.push(obj);
+					   })
+					   console.log('this.imgList', this.detailObj)
+					//    item.images = typeof(item.images)=='string'?item.images.split(','):item.images;
 					}
 				})
 			},
-			//规格弹窗开关
-			toggleSpec() {
-				if(this.specClass === 'show'){
-					this.specClass = 'hide';
-					setTimeout(() => {
-						this.specClass = 'none';
-					}, 250);
-				}else if(this.specClass === 'none'){
-					this.specClass = 'show';
-				}
-			},
-			//选择规格
-			selectSpec(index, pid){
-				let list = this.specChildList;
-				list.forEach(item=>{
-					if(item.pid === pid){
-						this.$set(item, 'selected', false);
-					}
-				})
+			// //规格弹窗开关
+			// toggleSpec() {
+			// 	if(this.specClass === 'show'){
+			// 		this.specClass = 'hide';
+			// 		setTimeout(() => {
+			// 			this.specClass = 'none';
+			// 		}, 250);
+			// 	}else if(this.specClass === 'none'){
+			// 		this.specClass = 'show';
+			// 	}
+			// },
+			// //选择规格
+			// selectSpec(index, pid){
+			// 	let list = this.specChildList;
+			// 	list.forEach(item=>{
+			// 		if(item.pid === pid){
+			// 			this.$set(item, 'selected', false);
+			// 		}
+			// 	})
 
-				this.$set(list[index], 'selected', true);
-				//存储已选择
-				/**
-				 * 修复选择规格存储错误
-				 * 将这几行代码替换即可
-				 * 选择的规格存放在specSelected中
-				 */
-				this.specSelected = []; 
-				list.forEach(item=>{ 
-					if(item.selected === true){ 
-						this.specSelected.push(item); 
-					} 
-				})
+			// 	this.$set(list[index], 'selected', true);
+			// 	//存储已选择
+			// 	/**
+			// 	 * 修复选择规格存储错误
+			// 	 * 将这几行代码替换即可
+			// 	 * 选择的规格存放在specSelected中
+			// 	 */
+			// 	this.specSelected = []; 
+			// 	list.forEach(item=>{ 
+			// 		if(item.selected === true){ 
+			// 			this.specSelected.push(item); 
+			// 		} 
+			// 	})
 				
-			},
-			//分享
-			share(){
-				this.$refs.share.toggleMask();	
-			},
-			//收藏
-			toFavorite(){
-				this.favorite = !this.favorite;
-			},
+			// },
+			// //分享
+			// share(){
+			// 	this.$refs.share.toggleMask();	
+			// },
+			// //收藏
+			// toFavorite(){
+			// 	this.favorite = !this.favorite;
+			// },
 			buy(){
 				uni.navigateTo({
-					url: `/pages/order/createOrder`
+					url: `/pages/order/createOrder?id=${this.id}&number=${this.detailObj.number}`
 				})
 			},
-			goCart(){
-				uni.navigateTo({
-					url: `/pages/cart/cart`
-				})
-			},
+			// goCart(){
+			// 	uni.navigateTo({
+			// 		url: `/pages/cart/cart`
+			// 	})
+			// },
 			stopPrevent(){},
 			//数量
 			numberChange(data){
-				console.log(data.number);
+				this.detailObj.number = data.number;
 			},
 		},
 
@@ -747,7 +746,7 @@
 			box-shadow: 0 20upx 40upx -16upx #fa436a;
 			box-shadow: 1px 2px 5px rgba(219, 63, 96, 0.4);
 			background: linear-gradient(to right, #ffac30,#fa436a,#F56C6C);
-			margin-left: 100upx;
+			margin-left: 380upx;
 			position:relative;
 			&:after{
 				content: '';

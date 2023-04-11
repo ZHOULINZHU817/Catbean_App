@@ -45,11 +45,11 @@
 				<view class="order-section">
 					<view class="order-item" @click="navTo('/pages/panicBuy/panicBuyOrder?state=0')" hover-class="common-hover"  :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/user_order1_1.jpg"></image>
-						<text>已预约</text>
+						<text>已抢中</text>
 					</view>
 					<view class="order-item" @click="navTo('/pages/panicBuy/panicBuyOrder?state=1')"  hover-class="common-hover" :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/user_order1_2.jpg"></image>
-						<text>抢购中</text>
+						<text>已支付</text>
 					</view>
 					<view class="order-item" @click="navTo('/pages/panicBuy/panicBuyOrder?state=2')" hover-class="common-hover"  :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/user_order1_3.jpg"></image>
@@ -65,25 +65,25 @@
 					</view>
 				</view>
 			</view>
-		    <!---抢购订单--->
+		    <!---猫超订单--->
 			<view class="order-section-content">
-				<list-cell iconColor="#5fcda2" title="猫超订单" tips="查看全部" border="1" @eventClick="navTo('/pages/address/address')"></list-cell>
+				<list-cell iconColor="#5fcda2" title="猫超订单" tips="查看全部" border="1" @eventClick="navTo('/pages/order/order?state=4')"></list-cell>
 				<view class="order-section">
-					<view class="order-item" @click="navTo('/pages/order/order?state=0')" hover-class="common-hover"  :hover-stay-time="50">
+					<view class="order-item" @click="navTo('/pages/order/order?state=1')" hover-class="common-hover"  :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/user_order2_1.jpg"></image>
 						<text>待支付</text>
 					</view>
-					<view class="order-item" @click="navTo('/pages/order/order?state=1')"  hover-class="common-hover" :hover-stay-time="50">
+					<view class="order-item" @click="navTo('/pages/order/order?state=2')"  hover-class="common-hover" :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/user_order2_2.jpg"></image>
-						<text>待收货</text>
+						<text>已支付</text>
 					</view>
-					<view class="order-item" @click="navTo('/pages/order/order?state=2')" hover-class="common-hover"  :hover-stay-time="50">
+					<view class="order-item" @click="navTo('/pages/order/order?state=3')" hover-class="common-hover"  :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/user_order2_3.jpg"></image>
-						<text>已完成</text>
+						<text>已发货</text>
 					</view>
 					<view class="order-item" @click="navTo('/pages/order/order?state=4')" hover-class="common-hover"  :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/user_order2_4.jpg"></image>
-						<text>退款/售后</text>
+						<text>已完成</text>
 					</view>
 				</view>
 			</view>
@@ -146,7 +146,7 @@
 				assetObj: {},
 			}
 		},
-		onLoad(){
+		onShow(){
 			/**获取消息红点* */
 			this.getNoticeMsg()
 			/**是否消息认证* */

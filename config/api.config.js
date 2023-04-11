@@ -48,14 +48,14 @@ export default {
        recordGoodRefund:`${ANDROID_URL}/api/app/record/product/refund`, //商品订单列表
        
        /**收货** */
-       address:`${ANDROID_URL}/api/sys/receive/address`, //默认收货地址 && 添加 && 编辑 && 删除
-       addressList:`${ANDROID_URL}/api/sys/receive/address/list`, //收货地址列表
+       address:`${ANDROID_URL}/api/app/receive/address`, //默认收货地址 && 添加 && 编辑 && 删除
+       addressList:`${ANDROID_URL}/api/app/receive/address/list`, //收货地址列表
 
        /**版本管理* */
        versionLast:`${ANDROID_URL}/api/app/version/last`, //获取版本
 
        /**抢购订单** */
-       recordBuyList:`${ANDROID_URL}/api/app/record/buy/list`, //获取 养殖 记录列表
+       recordBuyList:`${ANDROID_URL}/api/app/record/buy/list`, //获取 抢购 记录列表
        catFoodList:`${ANDROID_URL}/api/app/record/cat/food/list`, //获取 猫粮 记录列表
        exchangeList:`${ANDROID_URL}/api/app/record/exchange/list`, //获取 兑换 记录列表
        rechargeList:`${ANDROID_URL}/api/app/record/recharge/list`, //获取 充值 记录列表

@@ -150,10 +150,8 @@ export default {
      * 替换onLoad下代码即可
      */
     this.tabCurrentIndex = +options.state;
-    if(options.state == 0){
-      this.form.status = statusList[options.state];
-    	this.loadData()
-    }
+    this.form.status = statusList[options.state];
+    this.loadData()
     // #endif
   },
 
@@ -207,7 +205,7 @@ export default {
       return false;
     }
     this.form.page ++;
-    this.catFoodList()
+    this.loadData()
   }
 };
 </script>

@@ -19,35 +19,42 @@
 					@scrolltolower="loadData"
 				>
 					<!-- 空白页 -->
-					<empty v-if="tabItem.loaded === true && tabItem.orderList.length === 0"></empty>
+					<empty v-if="panicBuyList.length === 0"></empty>
 					
 					<!-- 订单列表 -->
 					<view class="order-content">
 						<view 
-							v-for="(item,index) in tabItem.orderList" :key="index"
+							v-for="(item,index) in panicBuyList" :key="index"
 							class="order-item"
 						>
 							<view class="order-item-f">
-								<view class="order-item-fl"><text>订单编号：</text>{{item.orderCode}}</view>
-								<view class="order-item-fr" :style="{color:item.stateTipColor}">{{item.stateTip}}</view>
+								<view class="order-item-fl"><text>订单编号：</text>{{item.id}}</view>
+								<view class="order-item-fr" :style="{color:orderStatusNameExp(item.status).stateTipColor}">{{orderStatusNameExp(item.status).stateTip}}</view>
 							</view>
-							<view v-if="item.state =='1'" class="order-item-text"><text>预约时间：</text>{{item.handlerDate}}</view>
+							<view v-if="item.status =='1'" class="order-item-text"><text>预约时间：</text>{{item.handlerDate}}</view>
 							<view class="order-item-text"><text>场次：</text>{{item.session}}</view>
 							<view class="order-item-text"><text>价格：</text>{{item.price}}</view>
-							<view v-if="item.state !='1'" class="order-item-text"><text>流拍次数：</text>{{item.passedIn}}</view>
-							<view v-if="item.state !='1'" class="order-item-text"><text>违约次数：</text>{{item.contractNum}}</view>
-							<view v-if="item.state !='1'" class="order-item-text"><text>抢中时间：</text>{{item.yDate}}</view>
-							<view v-if="item.state=='3' || item.state=='4' || item.state=='5'" class="order-item-text"><text>转卖人：</text>{{item.person}}</view>
-							<view v-if="item.state=='2'" class="order-item-text margin-b-20"><text>可转卖倒计时：</text>{{item.countdown}}</view>
-							<view v-if="item.state=='2'" class="order-item-btn">
+							<view v-if="item.status !='1'" class="order-item-text"><text>流拍次数：</text>{{item.passedIn}}</view>
+							<view v-if="item.status !='1'" class="order-item-text"><text>违约次数：</text>{{item.contractNum}}</view>
+							<view v-if="item.status !='1'" class="order-item-text"><text>抢中时间：</text>{{item.yDate}}</view>
+							<view v-if="item.status=='3' || item.state=='4' || item.state=='5'" class="order-item-text"><text>转卖人：</text>{{item.person}}</view>
+							<view v-if="item.status=='2'" class="order-item-text margin-b-20"><text>可转卖倒计时：</text>{{item.countdown}}</view>
+							<view v-if="item.status=='buying'" class="order-item-btn">
 								<view class="flex1"></view>
-								<view class="order-item-btn1">提货</view>
-								<view class="order-item-btn2">转卖</view>
+								<view class="order-item-btn1" @click="payOrder(item)">立即支付</view>
+							</view>
+							<view v-if="item.status=='paid'" class="order-item-btn">
+								<view class="flex1"></view>
+								<view class="order-item-btn2" @click="resellOrder(item)">立即转卖</view>
+							</view>
+							<view v-if="item.status=='resell'" class="order-item-btn">
+								<view class="flex1"></view>
+								<view class="order-item-btn1" @click="pickOrder(item)">提货</view>
 							</view>
 						</view>
 					</view>
-					<uni-load-more :status="tabItem.loadingType"></uni-load-more>
-					
+					<!-- <uni-load-more :status="tabItem.loadingType"></uni-load-more> -->
+					<view v-if="showTotal" class="showTotal">没有更多数据了~</view>
 				</scroll-view>
 			</swiper-item>
 		</swiper>
@@ -58,6 +65,11 @@
 	import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue';
 	import empty from "@/components/empty";
 	// import Json from '@/Json';
+	import { formatDate } from "@/utils/prototype/date";
+	let statusList = ["buying", "paid", "resell", "breach", "finish"];
+	import ApiClinet from "@/services/api-clinet";
+	import ApiConfig from "@/config/api.config";
+	import AppConfig from "@/config/app.config";
 	export default {
 		components: {
 			uniLoadMore,
@@ -68,8 +80,8 @@
 				tabCurrentIndex: 0,
 				panicBuyList: [
 					{
-						state: 1, 
-						orderCode:"1236789004321", //订单编号
+						status: 'buying', 
+						id:"1236789004321", //订单编号
 						session:'12:00',
 						price:'90',
 						passedIn: 3,
@@ -80,8 +92,8 @@
 						handlerDate:"2023年02月02日",
 					},
 					{
-						state: 2, 
-						orderCode:"1236789004321", //订单编号
+						status: 'paid', 
+						id:"1236789004321", //订单编号
 						session:'12:00',
 						price:'90',
 						passedIn: 3,
@@ -91,8 +103,8 @@
 						countdown:'23:00:00',
 					},
 					{
-						state: 3, 
-						orderCode:"1236789004321", //订单编号
+						status: 'resell', 
+						id:"1236789004321", //订单编号
 						session:'12:00',
 						price:'90',
 						passedIn: 3,
@@ -102,8 +114,8 @@
 						countdown:'23:00:00',
 					},
 					{
-						state: 4, 
-						orderCode:"1236789004321", //订单编号
+						status: 'breach', 
+						id:"1236789004321", //订单编号
 						session:'12:00',
 						price:'90',
 						passedIn: 3,
@@ -113,8 +125,8 @@
 						countdown:'23:00:00',
 					},
 					{
-						state: 5, 
-						orderCode:"1236789004321", //订单编号
+						status: 'finish', 
+						id:"1236789004321", //订单编号
 						session:'12:00',
 						price:'90',
 						passedIn: 3,
@@ -127,41 +139,41 @@
 				navList: [
 					{
 						state: 0,
-						text: '全部',
+						text: '已抢中',
 						loadingType: 'more',
 						orderList: []
 					},
 					{
 						state: 1,
-						text: '已预约',
+						text: '已支付',
 						loadingType: 'more',
 						orderList: []
 					},
 					{
 						state: 2,
-						text: '抢购中',
-						loadingType: 'more',
-						orderList: []
-					},
-					{
-						state: 3,
 						text: '转卖中',
 						loadingType: 'more',
 						orderList: []
 					},
 					{
-						state: 4,
+						state: 3,
 						text: '已违约',
 						loadingType: 'more',
 						orderList: []
 					},
 					{
-						state: 5,
+						state: 4,
 						text: '已完成',
 						loadingType: 'more',
 						orderList: []
 					}
 				],
+				form: {
+					status: "", //audit, finish, reject
+					page: 0,
+					size: 10,
+				},
+				showTotal: false,
 			};
 		},
 		
@@ -171,65 +183,31 @@
 			 * 替换onLoad下代码即可
 			 */
 			this.tabCurrentIndex = +options.state;
-			// #ifndef MP
-			this.loadData()
-			// #endif
-			// #ifdef MP
-			if(options.state == 0){
-				this.loadData()
-			}
+			this.form.status = statusList[options.state];
+            this.loadData();
 			// #endif
 			
 		},
 		 
 		methods: {
+			formatDate,
 			//获取订单列表
 			loadData(source){
-				//这里是将订单挂载到tab列表下
-				//1 1已预约2抢购中3转卖中4已违约5已完成
-				let index = this.tabCurrentIndex;
-				let navItem = this.navList[index];
-				let state = navItem.state;
-				
-				if(source === 'tabChange' && navItem.loaded === true){
-					//tab切换只有第一次需要加载数据
-					return;
-				}
-				if(navItem.loadingType === 'loading'){
-					//防止重复加载
-					return;
-				}
-				
-				navItem.loadingType = 'noMore';
-				
-				setTimeout(()=>{
-					let orderList = this.panicBuyList.filter(item=>{
-						//添加不同状态下订单的表现形式
-						item = Object.assign(item, this.orderStatusNameExp(item.state));
-						//演示数据所以自己进行状态筛选
-						if(state === 0){
-							//0为全部订单
-							return item;
-						}
-						return item.state === state
-					});
-					navItem.orderList = [];
-					orderList.forEach(item=>{
-						navItem.orderList.push(item);
-					})
-                    console.log('navItem', navItem, orderList)
-					//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
-					this.$set(navItem, 'loaded', true);
-					
-					//判断是否还有数据， 有改为 more， 没有改为noMore 
-					navItem.loadingType = 'noMore';
-				}, 600);	
+				ApiClinet.get(ApiConfig.APP_BASE_API.recordBuyList, this.form).then((res) => {
+					if (res.data.code == '200') {
+						this.panicBuyList = this.panicBuyList.concat(res.data.data.records || []);
+						this.total = Math.ceil(res.data.data.total / this.form.size);
+					}
+				})
 			}, 
 
 			//swiper 切换
 			changeTab(e){
 				this.tabCurrentIndex = e.target.current;
-				this.loadData('tabChange');
+				this.panicBuyList = [];
+				this.form.page = 0;
+				this.form.status = statusList[this.tabCurrentIndex];
+				this.loadData();
 			},
 			//顶部tab点击
 			tabClick(index){
@@ -237,29 +215,68 @@
 			},
 			//订单状态文字和颜色
 			orderStatusNameExp(state){
+				//	let statusList = ["buying", "paid", "resell", "breach", "finish"];
 				let stateTip = '',
 					stateTipColor = '#FF478C';
-				switch(+state){
-					case 1:
-						stateTip = '已预约'; 
-						break;
-					case 2:
+				switch(state){
+					case 'buying':
 						stateTip = '已抢中'; 
 						break;
-					case 3:
+					case 'paid':
+						stateTip = '已支付'; 
+						break;
+					case 'resell':
 						stateTip = '转卖中'; 
 						break;
-					case 4:
+					case 'breach':
 						stateTip = '已违约'; 
 						break;	
-					case 5:
+					case 'finish':
 						stateTip = '已完成'; 
 						stateTipColor = '#666666';
 						break;
 				}
 				return {stateTip, stateTipColor};
+			},
+			//支付
+			payOrder(item) {
+				ApiClinet.post(`${AppConfig.ANDROID_URL}/api/app/order/pay/${item.id}`).then((res) => {
+					if (res.data.code == '200') {
+						this.panicBuyList = [];
+						this.form.page = 0;
+						this.loadData();
+					}
+				})
+			},
+			//转卖
+			resellOrder(item) { 
+				ApiClinet.post(`${AppConfig.ANDROID_URL}/api/app/order/sale/${item.id}`).then((res) => {
+					if (res.data.code == '200') {
+						this.panicBuyList = [];
+						this.form.page = 0;
+						this.loadData();
+					}
+				})
+			},
+			//提货
+			pickOrder(item) { 
+				ApiClinet.post(`${AppConfig.ANDROID_URL}/api/app/order/pickUp/${item.id}`).then((res) => {
+				if (res.data.code == '200') {
+					this.panicBuyList = [];
+					this.form.page = 0;
+					this.loadData();
+				}
+			})
 			}
 		},
+		onReachBottom() {
+			if (this.form.page >= this.total) {
+				this.showTotal=true//已经滑到底的提醒
+				return false;
+			}
+			this.form.page ++;
+			this.loadData()
+		}
 	}
 </script>
 
@@ -499,5 +516,12 @@
 		100% {
 			opacity: .2
 		}
+	}
+
+	.showTotal{
+		text-align: center;
+		line-height: 60upx;
+		font-size:28upx;
+		color:#999999;
 	}
 </style>

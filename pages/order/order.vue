@@ -29,23 +29,21 @@
           @scrolltolower="loadData"
         >
           <!-- 空白页 -->
-          <empty
-            v-if="tabItem.loaded === true && tabItem.orderList.length === 0"
-          ></empty>
+          <empty v-if="orderListNew.length === 0"></empty>
 
           <!-- 订单列表 -->
           <view class="item-content">
             <view
-              v-for="(item, index) in tabItem.orderList"
+              v-for="(item, index) in orderListNew"
               :key="index"
               class="order-item"
             >
               <view class="i-top b-b">
                 <text class="time"
-                  ><text>订单编号：</text>{{ item.oderCode }}</text
+                  ><text>订单编号：</text>{{ item.id }}</text
                 >
-                <text class="state" :style="{ color: item.stateTipColor }">{{
-                  item.stateTip
+                <text class="state" :style="{ color: orderStateExp(item.state).stateTipColor }">{{
+                  orderStateExp(item.state).stateTip
                 }}</text>
                 <!-- <text 
 								v-if="item.state===9" 
@@ -72,31 +70,36 @@
                 <view class="num">商品金额：</view>
                 <view class="price">179<text>.5</text></view>
               </view>
-			  <view v-if="item.expressNumber" class="price-box">
+              <view v-if="item.expressNumber" class="price-box">
                 <view class="num">快递单号：</view>
-                <view>{{item.expressNumber}}</view>
+                <view>{{ item.expressNumber }}</view>
               </view>
-              <view class="action-box b-t" v-if="item.state == 1">
+              <view class="action-box b-t" v-if="item.state == 'init'">
                 <button class="action-btn" @click="cancelOrder(item)">
                   取消订单
                 </button>
-                <button class="action-btn recom">立即支付</button>
-              </view>
-			  <view class="action-box b-t" v-if="item.state == 2">
-                <button class="action-btn" @click="cancelOrder(item)">
-                  申请退款
+                <button class="action-btn" @click="deleteOrder(item)">
+                  删除订单
                 </button>
-                <button class="action-btn recom">确认收货</button>
+                <button class="action-btn recom" @click="payOrder(item)">立即支付</button>
               </view>
-			  <view class="action-box b-t" v-if="item.state == 3">
-                <button class="action-btn" @click="deleteOrder(index)">
+              <view class="action-box b-t" v-if="item.state == 'paid' || item.state == 'send' || item.state == 'finish'">
+                <button class="action-btn" @click="cancelOrder(item)">
+                  取消订单
+                </button>
+                <button class="action-btn" @click="deleteOrder(item)">
+                  删除订单
+                </button>
+              </view>
+              <view class="action-box b-t" v-if="item.state == 'cancel'">
+                <button class="action-btn" @click="deleteOrder(item)">
                   删除订单
                 </button>
               </view>
             </view>
           </view>
-
-          <uni-load-more :status="tabItem.loadingType"></uni-load-more>
+          <view v-if="showTotal" class="showTotal">没有更多数据了~</view>
+          <!-- <uni-load-more :status="tabItem.loadingType"></uni-load-more> -->
         </scroll-view>
       </swiper-item>
     </swiper>
@@ -106,7 +109,11 @@
 <script>
 import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue";
 import empty from "@/components/empty";
-import Json from "@/Json";
+import { formatDate } from "@/utils/prototype/date";
+let statusList = ["init", "paid", "send", "finish", "cancel"];
+import ApiClinet from "@/services/api-clinet";
+import ApiConfig from "@/config/api.config";
+import AppConfig from "@/config/app.config";
 export default {
   components: {
     uniLoadMore,
@@ -117,52 +124,72 @@ export default {
       tabCurrentIndex: 0,
       orderListNew: [
         {
-          state: 1,
+          state: 'init',
           title: "古黛妃 短袖t恤女 春夏装2019新款韩版宽松",
           price: 179.5,
           image:
             "https://img13.360buyimg.com/n8/jfs/t1/30343/20/1029/481370/5c449438Ecb46a15b/2b2adccb6dc742fd.jpg",
           number: 1,
-          oderCode: "123678900432144",
+          id: "123678900432144",
           expressNumber: null,
         },
         {
-          state: 2,
+          state: 'paid',
           title: "古黛妃 短袖t恤女 春夏装2019新款韩版宽松",
           price: 179.5,
           image:
             "https://img13.360buyimg.com/n8/jfs/t1/30343/20/1029/481370/5c449438Ecb46a15b/2b2adccb6dc742fd.jpg",
           number: 1,
-          oderCode: "123678900432144",
+          id: "123678900432144",
           expressNumber: "SF68329465396",
         },
         {
-          state: 3,
+          state: 'send',
           title: "古黛妃 短袖t恤女 春夏装2019新款韩版宽松",
           price: 179.5,
           image:
             "https://img13.360buyimg.com/n8/jfs/t1/30343/20/1029/481370/5c449438Ecb46a15b/2b2adccb6dc742fd.jpg",
           number: 1,
-          oderCode: "123678900432144",
+          id: "123678900432144",
+          expressNumber: "SF68329465396",
+        },
+        {
+          state: 'finish',
+          title: "古黛妃 短袖t恤女 春夏装2019新款韩版宽松",
+          price: 179.5,
+          image:
+            "https://img13.360buyimg.com/n8/jfs/t1/30343/20/1029/481370/5c449438Ecb46a15b/2b2adccb6dc742fd.jpg",
+          number: 1,
+          id: "123678900432144",
+          expressNumber: "SF68329465396",
+        },
+        {
+          state: 'cancel',
+          title: "古黛妃 短袖t恤女 春夏装2019新款韩版宽松",
+          price: 179.5,
+          image:
+            "https://img13.360buyimg.com/n8/jfs/t1/30343/20/1029/481370/5c449438Ecb46a15b/2b2adccb6dc742fd.jpg",
+          number: 1,
+          id: "123678900432144",
           expressNumber: "SF68329465396",
         },
       ],
       navList: [
         {
           state: 0,
-          text: "全部",
-          loadingType: "more",
-          orderList: [],
-        },
-        {
-          state: 1,
           text: "待付款",
           loadingType: "more",
           orderList: [],
         },
         {
+          state: 1,
+          text: "已支付",
+          loadingType: "more",
+          orderList: [],
+        },
+        {
           state: 2,
-          text: "待收货",
+          text: "已发货",
           loadingType: "more",
           orderList: [],
         },
@@ -172,13 +199,19 @@ export default {
           loadingType: "more",
           orderList: [],
         },
-        // {
-        // 	state: 4,
-        // 	text: '售后',
-        // 	loadingType: 'more',
-        // 	orderList: []
-        // }
+        {
+          state: 4,
+          text: "已取消",
+          loadingType: "more",
+          orderList: [],
+        },
       ],
+      form: {
+        state: "", //audit, finish, reject
+        page: 0,
+        size: 10,
+      },
+      showTotal: false,
     };
   },
 
@@ -188,118 +221,100 @@ export default {
      * 替换onLoad下代码即可
      */
     this.tabCurrentIndex = +options.state;
-    // #ifndef MP
+    this.form.state = statusList[options.state];
     this.loadData();
-    // #endif
-    // #ifdef MP
-    if (options.state == 0) {
-      this.loadData();
-    }
     // #endif
   },
 
   methods: {
+     formatDate,
     //获取订单列表
     loadData(source) {
-      //这里是将订单挂载到tab列表下
-      let index = this.tabCurrentIndex;
-      let navItem = this.navList[index];
-      let state = navItem.state;
-
-      if (source === "tabChange" && navItem.loaded === true) {
-        //tab切换只有第一次需要加载数据
-        return;
-      }
-      if (navItem.loadingType === "loading") {
-        //防止重复加载
-        return;
-      }
-
-      navItem.loadingType = "loading";
-
-      setTimeout(() => {
-        let orderList = this.orderListNew.filter((item) => {
-          //添加不同状态下订单的表现形式
-          item = Object.assign(item, this.orderStateExp(item.state));
-          //演示数据所以自己进行状态筛选
-          if (state === 0) {
-            //0为全部订单
-            return item;
-          }
-          return item.state === state;
-        });
-		navItem.orderList = [];
-        orderList.forEach((item) => {
-          navItem.orderList.push(item);
-        });
-        //loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
-        this.$set(navItem, "loaded", true);
-
-        //判断是否还有数据， 有改为 more， 没有改为noMore
-        navItem.loadingType = "more";
-      }, 600);
+      ApiClinet.get(ApiConfig.APP_BASE_API.recordGoodList, this.form).then((res) => {
+        if (res.data.code == '200') {
+            this.orderListNew = this.orderListNew.concat(res.data.data.records || []);
+            this.total = Math.ceil(res.data.data.total / this.form.size);
+        }
+      })
     },
 
     //swiper 切换
     changeTab(e) {
       this.tabCurrentIndex = e.target.current;
-      this.loadData("tabChange");
+      this.orderListNew = [];
+      this.form.page = 0;
+      this.form.state = statusList[this.tabCurrentIndex];
+      this.loadData();
     },
     //顶部tab点击
     tabClick(index) {
       this.tabCurrentIndex = index;
     },
     //删除订单
-    deleteOrder(index) {
-      uni.showLoading({
-        title: "请稍后",
-      });
-      setTimeout(() => {
-        this.navList[this.tabCurrentIndex].orderList.splice(index, 1);
-        uni.hideLoading();
-      }, 600);
+    deleteOrder(item) {
+      ApiClinet.delete(`${AppConfig.ANDROID_URL}/api/app/record/product/${item.id}`).then((res) => {
+        if (res.data.code == '200') {
+            this.orderListNew = [];
+            this.form.page = 0;
+            this.loadData();
+        }
+      })
     },
     //取消订单
     cancelOrder(item) {
-      uni.showLoading({
-        title: "请稍后",
-      });
-      setTimeout(() => {
-        let { stateTip, stateTipColor } = this.orderStateExp(9);
-        item = Object.assign(item, {
-          state: 9,
-          stateTip,
-          stateTipColor,
-        });
-
-        //取消订单后删除待付款中该项
-        let list = this.navList[1].orderList;
-        let index = list.findIndex((val) => val.id === item.id);
-        index !== -1 && list.splice(index, 1);
-
-        uni.hideLoading();
-      }, 600);
+      ApiClinet.post(`${ApiConfig.APP_BASE_API.recordGoodCancel}?id=${item.id}`).then((res) => {
+        if (res.data.code == '200') {
+            this.orderListNew = [];
+            this.form.page = 0;
+            this.loadData();
+        }
+      })
     },
-
+    /**支付订单* */
+    payOrder(item) {
+      ApiClinet.post(`${ApiConfig.APP_BASE_API.recordGoodPay}?id=${item.id}`).then((res) => {
+        if (res.data.code == '200') {
+            this.orderListNew = [];
+            this.form.page = 0;
+            this.loadData();
+        }
+      })
+    },
     //订单状态文字和颜色
     orderStateExp(state) {
+      //["init", "paid", "send", "finish", "cancel"];
       let stateTip = "",
         stateTipColor = "#FF478C";
-      switch (+state) {
-        case 1:
+      switch (state) {
+        case 'init':
           stateTip = "待支付";
           break;
-        case 2:
-          stateTip = "待发货";
+        case 'paid':
+          stateTip = "已支付";
           break;
-        case 3:
+        case 'send':
+          stateTip = "已发货";
+          break;
+        case 'finish':
           stateTip = "已完成";
+          stateTipColor = "#666666";
+          break;
+        case 'cancel':
+          stateTip = "已取消";
           stateTipColor = "#666666";
           break;
       }
       return { stateTip, stateTipColor };
     },
   },
+  onReachBottom() {
+      if (this.form.page >= this.total) {
+      this.showTotal=true//已经滑到底的提醒
+      return false;
+    }
+    this.form.page ++;
+    this.loadData()
+  }
 };
 </script>
 
@@ -353,8 +368,8 @@ page,
 .uni-swiper-item {
   height: auto;
 }
-.item-content{
-	padding: 24upx;
+.item-content {
+  padding: 24upx;
 }
 .order-item {
   display: flex;
@@ -377,7 +392,7 @@ page,
       }
     }
     .state {
-		font-size:28upx;
+      font-size: 28upx;
     }
     .del-btn {
       padding: 10upx 0 10upx 36upx;
@@ -404,11 +419,11 @@ page,
       display: block;
       width: 180upx;
       height: 180upx;
-	  border-radius: 12upx;
+      border-radius: 12upx;
     }
     .centre {
       width: 50%;
-	  margin-left: 20upx;
+      margin-left: 20upx;
       .title {
         font-size: 28upx;
         color: #000000;
@@ -445,21 +460,21 @@ page,
     font-size: 26upx;
     color: #666666;
     .num {
-     flex:1;
-	 font-weight: 700;
+      flex: 1;
+      font-weight: 700;
     }
     .price {
       font-size: 28upx;
       color: #000000;
-	  font-weight: 700;
-	  text{
-		font-size: 24upx;
-	  }
-    //   &:before {
-    //     content: "￥";
-    //     font-size: $font-sm;
-    //     margin: 0 2upx 0 8upx;
-    //   }
+      font-weight: 700;
+      text {
+        font-size: 24upx;
+      }
+      //   &:before {
+      //     content: "￥";
+      //     font-size: $font-sm;
+      //     margin: 0 2upx 0 8upx;
+      //   }
     }
   }
   .action-box {
@@ -482,15 +497,19 @@ page,
     color: #333333;
     background: #fff;
     border-radius: 100px;
-	border-color:#DBDBDB;
+    border-color: #dbdbdb;
     &:after {
       border-radius: 100px;
     }
     &.recom {
-      background-image: linear-gradient(90deg,rgba(255, 104, 166, 1) 0,rgba(255, 71, 140, 1) 100%);
+      background-image: linear-gradient(
+        90deg,
+        rgba(255, 104, 166, 1) 0,
+        rgba(255, 71, 140, 1) 100%
+      );
       color: #ffffff;
       &:after {
-        border:none;
+        border: none;
       }
     }
   }
@@ -626,5 +645,11 @@ page,
   100% {
     opacity: 0.2;
   }
+}
+.showTotal{
+  text-align: center;
+  line-height: 60upx;
+  font-size:28upx;
+  color:#999999;
 }
 </style>

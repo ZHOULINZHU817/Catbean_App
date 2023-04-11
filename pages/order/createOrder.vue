@@ -6,11 +6,11 @@
 				<!-- <text class="yticon icon-shouhuodizhi"></text> -->
 				<view class="cen">
 					<view class="top">
-						<text class="name">{{addressData.name}}</text>
-						<text class="mobile">{{addressData.mobile}}</text>
-						<text class="tips" v-if="addressData.default">默认</text>
+						<text class="name">{{addressData.receiver}}</text>
+						<text class="mobile">{{addressData.phone}}</text>
+						<text class="tips" v-if="addressData.first">默认</text>
 					</view>
-					<text class="address">{{addressData.address}} {{addressData.area}}</text>
+					<text class="address">{{addressData.address}}</text>
 				</view>
 				<text class="yticon icon-you"></text>
 			</view>
@@ -24,13 +24,13 @@
 			</view> -->
 			<!-- 商品列表 -->
 			<view class="g-item">
-				<image src="https://gd3.alicdn.com/imgextra/i3/0/O1CN01IiyFQI1UGShoFKt1O_!!0-item_pic.jpg_400x400.jpg"></image>
+				<image :src="detailObj.images"></image>
 				<view class="right">
-					<text class="title clamp">古黛妃 短袖t恤女夏装2019新款</text>
+					<text class="title clamp">{{detailObj.name}}-{{detailObj.detail}}</text>
 				</view>
 				<view class="price-box">
-					<view class="price">￥17.8</view>
-					<view class="number">x 1</view>
+					<view class="price">￥{{detailObj.price}}</view>
+					<view class="number">x {{detailObj.number}}</view>
 				</view>
 			</view>
 			<!-- <view class="g-item">
@@ -70,7 +70,7 @@
 		<view class="yt-list">
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">商品金额</text>
-				<text class="cell-tip">￥179.88</text>
+				<text class="cell-tip">￥{{detailObj.price}}</text>
 			</view>
 			<!-- <view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">优惠金额</text>
@@ -91,7 +91,7 @@
 			<view class="price-content">
 				<text>合计：</text>
 				<text class="price-tip">￥</text>
-				<text class="price">475</text>
+				<text class="price">{{allPrice}}</text>
 			</view>
 			<text class="submit" @click="submit">提交订单</text>
 		</view>
@@ -122,6 +122,9 @@
 </template>
 
 <script>
+    import ApiClinet from "@/services/api-clinet";
+	import ApiConfig from "@/config/api.config";
+	import AppConfig from "@/config/app.config";
 	export default {
 		data() {
 			return {
@@ -149,13 +152,26 @@
 					address: '山东省济南市历城区',
 					area: '149号',
 					default: false,
-				}
+				},
+				detailObj: {
+					number: 1
+				},
+				allPrice: 0,
 			}
 		},
-		onLoad(option){
+		onLoad(options){
 			//商品数据
 			//let data = JSON.parse(option.data);
 			//console.log(data);
+			this.id = options.id;
+			if(options.number){
+				this.number = options.number*1;
+				this.getGoodDetail(this.id);
+				/**获取收货地址* */
+				this.getAddressList();
+			}else{
+				this.getOrderDetail(this.id)
+			}
 		},
 		methods: {
 			//显示优惠券面板
@@ -170,15 +186,49 @@
 			numberChange(data) {
 				this.number = data.number;
 			},
-			changePayType(type){
-				this.payType = type;
-			},
+			// changePayType(type){
+			// 	this.payType = type;
+			// },
 			submit(){
-				uni.redirectTo({
-					url: '/pages/money/pay'
+				let params = {
+					productId: this.id,
+					productNum: this.detailObj.number,
+					receiveAddressId: this.addressData && this.addressData.id,
+					payType: 'catfood'
+				}
+				ApiClinet.post(ApiConfig.APP_BASE_API.recordGoodBuy, params).then((res) => {
+					if (res.data.code == '200') {
+						
+					}
 				})
 			},
-			stopPrevent(){}
+			stopPrevent(){
+
+			},
+			getGoodDetail(id){
+				ApiClinet.get(`${AppConfig.ANDROID_URL}/api/app/product/${id}`, {}).then((res) => {
+					if (res.data.code == '200') {
+					   this.detailObj = res.data.data;
+					   this.detailObj.number = this.number;
+					   this.detailObj.images = this.detailObj.images && this.detailObj.images.split(',')[0];
+					   this.allPrice = (this.detailObj.number*this.detailObj.price).toFixed(2)
+					}
+				})
+			},
+			getAddressList(){
+				ApiClinet.get(ApiConfig.APP_BASE_API.addressList, {}).then((res) => {
+					if (res.data.code == '200') {
+					   this.addressList = res.data.data || [];
+					   let addressList = this.addressList.filter(item=> item.first);
+					   if(addressList.length>0){
+						this.addressData  = addressList[0]
+					   }else{
+						this.addressData = this.addressList[0];
+					   }
+					   
+					}
+				})
+			}
 		}
 	}
 </script>

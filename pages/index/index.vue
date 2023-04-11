@@ -237,6 +237,7 @@
 			</view>
 		</view>
 		<view v-if="showTotal" class="showTotal">没有更多数据了~</view>
+		<view v-if="!goodsList.length" class="noTotal">～暂无数据~</view>
 		
 
 	</view>
@@ -308,7 +309,7 @@
 			//详情页
 			navToDetailPage(item) {
 				//测试数据没有写id，用title代替
-				let id = item.title;
+				let id = item.id;
 				uni.navigateTo({
 					url: `/pages/product/detail?id=${id}`
 				})
@@ -318,6 +319,7 @@
 			console.log("22", e)
 			this.params.name = e.text;
 			this.params.page = 0;
+			this.goodsList = [];
 			this.productList();
 		},
 		onReachBottom() {
@@ -768,6 +770,12 @@
 	.showTotal{
 		text-align: center;
 		line-height: 60upx;
+		font-size:28upx;
+		color:#999999;
+	}
+	.noTotal{
+		text-align: center;
+		line-height: 360upx;
 		font-size:28upx;
 		color:#999999;
 	}
