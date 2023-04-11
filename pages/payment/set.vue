@@ -5,44 +5,41 @@
         <view class="input-item">
           <text class="tit">姓名:</text>
           <input
-            :value="userName"
+            :value="form.name"
             placeholder="请输入姓名"
             maxlength="11"
-            data-key="userName"
+            data-key="name"
             @input="inputChange"
           />
         </view>
         <view class="input-item">
           <text class="tit">身份证号码:</text>
           <input
-            :value="userName"
+            :value="form.idNo"
             placeholder="请输入身份证号码"
-            maxlength="11"
-            data-key="userName"
+            data-key="idNo"
             @input="inputChange"
           />
         </view>
         <view class="input-item">
           <text class="tit">收款银行:</text>
           <input
-            :value="userName"
+            :value="form.bankName"
             placeholder="请输入收款银行"
-            maxlength="11"
-            data-key="userName"
+            data-key="bankName"
             @input="inputChange"
           />
         </view>
         <view class="input-item">
           <text class="tit">银行卡号:</text>
           <input
-            :value="userName"
+            :value="form.bankNo"
             placeholder="请输入银行卡号"
-            maxlength="11"
-            data-key="userName"
+            data-key="bankNo"
             @input="inputChange"
           />
         </view>
-         <view class="input-item">
+         <!-- <view class="input-item">
           <text class="tit">收款支付宝账号:</text>
           <input
             :value="userName"
@@ -51,31 +48,31 @@
             data-key="userName"
             @input="inputChange"
           />
-        </view>
+        </view> -->
         <view class="input-item">
           <text class="tit">手机号码:</text>
           <input
-            :value="inputUserPhone"
+            :value="form.phone"
             placeholder="请输入手机号码"
             maxlength="11"
-            data-key="inputUserPhone"
+            data-key="phone"
             @input="inputChange"
           />
         </view>
         <view class="pay-pic">
           <view class="pay-pic-item">
             <view>微信收款码</view>
-            <uploadFile class="context" v-model="uploadAttachment" mediaType="all"></uploadFile>
+            <uploadFile class="context" v-model="wechatUrlList" mediaType="all"></uploadFile>
           </view>
           <view class="pay-pic-item">
             <view>支付宝收款码</view>
-            <uploadFile class="context" v-model="uploadAttachment" mediaType="all"></uploadFile>
+            <uploadFile class="context" v-model="alipayUrlList" mediaType="all"></uploadFile>
           </view>
         </view>
         <view class="input-item phone-code">
           <text class="tit">短信验证码:</text>
           <input
-            :value="code"
+            :value="form.code"
             placeholder="请输入验证码"
             placeholder-class="input-empty"
             maxlength="20"
@@ -97,78 +94,102 @@
 </template>
 
 <script>
-
+import ApiClinet from "@/services/api-clinet";
+import ApiConfig from "@/config/api.config";
 export default {
   data() {
     return {
-      userName:"",
-      inputUserPhone:"13789333333",
-      code:'',
+      form: {
+        alipayUrl:"",//收款支付宝码
+        bankName:"",//银行名称--必填
+        bankNo:"",//银行卡号--必填
+        code:"",//验证码--必填
+        idNo:"",//身份证号--必填
+        name:"",//真实姓名--必填
+        wechatUrl:"",//收款微信码
+        phone:'',//--必填
+      },
       codeTxt: "获取验证码",
       logining: false,
-      uploadAttachment:[]
+      wechatUrlList:[],
+      alipayUrlList: [],
+      userInfo: JSON.parse(uni.getStorageSync('userInfo'))
     };
   },
-  onLoad() {},
+  onLoad() {
+    if(Object.keys(this.userInfo).length>0){
+      this.form.bankName = this.userInfo.bankName;
+      this.form.bankNo = this.userInfo.bankNo;
+      this.form.idNo = this.userInfo.idNo;
+      this.form.name = this.userInfo.name;
+      this.form.phone = this.userInfo.phone;
+      this.alipayUrlList = this.userInfo.alipayUrl && `['文件｜${this.userInfo.alipayUrl}']`
+      this.wechatUrlList = this.userInfo.wechatUrl && `['文件｜${this.userInfo.wechatUrl}']`
+    }
+  },
   methods: {
 
     inputChange(e) {
       const key = e.currentTarget.dataset.key;
-      this[key] = e.detail.value;
+      this.form[key] = e.detail.value;
     },
     navBack() {
       uni.navigateBack();
     },
     savePassword() {
+      this.form.alipayUrl = this.alipayUrlList[0] && this.alipayUrlList[0].split('|')[1];
+      this.form.wechatUrl = this.wechatUrlList[0] && this.wechatUrlList[0].split('|')[1];
       this.logining = true;
-      this.$api.msg("去注册");
+      ApiClinet.post(ApiConfig.APP_BASE_API.receiveAccount, this.form).then((res) => {
+        if (res.data.code == '200') {
+            this.$api.msg('设置成功！')
+            this.logining = false;
+            // this.navBack();
+        }else{
+            this.$api.msg(res.data.msg)
+            this.logining = false;
+        }
+      }).catch(err=>{
+        this.logining = false;
+      })
     },
     /**
      * 获取手机验证码
      */
     getPhoneCode() {
       var rePhone = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
-      if (!this.inputUserPhone) {
+      if (!this.form.phone) {
         this.$api.msg("请先输入手机号");
         return;
       }
-      if (!rePhone.test(this.inputUserPhone)) {
+      if (!rePhone.test(this.form.phone)) {
         this.$api.msg("请输入正确的手机号");
         return;
       }
-      this.codeTxt = "验证码发送中...";
-	  this.$api.msg("验证码发送成功");
-            let time = 60;
-            const set = setInterval(() => {
-              this.codeTxt = time-- + "s重新获取";
-              if (time < 0) {
-                clearInterval(set);
-                this.codeTxt = "获取验证码";
-              }
-            }, 1000);
-    //   http
-    //     .post(changePhone.sendPhone, {
-    //       userPhone: this.userPhone || this.inputUserPhone,
-    //       code: this.imgVerCode,
-    //     })
-    //     .then((res) => {
-    //       if (res && res.success) {
-    //         this.$api.msg("验证码发送成功");
-    //         let time = 60;
-    //         const set = setInterval(() => {
-    //           this.codeTxt = time-- + "s重新获取";
-    //           this.pass = false;
-    //           if (time < 0) {
-    //             clearInterval(set);
-    //             this.pass = true;
-    //             this.codeTxt = "获取验证码";
-    //           }
-    //         }, 1000);
-    //       } else {
-    //         this.$api.msg("验证码发送失败");
-    //         this.codeTxt = "获取验证码";
-    //       }
-    //     });
+       this.codeTxt = "验证码发送中...";
+       ApiClinet.get(ApiConfig.APP_BASE_API.code, {phone: this.form.phone}, {
+					loading: true
+				}).then((res) => {
+					if (res.data.code == '200') {
+					    this.$api.msg("验证码发送成功");
+              let time = 60;
+              const set = setInterval(() => {
+                this.codeTxt = time-- + "s重新获取";
+                this.pass = false;
+                if (time < 0) {
+                  clearInterval(set);
+                  this.pass = true;
+                  this.codeTxt = "获取验证码";
+                }
+              }, 1000);
+					}else{
+              this.$api.msg("验证码发送失败");
+              this.codeTxt = "获取验证码";
+          }
+				}).catch(()=>{
+            this.$api.msg("验证码发送失败");
+            this.codeTxt = "获取验证码";
+        })
     },
   },
 };

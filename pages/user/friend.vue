@@ -15,7 +15,8 @@
 </template>
 
 <script>
-
+import ApiClinet from "@/services/api-clinet";
+import ApiConfig from "@/config/api.config";
 export default {
   data() {
     return {
@@ -41,9 +42,17 @@ export default {
       ]
     };
   },
-  onLoad() {},
+  onLoad() {
+    this.memberChildList();
+  },
   methods: {
-
+    memberChildList(){
+      ApiClinet.get(ApiConfig.APP_BASE_API.memberChildList).then((res) => {
+        if (res.data.code == '200') {
+            // this.list = res.data.data.childList || [];
+        }
+      })
+    }
   },
 };
 </script>

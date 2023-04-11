@@ -2,51 +2,63 @@
 	<view class="container">
 		<view class="notice-item" v-for="(item, index) in newsList" :key="index">
 			<view class="notice-title flex">
-				<img v-if="item.type == '1'" src="https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/c58ce5b782f34b53b0c51ebaeb77a196_mergeImage.png"/>
+				<!-- <img v-if="item.type == '1'" src="https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/c58ce5b782f34b53b0c51ebaeb77a196_mergeImage.png"/>
 				<img v-if="item.type == '3'" src="https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/590a2c6aef3040afa32f0f81c570be7d_mergeImage.png"/>
-				<img v-if="item.type == '2'" src="https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/a5fe67a4e51a40a98c7c2206443500ca_mergeImage.png"/>
+				<img v-if="item.type == '2'" src="https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/a5fe67a4e51a40a98c7c2206443500ca_mergeImage.png"/> -->
 				<view>{{item.title}}</view>
-				<view class="notice-date flex1">{{item.date}}</view>
+				<view class="notice-date flex1">{{formatDate(item.createTime)}}</view>
 			</view>
 			<view class="notice-content">{{item.content}}</view>
 		</view>
+		<view v-if="showTotal" class="showTotal">没有更多数据了~</view>
 	</view>
 </template>
 
 <script>
+	import ApiClinet from "@/services/api-clinet";
+	import ApiConfig from "@/config/api.config";
+	import { formatDate } from "@/utils/prototype/date"
 	export default {
 		data() {
 			return {
-				newsList: [
-					{
-						title:"公告消息",
-						type: "1",
-						content:'公告消息公告消息公告消息公告消息公告消息',
-						date:'2023-03-02'
-					},
-					{
-						title:"提现消息",
-						type: "2",
-						content:'您的提现申请已通过！',
-						date:'2023-03-02'
-					},
-					{
-						title:"预约成功通知",
-						type: "3",
-						content:'您预约的12:00场次已通过！',
-						date:'2023-03-02'
-					},
-					{
-						title:"公告消息",
-						type: "1",
-						content:'公告消息公告消息公告消公告消息公告消息公告消息公告消息公告消息公告消息公告消息公告消息公告消息公告消息公告消息公告消息公告消息公告消息公告消息息公告消息公告消息',
-						date:'2023-03-02'
-					}
-				]
+				newsList: [],
+				params:{
+					page: 0,
+					size: 10
+			    },
+				showTotal: false,
 			}
+			
+		},
+		onLoad(){
+			this.getNewsData();
+			this.noticeMsgRead();
 		},
 		methods: {
-
+			formatDate,
+			getNewsData(){
+				ApiClinet.get(ApiConfig.APP_BASE_API.noticeList, this.params).then((res) => {
+					if (res.data.code == '200') {
+					   this.newsList = res.data.data.records || [];
+					   this.total = Math.ceil(res.data.total / this.params.size);
+					}
+				})
+			},
+			noticeMsgRead(){
+				ApiClinet.delete(ApiConfig.APP_BASE_API.noticeMsg).then((res) => {
+					if (res.data.code == '200') {
+					  
+					}
+				})
+			}
+		},
+		onReachBottom() {
+		    if (this.params.page >= this.total) {
+				this.showTotal=true//已经滑到底的提醒
+				return false;
+			}
+			this.params.page ++;
+			this.getNewsData()
 		}
 	}
 </script>
@@ -88,5 +100,10 @@
 			font-family: PingFangSC-Regular;
 			margin-top:20upx;
 		}
+	}
+	.showTotal{
+		text-align: center;
+		line-height: 60upx;
+		font-size:28upx;
 	}
 </style>

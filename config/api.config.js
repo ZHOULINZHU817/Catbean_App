@@ -19,7 +19,7 @@ export default {
        code:`${ANDROID_URL}/api/common/code`, //获取验证码
        login:`${ANDROID_URL}/api/app/member/login`, //登陆
        logout:`${ANDROID_URL}/api/app/member/logout`, //登出
-       editPwd:`${ANDROID_URL}/api/app/member/pwd`, //重置密码
+       resetPwd:`${ANDROID_URL}/api/app/member/pwd`, //重置密码
        editPwdPay:`${ANDROID_URL}/api/app/member/pwd/pay`, //重置支付密码
        //首页商品
        productList:`${ANDROID_URL}/api/app/product/list`, //商城->商品列表

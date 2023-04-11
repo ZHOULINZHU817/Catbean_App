@@ -4,7 +4,7 @@
 		<view class="user-section">
 			<view class="user-set">
 				<view class="user-set-view"></view>
-				<view class="user-set-icon"><text class="yticon icon-xiaoxi font-icon" @click="goNews"></text> <text class="yticon icon-shezhi font-icon" @click="goSet"></text></view>
+				<view class="user-set-icon"><text class="yticon icon-xiaoxi font-icon" @click="goNews"><text v-if="isDot" class="xiaoxi-dian"></text></text> <text class="yticon icon-shezhi font-icon" @click="goSet"></text></view>
 			</view>
 			<image class="bg" src="/static/user-bg.jpg"></image>
 			<view class="user-info-box">
@@ -23,19 +23,19 @@
 		>
 			<view class="tj-sction">
 				<view class="tj-item"  @click="navTo('/pages/cat/catbean')">
-					<text class="num">128.8</text>
+					<text class="num">{{assetObj.catFood || 0}}</text>
 					<text>猫豆</text> 
 				</view>
 				<view class="tj-item"  @click="navTo('/pages/shareProfit/shareProfit')">
-					<text class="num">0</text>
+					<text class="num">{{assetObj.teamReward || 0}}</text>
 					<text>分润</text>
 				</view>
 				<view class="tj-item" @click="navTo('/pages/rewards/rewards')">
-					<text class="num">20</text>
+					<text class="num">{{assetObj.buyReword || 0}}</text>
 					<text>奖励金</text>
 				</view>
 				<view class="tj-item" @click="navTo('/pages/shareValue/shareValue')">
-					<text class="num">20</text>
+					<text class="num">{{assetObj.childReward || 0}}</text>
 					<text>分享值</text>
 				</view>
 			</view>
@@ -111,7 +111,7 @@
 						<image class="user-icon-pic" src="/static/user/set_5.jpg"></image>
 						<text>收款账号</text>
 					</view>
-					<view class="order-item" @click="navTo('/pages/user/friend')" hover-class="common-hover"  :hover-stay-time="50">
+					<view class="order-item" v-if="isExist" @click="navTo('/pages/user/friend')" hover-class="common-hover"  :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/set_6.jpg"></image>
 						<text>我的好友</text>
 					</view>
@@ -140,12 +140,19 @@
 			return {
 				coverTransform: 'translateY(0px)',
 				coverTransition: '0s',
-				moving: false,
-				userInfo: store.getters.userInfo
+				isDot: false,
+				isExist: false,
+				userInfo: JSON.parse(uni.getStorageSync('userInfo')),
+				assetObj: {},
 			}
 		},
 		onLoad(){
+			/**获取消息红点* */
 			this.getNoticeMsg()
+			/**是否消息认证* */
+			this.getCardExist();
+			/**资产** */
+			this.getAsset();
 		},
         // computed: {
 		// 	// ...mapState(['hasLogin','userInfo'])
@@ -155,7 +162,22 @@
 			getNoticeMsg() {
 				ApiClinet.get(ApiConfig.APP_BASE_API.noticeMsg, {}).then((res) => {
 					if (res.data.code == '200') {
-					   
+					   this.isDot = res.data.data;
+					}
+				})
+			},
+			getCardExist() {
+				ApiClinet.get(ApiConfig.APP_BASE_API.userExist).then((res) => {
+					if (res.data.code == '200') {
+					   this.isExist = res.data.data == 'approved';
+					}
+				})
+			},
+			getAsset() {
+				ApiClinet.get(ApiConfig.APP_BASE_API.asset).then((res) => {
+					if (res.data.code == '200') {
+					   this.assetObj = res.data.data;
+					   uni.setStorageSync('assetObj', this.assetObj);
 					}
 				})
 			},
@@ -263,6 +285,18 @@
 				font-size:38upx;
 				color:#000000;
 				padding-right:20upx;
+			}
+			.icon-xiaoxi{
+				position: relative;
+				.xiaoxi-dian{
+					position: absolute;
+					width:10upx;
+					height:10upx;
+					border-radius: 10upx;
+					background-color: #ff478c;
+					top:0;
+					right: 18upx;
+				}
 			}
 		}
 	}

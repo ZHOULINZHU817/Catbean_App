@@ -11,40 +11,40 @@
         <view class="input-item">
           <text class="tit">昵称:</text>
           <input
-            :value="userName"
+            :value="form.nickName"
             placeholder="请输入昵称"
             maxlength="11"
-            data-key="userName"
+            data-key="nickName"
             @input="inputChange"
           />
         </view>
         <view class="input-item">
           <text class="tit">QQ号:</text>
           <input
-            :value="userName"
+            :value="form.qq"
             placeholder="请输入QQ号"
-            maxlength="11"
-            data-key="userName"
+            data-key="qq"
             @input="inputChange"
           />
         </view>
         <view class="input-item">
           <text class="tit">微信号:</text>
           <input
-            :value="userName"
+            :value="form.wechatNo"
             placeholder="请输入微信号"
             maxlength="11"
-            data-key="userName"
+            data-key="wechatNo"
             @input="inputChange"
           />
         </view>
         <view class="input-item">
           <text class="tit">手机号:</text>
           <input
-            :value="userName"
+            type="number"
+            :value="form.phone"
             placeholder="请输入手机号"
             maxlength="11"
-            data-key="userName"
+            data-key="phone"
             @input="inputChange"
           />
         </view>
@@ -57,29 +57,58 @@
 </template>
 
 <script>
-
+import ApiClinet from "@/services/api-clinet";
+import ApiConfig from "@/config/api.config";
 export default {
   data() {
     return {
-      userName:"",
-      inputUserPhone:"13789333333",
+      form:{
+        avatar:'',
+        nickName:'',
+        phone:'',
+        qq:'',
+        wechatNo:''
+      },
       logining: false,
-      uploadAttachment:[]
+      uploadAttachment:[],
+      userInfo: JSON.parse(uni.getStorageSync('userInfo'))
     };
   },
-  onLoad() {},
+  onLoad() {
+    if(Object.keys(this.userInfo).length>0){
+      // this.form = this.userInfo;
+      this.form.phone = this.userInfo.phone;
+      this.form.qq = this.userInfo.qq;
+      this.form.nickName = this.userInfo.nickName;
+      this.form.avatar = this.userInfo.avatar;
+      this.form.wechatNo = this.userInfo.wechatNo;
+      this.uploadAttachment = this.userInfo.avatar && `['文件｜${this.userInfo.avatar}']`
+    }
+  },
   methods: {
 
     inputChange(e) {
       const key = e.currentTarget.dataset.key;
-      this[key] = e.detail.value;
+      this.form[key] = e.detail.value;
     },
     navBack() {
       uni.navigateBack();
     },
     savePassword() {
+      this.form.avatar = this.uploadAttachment[0] && this.uploadAttachment[0].split('|')[1];
       this.logining = true;
-      this.$api.msg("去注册");
+      ApiClinet.post(ApiConfig.APP_BASE_API.settingInfo, this.form).then((res) => {
+        if (res.data.code == '200') {
+            this.$api.msg('设置成功！')
+            this.logining = false;
+            // this.navBack();
+        }else{
+            this.$api.msg(res.data.msg)
+            this.logining = false;
+        }
+      }).catch(err=>{
+        this.logining = false;
+      })
     },
   },
 };

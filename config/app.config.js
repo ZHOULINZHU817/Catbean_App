@@ -6,8 +6,9 @@ export default {
 	IMG_URL: "http://localhost:4000/img", //图片资源接口
 	//ANDROID_URL: "http://192.168.0.132:8873/supplyx-mes",//开发环境
 	FILE_UPLOAD_SAVE:'https://supplyx.goocidata.com/supplyx/fileserver/picsave',
-	FILE_UPLOAD: 'https://supplyx.goocidata.com/fileserver/upload/',
+	// FILE_UPLOAD: 'https://supplyx.goocidata.com/fileserver/upload/', 
 	FILE_UPLOAD_ANDWELL:'https://supplyx.goocidata.com/fileserver/upload/',
+	FILE_UPLOAD: 'https://mc.hongfeigg.com/api/common/upload/image',
 	//ANDROID_URL: "http://172.21.0.13:8083/supplyx-mes",//内网测试环境
 	//ANDROID_URL: "https://mom.goocidata.com/supplyx-mes",//内网预发版环境
 	ANDROID_URL: "https://mc.hongfeigg.com",//开发环境 

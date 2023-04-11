@@ -291,7 +291,7 @@
 				this.goodsList = goodsList || [];
 				ApiClinet.get(ApiConfig.APP_BASE_API.productList, this.params).then((res) => {
 					if (res.data.code == '200') {
-						this.goodsList = res.data.records || [];
+						this.goodsList = res.data.data.records || [];
 					    this.total = Math.ceil(res.data.total / this.params.size);
 					}
 				})

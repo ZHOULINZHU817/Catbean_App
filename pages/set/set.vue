@@ -1,14 +1,14 @@
 <template>
 	<view class="container">
-		<view class="list-title">消息通知</view>
+		<!-- <view class="list-title">消息通知</view>
         <view class="list-cell m-t">
 			<text class="cell-tit">短信提醒</text>
 			<switch checked color="#fa436a" @change="switchChange" />
-		</view>
+		</view> -->
 		<view class="list-title">个人信息</view>
 		<view class="list-cell b-b m-t" @click="navTo('/pages/userinfo/userinfo')" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">图像</text>
-			<img src="/static/user/friend.jpg"/>
+			<img :src="userInfo.avatar || '/static/user/friend.jpg'"/>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
 		<view class="list-cell b-b" @click="navTo('/pages/userinfo/userinfo')" hover-class="cell-hover" :hover-stay-time="50">
@@ -35,7 +35,7 @@
 			<text class="cell-tit">支付密码</text>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
-		<view class="list-cell b-b" @click="navTo('/pages/payment/password')" hover-class="cell-hover" :hover-stay-time="50">
+		<view class="list-cell b-b" @click="navTo('/pages/public/forgetPassword')" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">修改密码</text>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
@@ -51,20 +51,14 @@
 </template>
 
 <script>
-	import {  
-	    mapMutations  
-	} from 'vuex';
 	export default {
 		data() {
 			return {
-				
+				 userInfo: JSON.parse(uni.getStorageSync('userInfo'))
 			};
 		},
 		methods:{
-			...mapMutations(['logout']),
-
 			navTo(url){
-				this.$api.msg(`跳转到${url}`);
 				uni.navigateTo({  
 					url
 				}) 
@@ -75,10 +69,13 @@
 				    content: '确定要退出登录么',
 				    success: (e)=>{
 				    	if(e.confirm){
-				    		this.logout();
-				    		setTimeout(()=>{
-				    			uni.navigateBack();
-				    		}, 200)
+							
+				    		uni.removeStorageSync('userInfo');
+							this.$store.dispatch("auth/logout", {}).then(res => {
+								uni.reLaunch({
+									url: '/pages/public/login'
+								});
+							})
 				    	}
 				    }
 				});

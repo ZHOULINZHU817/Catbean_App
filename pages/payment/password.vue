@@ -5,10 +5,10 @@
         <view class="input-item pass-position">
           <input
             type="number"
-            :value="inputUserPhone"
+            :value="form.phone"
             placeholder="请输入手机号码"
             maxlength="11"
-            data-key="inputUserPhone"
+            data-key="phone"
             disabled
             @input="inputChange"
           />
@@ -16,7 +16,7 @@
         </view>
         <view class="input-item phone-code">
           <input
-            :value="code"
+            :value="form.code"
             placeholder="请输入验证码"
             placeholder-class="input-empty"
             maxlength="20"
@@ -30,12 +30,12 @@
         </view>
         <view class="input-item pass-position">
           <input
-            :value="paymentPassword"
+            :value="form.payPwd"
             type="number"
             placeholder="请输入支付密码"
             placeholder-class="input-empty"
             maxlength="6"
-            data-key="paymentPassword"
+            data-key="payPwd"
             @input="inputChange"
           />
         </view>
@@ -48,77 +48,85 @@
 </template>
 
 <script>
-
+import store from '@/store'
+import ApiClinet from "@/services/api-clinet";
+import ApiConfig from "@/config/api.config";
 export default {
   data() {
     return {
-      paymentPassword:"",
-      inputUserPhone:"1233333333",
-      code:'',
+      form:{
+        payPwd:'',
+        code:'',
+        phone:''
+      },
       codeTxt: "获取验证码",
       logining: false,
+      userInfo: JSON.parse(uni.getStorageSync('userInfo'))
     };
   },
-  onLoad() {},
+  onLoad() {
+    this.form.phone = this.userInfo.phone;
+  },
   methods: {
 
     inputChange(e) {
       const key = e.currentTarget.dataset.key;
-      this[key] = e.detail.value;
+      this.form[key] = e.detail.value;
     },
     navBack() {
       uni.navigateBack();
     },
     savePassword() {
       this.logining = true;
-      this.$api.msg("去注册");
+      ApiClinet.put(ApiConfig.APP_BASE_API.editPwdPay, this.form).then((res) => {
+					if (res.data.code == '200') {
+					   this.$api.msg('支付密码修改成功！')
+             this.logining = false;
+					}else{
+             this.$api.msg(res.data.msg)
+             this.logining = false;
+          }
+				}).catch(err=>{
+          this.logining = false;
+        })
     },
     /**
      * 获取手机验证码
      */
     getPhoneCode() {
       var rePhone = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
-      if (!this.inputUserPhone) {
+      if (!this.form.phone) {
         this.$api.msg("请先输入手机号");
         return;
       }
-      if (!rePhone.test(this.inputUserPhone)) {
+      if (!rePhone.test(this.form.phone)) {
         this.$api.msg("请输入正确的手机号");
         return;
       }
       this.codeTxt = "验证码发送中...";
-	  this.$api.msg("验证码发送成功");
-            let time = 60;
-            const set = setInterval(() => {
-              this.codeTxt = time-- + "s重新获取";
-              if (time < 0) {
-                clearInterval(set);
-                this.codeTxt = "获取验证码";
-              }
-            }, 1000);
-    //   http
-    //     .post(changePhone.sendPhone, {
-    //       userPhone: this.userPhone || this.inputUserPhone,
-    //       code: this.imgVerCode,
-    //     })
-    //     .then((res) => {
-    //       if (res && res.success) {
-    //         this.$api.msg("验证码发送成功");
-    //         let time = 60;
-    //         const set = setInterval(() => {
-    //           this.codeTxt = time-- + "s重新获取";
-    //           this.pass = false;
-    //           if (time < 0) {
-    //             clearInterval(set);
-    //             this.pass = true;
-    //             this.codeTxt = "获取验证码";
-    //           }
-    //         }, 1000);
-    //       } else {
-    //         this.$api.msg("验证码发送失败");
-    //         this.codeTxt = "获取验证码";
-    //       }
-    //     });
+       ApiClinet.get(ApiConfig.APP_BASE_API.code, {phone: this.form.phone}, {
+					loading: true
+				}).then((res) => {
+					if (res.data.code == '200') {
+					    this.$api.msg("验证码发送成功");
+              let time = 60;
+              const set = setInterval(() => {
+                this.codeTxt = time-- + "s重新获取";
+                this.pass = false;
+                if (time < 0) {
+                  clearInterval(set);
+                  this.pass = true;
+                  this.codeTxt = "获取验证码";
+                }
+              }, 1000);
+					}else{
+              this.$api.msg("验证码发送失败");
+              this.codeTxt = "获取验证码";
+          }
+				}).catch(()=>{
+            this.$api.msg("验证码发送失败");
+            this.codeTxt = "获取验证码";
+        })
     },
   },
 };

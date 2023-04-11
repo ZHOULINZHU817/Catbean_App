@@ -132,7 +132,7 @@ export default {
         this.$api.msg("请输入正确的手机号");
         return;
       }
-      this.codeTxt = "验证码发送中...";
+       this.codeTxt = "验证码发送中...";
        ApiClinet.get(ApiConfig.APP_BASE_API.code, {phone: this.form.phone}, {
 					loading: true
 				}).then((res) => {

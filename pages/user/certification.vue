@@ -5,10 +5,9 @@
         <view class="input-item">
           <text class="tit">姓名:</text>
           <input
-            :value="userName"
+            :value="form.name"
             placeholder="请输入姓名"
-            maxlength="11"
-            data-key="userName"
+            data-key="name"
             @input="inputChange"
           />
         </view>
@@ -22,10 +21,9 @@
         <view class="input-item">
           <text class="tit">身份证号:</text>
           <input
-            :value="userName"
+            :value="form.idNo"
             placeholder="请输入身份证号"
-            maxlength="11"
-            data-key="userName"
+            data-key="idNo"
             @input="inputChange"
           />
         </view>
@@ -38,12 +36,15 @@
 </template>
 
 <script>
-
+import ApiClinet from "@/services/api-clinet";
+import ApiConfig from "@/config/api.config";
 export default {
   data() {
     return {
-      userName:"",
-      inputUserPhone:"13789333333",
+      form: {
+        idNo:'',
+        name:''
+      },
       logining: false,
     //   array: ['--请选择--','身份证', '港澳台通行证'],
     //   index: 0
@@ -54,14 +55,25 @@ export default {
 
     inputChange(e) {
       const key = e.currentTarget.dataset.key;
-      this[key] = e.detail.value;
+      this.form[key] = e.detail.value;
     },
     navBack() {
       uni.navigateBack();
     },
     savePassword() {
       this.logining = true;
-      this.$api.msg("去注册");
+      ApiClinet.put(ApiConfig.APP_BASE_API.realAuth, this.form).then((res) => {
+					if (res.data.code == '200') {
+					   this.$api.msg('认证成功！')
+             this.logining = false;
+             this.navBack();
+					}else{
+             this.$api.msg(res.data.msg)
+             this.logining = false;
+          }
+				}).catch(err=>{
+          this.logining = false;
+        })
     },
     // bindPickerChange(e){
     //     this.index = e.target.value

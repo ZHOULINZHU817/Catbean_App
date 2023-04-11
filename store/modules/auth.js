@@ -139,10 +139,11 @@ const mutations = {
 		AuthService.set(state.user);
 	},
 	[TYPES.CLEAR_AUTH](state) {
-		state.indexMenus = [];
-		state.isAuthenticated = false;
-		state.user = {};
-		state.errors = {};
+		// state.indexMenus = [];
+		// state.isAuthenticated = false;
+		// state.user = {};
+		// state.errors = {};
+		state.userInfo = {};
 		AuthService.logout();
 	},
 	SET_ELEMENTS: (state, elements) => {
@@ -151,6 +152,11 @@ const mutations = {
 	[TYPES.UPDATE_INDEX_MENU](state,menus) {
 		state.indexMenus = menus;
 	},
+	USER_INFO: (state, userInfo) => {
+	    state.userInfo = userInfo
+		uni.setStorageSync('userInfo', JSON.stringify(userInfo));
+	},
+
 };
 
 export default {

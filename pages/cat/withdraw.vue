@@ -6,6 +6,29 @@
           <text class="tit">提现到</text>
           <list-cell class="withdraw-cell" :title="title" border="1" @eventClick="selectWithDraw"></list-cell>
         </view>
+        <!-- <view class="input-item phone-code">
+          <input
+            type="number"
+            :value="form.code"
+            placeholder="请输入验证码"
+            placeholder-class="input-empty"
+            maxlength="20"
+            data-key="code"
+            @input="inputChange"
+          />
+          <view
+            class="code"
+            v-if="codeTxt == '获取验证码'"
+            @click="getPhoneCode"
+            >{{ codeTxt }}</view
+          >
+          <view
+            class="code"
+            placeholder-style="-webkit-user-select:auto;font-size: 32rpx;font-weight: 400;color: #B3B5BA;line-height: 44rpx;"
+            v-else
+            >{{ codeTxt }}</view
+          >
+        </view> -->
         <view class="input-item">
           <text class="tit">提现金额</text>
           <input
@@ -65,6 +88,11 @@ export default {
         {name:'银行卡', value: '3', src:"../../static/user/bank.jpg"}
       ],
       activeIndex: 0,
+      iconSrc: "../../static/tab/close.png", //图标眼睛
+      codeTxt: "获取验证码",
+      form: {
+
+      }
     };
   },
   onLoad() {},
@@ -236,6 +264,33 @@ page {
             margin-left: 20upx;
         }
     }
+}
+
+/***新加样式** */
+.pass-position {
+  position: relative;
+}
+.pass-icon {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+.icon {
+  width: 32rpx;
+  height: 32rpx;
+}
+.phone-code {
+  position: relative;
+  .code {
+    position: absolute;
+    right: 20upx;
+    top: 30%;
+    color: #666666;
+  }
+}
+/deep/.uni-input-placeholder {
+  color: #b8b8b8;
 }
 
 </style>

@@ -602,33 +602,37 @@ class ApiClient {
 					name: 'file',
 					filePath: option.path,
 					header:{
-						"x-access-token": AuthService.getToken() ? AuthService.getToken() : ""
+						"token": AuthService.getToken() ? AuthService.getToken() : "",
+					},
+					formData:{
+                       type:'banner'
 					},
 					success: function(response) {
 						uni.hideLoading();
 						if (response.statusCode == 200) {
-							var options = {};
+							// var options = {};
 							var res = JSON.parse(response.data);
-							if(res.body){
-								options.data = res.body;
-							}else{
-								options.data = res;
-							}
+							resolve({path:res.data[0]})
+							// if(res.body){
+							// 	options.data = res.body;
+							// }else{
+							// 	options.data = res;
+							// }
 							// 开启内外网后需要对url进行处理
 							// let uploadHost = uni.getStorageSync('androidUrl')==1? AppConfig.FILE_UPLOAD_SAVE:AppConfig.FILE_UPLOAD_SAVE_INNER;
 							// options.url = uploadHost +'?url='+options.data.path+'&filename='+options.data.filename;
-							options.url = AppConfig.FILE_UPLOAD_SAVE+'?url='+options.data.path+'&filename='+options.data.filename;
-							options.method = "POST";
-							_this.request(options).then((res)=>{
-								if(res.data.code === '0'){
-									resolve({
-										path:res.data.data,
-										filename:options.data.filename
-									})
-								}else{
-									reject();
-								}
-							})
+							// options.url = AppConfig.FILE_UPLOAD_SAVE+'?url='+options.data.path+'&filename='+options.data.filename;
+							// options.method = "POST";
+							// _this.request(options).then((res)=>{
+							// 	if(res.data.code === '0'){
+							// 		resolve({
+							// 			path:res.data.data,
+							// 			filename:options.data.filename
+							// 		})
+							// 	}else{
+							// 		reject();
+							// 	}
+							// })
 						}else {
 							uni.showToast({
 								mask:true,

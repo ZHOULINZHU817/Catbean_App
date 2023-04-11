@@ -5,7 +5,7 @@
         <view class="cat-bean-top-bg">
           <view class="margin-b-20">猫豆数量</view>
           <view>
-            <text class="cat-bean-top-num">899000</text>
+            <text class="cat-bean-top-num">{{assetObj.catFood || 0}}</text>
             <text @click="navTo('/pages/cat/withdraw')" class="cat-bean-top-btn"
               >提现</text
             >
@@ -36,11 +36,15 @@
           <view class="record-price">{{ item.price }}</view>
         </view>
       </view>
+      <view v-if="showTotal" class="showTotal">没有更多数据了~</view>
     </view>
   </view>
 </template>
 
 <script>
+import ApiClinet from "@/services/api-clinet";
+import ApiConfig from "@/config/api.config";
+import { formatDate } from "@/utils/prototype/date"
 export default {
   data() {
     return {
@@ -71,16 +75,41 @@ export default {
           price: "-99",
         },
       ],
+      assetObj: uni.getStorageSync('assetObj'),
+      params:{
+        page: 0,
+        size: 10
+        },
+      showTotal: false,
     };
   },
+  onLoad(){
+    this.catFoodList();
+  },
   methods: {
-    //
+    formatDate,
+    catFoodList(){
+      ApiClinet.get(ApiConfig.APP_BASE_API.catFoodList, this.params).then((res) => {
+        if (res.data.code == '200') {
+            // this.recordList = res.data.data.records || [];
+            this.total = Math.ceil(res.data.total / this.params.size);
+        }
+      })
+    },
     navTo(url) {
       uni.navigateTo({
         url,
       });
     },
   },
+  onReachBottom() {
+      if (this.params.page >= this.total) {
+      this.showTotal=true//已经滑到底的提醒
+      return false;
+    }
+    this.params.page ++;
+    this.catFoodList()
+  }
 };
 </script>
 
@@ -104,8 +133,10 @@ page {
       font-size: 28upx;
       .cat-bean-top-num {
         font-size: 60upx;
-        margin-top: 30upx;
-        margin-right: 320upx;
+        // margin-top: 30upx;
+        width: 500upx;
+        display: inline-block;
+        // margin-right: 320upx;
       }
       .cat-bean-top-btn {
         padding: 10upx 20upx;
@@ -165,5 +196,10 @@ page {
       }
     }
   }
+}
+.showTotal{
+  text-align: center;
+  line-height: 60upx;
+  font-size:28upx;
 }
 </style>
