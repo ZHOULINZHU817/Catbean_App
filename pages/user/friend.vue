@@ -7,38 +7,44 @@
             <view class="friend-text-phone">手机号：{{item.phone}}</view>
         </view>
         <view class="friend-text-status">
-            <view class="tag1" v-if="item.status == '1'">有效会员</view>
+            <view class="tag1" v-if="item.isEffect">有效会员</view>
             <view class="tag2" v-else>无效会员</view>
         </view>
     </view>
+    <!-- 空白页 -->
+		<empty v-if="list.length === 0"></empty>
   </view>
 </template>
 
 <script>
 import ApiClinet from "@/services/api-clinet";
 import ApiConfig from "@/config/api.config";
+import empty from "@/components/empty";
 export default {
+  components: {
+    empty
+  },
   data() {
     return {
       list: [
-        {
-            name:'13424526272aj',
-            src:'',
-            phone:"13673548656",
-            status: 1,
-        },
-        {
-            name:'13424526272aj',
-            src:'',
-            phone:"13673548656",
-            status: 0,
-        },
-        {
-            name:'13424526272aj',
-            src:'',
-            phone:"13673548656",
-            status: 0,
-        }
+        // {
+        //     name:'13424526272aj',
+        //     src:'',
+        //     phone:"13673548656",
+        //     isEffect: 1,
+        // },
+        // {
+        //     name:'13424526272aj',
+        //     src:'',
+        //     phone:"13673548656",
+        //     isEffect: 0,
+        // },
+        // {
+        //     name:'13424526272aj',
+        //     src:'',
+        //     phone:"13673548656",
+        //     isEffect: 0,
+        // }
       ]
     };
   },
@@ -49,7 +55,7 @@ export default {
     memberChildList(){
       ApiClinet.get(ApiConfig.APP_BASE_API.memberChildList).then((res) => {
         if (res.data.code == '200') {
-            // this.list = res.data.data.childList || [];
+            this.list = res.data.data.childList || [];
         }
       })
     }

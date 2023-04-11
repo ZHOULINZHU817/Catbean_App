@@ -15,9 +15,8 @@
           <view @click="navTo('/pages/cat/beangiven')" class="cat-bean-w"
             ><img src="@/static/user/zhuanzeng.jpg" />猫豆转赠</view
           >
-          <view class="cat-bean-w"
-            ><img src="@/static/user/chongzhi.jpg" />购买猫豆</view
-          >
+          <!-- <view class="cat-bean-w"
+            ><img src="@/static/user/chongzhi.jpg" />购买猫豆</view> -->
         </view>
       </view>
     </view>
@@ -31,9 +30,9 @@
         >
           <view class="flex1">
             <view class="record-title">{{ item.title }}</view>
-            <view class="record-date">{{ item.date }}</view>
+            <view class="record-date">{{ formatDate(item.createTime*1) }}</view>
           </view>
-          <view class="record-price">{{ item.price }}</view>
+          <view class="record-price">{{ item.amount }}</view>
         </view>
       </view>
       <view v-if="showTotal" class="showTotal">没有更多数据了~</view>
@@ -51,31 +50,31 @@ export default {
       recordList: [
         {
           title: "平台购入",
-          date: "2023-03-21 16:35:26",
-          price: "+999",
+          createTime: "1681179629177",
+          amount: "+999",
         },
         {
           title: "预约消耗",
-          date: "2023-03-21 16:35:26",
-          price: "-100",
+          createTime: "1681179629177",
+          amount: "-100",
         },
         {
           title: "转赠给+19909876547",
-          date: "2023-03-21 16:35:26",
-          price: "-88",
+          createTime:  "1681179629177",
+          amount: "-88",
         },
         {
           title: "猫超订单",
-          date: "2023-03-21 16:35:26",
-          price: "-10",
+          createTime:  "1681179629177",
+          amount: "-10",
         },
         {
           title: "提现",
-          date: "2023-03-21 16:35:26",
-          price: "-99",
+          createTime:  "1681179629177",
+          amount: "-99",
         },
       ],
-      assetObj: uni.getStorageSync('assetObj'),
+      assetObj: {},
       params:{
         page: 0,
         size: 10
@@ -85,13 +84,22 @@ export default {
   },
   onLoad(){
     this.catFoodList();
+    this.getAsset();
   },
   methods: {
     formatDate,
+    /**获取资产* */
+    getAsset() {
+      ApiClinet.get(ApiConfig.APP_BASE_API.asset).then((res) => {
+        if (res.data.code == '200') {
+            this.assetObj = res.data.data;
+        }
+      })
+    },
     catFoodList(){
       ApiClinet.get(ApiConfig.APP_BASE_API.catFoodList, this.params).then((res) => {
         if (res.data.code == '200') {
-            // this.recordList = res.data.data.records || [];
+            // this.recordList = this.recordList.concat(res.data.data.records || []);
             this.total = Math.ceil(res.data.total / this.params.size);
         }
       })
@@ -201,5 +209,6 @@ page {
   text-align: center;
   line-height: 60upx;
   font-size:28upx;
+  color:#999999;
 }
 </style>

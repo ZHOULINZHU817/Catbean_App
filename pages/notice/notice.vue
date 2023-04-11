@@ -11,6 +11,8 @@
 			<view class="notice-content">{{item.content}}</view>
 		</view>
 		<view v-if="showTotal" class="showTotal">没有更多数据了~</view>
+		 <!-- 空白页 -->
+		<empty v-if="newsList.length === 0"></empty>
 	</view>
 </template>
 
@@ -18,7 +20,11 @@
 	import ApiClinet from "@/services/api-clinet";
 	import ApiConfig from "@/config/api.config";
 	import { formatDate } from "@/utils/prototype/date"
+	import empty from "@/components/empty";
 	export default {
+		components: {
+			empty
+		},
 		data() {
 			return {
 				newsList: [],
@@ -39,7 +45,7 @@
 			getNewsData(){
 				ApiClinet.get(ApiConfig.APP_BASE_API.noticeList, this.params).then((res) => {
 					if (res.data.code == '200') {
-					   this.newsList = res.data.data.records || [];
+					   this.newsList =  this.newsList.concat(res.data.data.records || []);
 					   this.total = Math.ceil(res.data.total / this.params.size);
 					}
 				})
@@ -105,5 +111,6 @@
 		text-align: center;
 		line-height: 60upx;
 		font-size:28upx;
+		color:#999999;
 	}
 </style>

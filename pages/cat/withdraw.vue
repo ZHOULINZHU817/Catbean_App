@@ -4,41 +4,23 @@
       <view class="input-content">
         <view class="input-item">
           <text class="tit">提现到</text>
-          <list-cell class="withdraw-cell" :title="title" border="1" @eventClick="selectWithDraw"></list-cell>
+          <list-cell
+            class="withdraw-cell"
+            :title="title"
+            border="1"
+            @eventClick="selectWithDraw"
+          ></list-cell>
         </view>
-        <!-- <view class="input-item phone-code">
-          <input
-            type="number"
-            :value="form.code"
-            placeholder="请输入验证码"
-            placeholder-class="input-empty"
-            maxlength="20"
-            data-key="code"
-            @input="inputChange"
-          />
-          <view
-            class="code"
-            v-if="codeTxt == '获取验证码'"
-            @click="getPhoneCode"
-            >{{ codeTxt }}</view
-          >
-          <view
-            class="code"
-            placeholder-style="-webkit-user-select:auto;font-size: 32rpx;font-weight: 400;color: #B3B5BA;line-height: 44rpx;"
-            v-else
-            >{{ codeTxt }}</view
-          >
-        </view> -->
         <view class="input-item">
           <text class="tit">提现金额</text>
           <input
-            :value="userName"
+            :value="form.amount"
             placeholder="可提现金额为999"
             maxlength="11"
-            data-key="userName"
+            data-key="amount"
             @input="inputChange"
           />
-          <view class="all">全部</view>
+          <view class="all" @click="allWithdraw">全部</view>
           <view class="tips">
             <view>1、每天最多提现1次；</view>
             <view>2、最低提现金额不能少于10；</view>
@@ -49,82 +31,140 @@
       </view>
     </view>
     <view class="password-fot">
-      <button class="confirm-btn" @click="savePassword" :disabled="logining">确认提现</button>
+      <button class="confirm-btn" @click="savePassword">
+        确认提现
+      </button>
     </view>
     <!---提现方式弹窗---->
     <uniModal ref="withdrawModal" :contentHeight="400" class="withdrawModal">
-        <view slot="modalInfo">
-            <view class="withdraw-content">
-                <view class="draw-m-title">选择提现方式<img @click="closeModal" src="@/static/user/close.png"/></view>
-                <view class="draw-m-item b-b" v-for="(item, index) in withdrawList" :key="index" @click="withDrawManner(item,index)">
-                    <img :src="item.src"/>
-                    <view class="draw-m-item-text flex1">{{item.name}}</view>
-                    <img v-if="activeIndex == index" src="@/static/user/duihao.jpg"/>
-                </view>
-            </view>
+      <view slot="modalInfo">
+        <view class="withdraw-content">
+          <view class="draw-m-title"
+            >选择提现方式<img @click="closeModal" src="@/static/user/close.png"
+          /></view>
+          <view
+            class="draw-m-item b-b"
+            v-for="(item, index) in withdrawList"
+            :key="index"
+            @click="withDrawManner(item, index)"
+          >
+            <img :src="item.src" />
+            <view class="draw-m-item-text flex1">{{ item.name }}</view>
+            <img v-if="activeIndex == index" src="@/static/user/duihao.jpg" />
+          </view>
         </view>
+      </view>
     </uniModal>
+    <!------密码弹窗------->
+    <jp-pwd ref="jpPwd" :contents="''" :msg="msg" @completed="completed" @forget="forget" ></jp-pwd>
   </view>
 </template>
 
 <script>
-import listCell from '@/components/mix-list-cell';
-import uniModal from '@/components/uni-modal/uni-modal';
+import listCell from "@/components/mix-list-cell";
+import uniModal from "@/components/uni-modal/uni-modal";
+import ApiClinet from "@/services/api-clinet";
+import ApiConfig from "@/config/api.config";
+
 export default {
-  components:{
+  components: {
     listCell,
-    uniModal
+    uniModal,
   },
   data() {
     return {
-      userName:"",
-      inputUserPhone:"13789333333",
-      logining: false,
-      uploadAttachment:[],
-      title:'请选择提现方式',
-      withdrawList:[
-        {name:'支付宝', value: '1', src:"../../static/user/zhifubao.jpg"},
-        {name:'微信', value: '2', src:"../../static/user/weixin.jpg"},
-        {name:'银行卡', value: '3', src:"../../static/user/bank.jpg"}
+      title: "请选择提现方式",
+      withdrawList: [
+        { name: "支付宝", value: "ali", src: "../../static/user/zhifubao.jpg" },
+        { name: "微信", value: "wx", src: "../../static/user/weixin.jpg" },
+        { name: "银行卡", value: "bank", src: "../../static/user/bank.jpg" },
       ],
       activeIndex: 0,
-      iconSrc: "../../static/tab/close.png", //图标眼睛
-      codeTxt: "获取验证码",
       form: {
-
-      }
+        amount:'',
+      },
+      assetObj: {},
+      msg:""
     };
   },
-  onLoad() {},
+  onLoad() {
+    this.getAsset();
+  },
   methods: {
     onNavigationBarButtonTap() {
-        this.$api.msg('点击')
-        uni.navigateTo({
-            url:'/pages/cat/withDrawManner?state=0'
-        })
+      this.$api.msg("点击");
+      uni.navigateTo({
+        url: "/pages/cat/withDrawManner?state=0",
+      });
+    },
+    /**获取资产* */
+    getAsset() {
+      ApiClinet.get(ApiConfig.APP_BASE_API.asset).then((res) => {
+        if (res.data.code == '200') {
+            this.assetObj = res.data.data;
+        }
+      })
+    },
+    //全部
+    allWithdraw(){
+      this.form.amount = this.assetObj.catFood;
     },
     inputChange(e) {
       const key = e.currentTarget.dataset.key;
-      this[key] = e.detail.value;
+      this.form[key] = e.detail.value;
     },
     navBack() {
       uni.navigateBack();
     },
     selectWithDraw() {
-        this.$refs.withdrawModal.toggleMask();
+      this.$refs.withdrawModal.toggleMask();
     },
-    closeModal(){
-        this.$refs.withdrawModal.toggleMask();
+    closeModal() {
+      this.$refs.withdrawModal.toggleMask();
     },
     withDrawManner(row, idx) {
-        this.activeIndex = idx;
-        this.closeModal();
-        this.title = row.name;
+      this.activeIndex = idx;
+      this.closeModal();
+      this.title = row.name;
+      this.form.payType = row.value;
     },
     savePassword() {
-      this.logining = true;
-      this.$api.msg("去注册");
+      if(!this.form.payType){
+        return this.$api.msg('请选择支付方式')
+      }
+      if(!this.form.amount){
+        return this.$api.msg('请输入提现金额')
+      }
+      this.$refs.jpPwd.toOpen()
     },
+    saveData(){
+      ApiClinet.post(ApiConfig.APP_BASE_API.asset, this.form).then((res) => {
+        if (res.data.code == '200') {
+            this.$refs.jpPwd.toCancel()
+            this.$api.msg('提现成功！')
+            this.navBack()
+        }else{
+          this.msg = res.data.msg;
+          this.$refs.jpPwd.backs()
+        }
+      })
+    },
+    /***支付弹窗** */
+    completed(e) {
+      this.form.payPwd = e;
+      this.saveData();
+      // if (e == '123456') {
+      //   this.$refs.jpPwd.toCancel()
+      // } else {
+      //   this.pwd.msg = '密码错误'
+      //   this.$refs.jpPwd.backs()
+      // }
+    },
+    forget() {
+      uni.navigateTo({
+        url: "/pages/payment/password",
+      });
+    }
   },
 };
 </script>
@@ -134,7 +174,7 @@ page {
   background-color: #f6f6f6;
 }
 .container {
-//   padding-top: 115px;
+  //   padding-top: 115px;
   position: relative;
   width: 100vw;
   height: 90vh;
@@ -155,7 +195,7 @@ page {
   justify-content: center;
   background-color: #fff;
   border-radius: 16upx;
-  padding:24upx;
+  padding: 24upx;
   position: relative;
   margin-bottom: 20upx;
   .tit {
@@ -164,49 +204,53 @@ page {
     font-weight: 900;
     margin-bottom: 34upx;
   }
-  .withdraw-cell{
-    width:100%;
-  } 
+  .withdraw-cell {
+    width: 100%;
+  }
   input {
     height: 60upx;
     font-size: 28upx;
     color: $font-color-dark;
     width: 100%;
   }
-  .searchBtn{
+  .searchBtn {
     position: absolute;
-    right:30upx;
+    right: 30upx;
     bottom: 30upx;
-    background-image: linear-gradient(90deg,rgba(255, 104, 166, 1) 0,rgba(255, 71, 140, 1) 100%);
+    background-image: linear-gradient(
+      90deg,
+      rgba(255, 104, 166, 1) 0,
+      rgba(255, 71, 140, 1) 100%
+    );
     border-radius: 14px;
     padding: 8upx 42upx 8upx 42upx;
     color: #fff;
-    font-size:24upx;
+    font-size: 24upx;
     font-weight: 700;
   }
-  .all{
+  .all {
     position: absolute;
-    right:30upx;
+    right: 30upx;
     top: 112upx;
-    color: #FF478C;
-    font-size:28upx;
+    color: #ff478c;
+    font-size: 28upx;
     font-weight: 700;
   }
-  .tips{
-    margin-top:20upx;
-    border-top:1upx solid #F6F6F6;
-    width:100%;
-    padding-top:20upx;
-    font-size:24upx;
-    color:#666666;
+  .tips {
+    margin-top: 20upx;
+    border-top: 1upx solid #f6f6f6;
+    width: 100%;
+    padding-top: 20upx;
+    font-size: 24upx;
+    color: #666666;
   }
 }
-.password-fot{
+.password-fot {
   position: fixed;
   bottom: 50upx;
-  width:100%;
+  width: 100%;
   text-align: center;
-  z-index:100;
+  z-index: 100;
 }
 .confirm-btn {
   width: 630upx;
@@ -214,7 +258,11 @@ page {
   line-height: 92upx;
   border-radius: 50px;
   margin-top: 70upx;
-  background-image: linear-gradient(90deg,rgba(255, 104, 166, 1) 0,rgba(255, 71, 140, 1) 100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 104, 166, 1) 0,
+    rgba(255, 71, 140, 1) 100%
+  );
   border-radius: 23px;
   color: #fff;
   font-size: $font-lg;
@@ -223,47 +271,47 @@ page {
     border-radius: 100px;
   }
 }
-/deep/.withdraw-cell .mix-list-cell{
-    padding: 20upx 0!important;
+/deep/.withdraw-cell .mix-list-cell {
+  padding: 20upx 0 !important;
 }
-/deep/.withdrawModal .mask-content{
-    border-top-left-radius: 16upx;
-    border-top-right-radius: 16upx;
+/deep/.withdrawModal .mask-content {
+  border-top-left-radius: 16upx;
+  border-top-right-radius: 16upx;
 }
-.withdraw-content{
-    .draw-m-title{
-        height:100upx;
-        text-align: center;
-        line-height:100upx;
-        font-size:32upx;
-        color:#000000;
-        font-weight: 700;
-        border-bottom: 1upx solid #F6F6F6;
-        position: relative;
-        img{
-            width:24upx;
-            height:24upx;
-            position: absolute;
-            right:30upx;
-            top:40upx;
-        }
+.withdraw-content {
+  .draw-m-title {
+    height: 100upx;
+    text-align: center;
+    line-height: 100upx;
+    font-size: 32upx;
+    color: #000000;
+    font-weight: 700;
+    border-bottom: 1upx solid #f6f6f6;
+    position: relative;
+    img {
+      width: 24upx;
+      height: 24upx;
+      position: absolute;
+      right: 30upx;
+      top: 40upx;
     }
-    .draw-m-item{
-        display: flex;
-        height:100upx;
-        align-items: center;
-        padding: 0 24upx;
-        border-bottom: 1upx solid #F6F6F6;
-        img {
-            width:40upx;
-            height:40upx;
-        }
-        .draw-m-item-text{
-            font-size: 30upx;
-            color:#000000;
-            margin-left: 20upx;
-        }
+  }
+  .draw-m-item {
+    display: flex;
+    height: 100upx;
+    align-items: center;
+    padding: 0 24upx;
+    border-bottom: 1upx solid #f6f6f6;
+    img {
+      width: 40upx;
+      height: 40upx;
     }
+    .draw-m-item-text {
+      font-size: 30upx;
+      color: #000000;
+      margin-left: 20upx;
+    }
+  }
 }
 
 /***新加样式** */
@@ -292,5 +340,4 @@ page {
 /deep/.uni-input-placeholder {
   color: #b8b8b8;
 }
-
 </style>

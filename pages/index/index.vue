@@ -230,13 +230,13 @@
 				@click="navToDetailPage(item)"
 			>
 				<view class="image-wrapper">
-					<image :src="item.image" mode="aspectFill"></image>
+					<image :src="item.images[0]" mode="aspectFill"></image>
 				</view>
-				<text class="title clamp">{{item.title}}</text>
+				<text class="title clamp">{{item.name}}-{{item.detail}}</text>
 				<text class="price">￥{{item.price}}</text>
 			</view>
-			<view v-if="showTotal" class="showTotal">没有更多数据了~</view>
 		</view>
+		<view v-if="showTotal" class="showTotal">没有更多数据了~</view>
 		
 
 	</view>
@@ -287,12 +287,15 @@
 				
 			},
 			async productList(){
-				let goodsList = await this.$api.json('goodsList');
-				this.goodsList = goodsList || [];
+				// let goodsList = await this.$api.json('goodsList');
+				// this.goodsList = goodsList || [];
 				ApiClinet.get(ApiConfig.APP_BASE_API.productList, this.params).then((res) => {
 					if (res.data.code == '200') {
-						this.goodsList = res.data.data.records || [];
-					    this.total = Math.ceil(res.data.total / this.params.size);
+						this.goodsList = this.goodsList.concat(res.data.data.records || []);
+						this.goodsList.map(item=>{
+							item.images = typeof(item.images)=='string'?item.images.split(','):item.images;
+						})
+					    this.total = Math.ceil(res.data.data.total / this.params.size);
 					}
 				})
 			},
@@ -318,6 +321,7 @@
 			this.productList();
 		},
 		onReachBottom() {
+			console.log(' this.total',  this.total, this.params.page)
 		    if (this.params.page >= this.total) {
 				this.showTotal=true//已经滑到底的提醒
 				return false;
@@ -765,6 +769,7 @@
 		text-align: center;
 		line-height: 60upx;
 		font-size:28upx;
+		color:#999999;
 	}
 	
 

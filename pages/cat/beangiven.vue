@@ -5,24 +5,22 @@
         <view class="input-item">
           <text class="tit">转赠给</text>
           <input
-            :value="userName"
-            placeholder="输入手机号/邀请码查询"
-            maxlength="11"
-            data-key="userName"
+            :value="form.phone"
+            placeholder="输入手机号"
+            data-key="phone"
             @input="inputChange"
           />
-          <view class="searchBtn">查询</view>
+          <!-- <view class="searchBtn">查询</view> -->
         </view>
         <view class="input-item">
           <text class="tit">转赠金额</text>
           <input
-            :value="userName"
+            :value="form.amount"
             placeholder="可转赠金额为999"
-            maxlength="11"
-            data-key="userName"
+            data-key="amount"
             @input="inputChange"
           />
-          <view class="all">全部</view>
+          <view class="all" @click="allGiven">全部</view>
           <view class="tips">
             <view>1、只允许上下级转赠； </view>
             <view>2、转赠的金额最低为1；</view>
@@ -32,36 +30,80 @@
       </view>
     </view>
     <view class="password-fot">
-      <button class="confirm-btn" @click="savePassword" :disabled="logining">确认转赠</button>
+      <button class="confirm-btn" @click="savePassword">确认转赠</button>
     </view>
+    <!------密码弹窗------->
+    <jp-pwd ref="jpPwd" :contents="''" :msg="msg" @completed="completed" @forget="forget" ></jp-pwd>
   </view>
 </template>
 
 <script>
-
+import ApiClinet from "@/services/api-clinet";
+import ApiConfig from "@/config/api.config";
 export default {
   data() {
     return {
-      userName:"",
-      inputUserPhone:"13789333333",
-      logining: false,
-      uploadAttachment:[]
+      form: {
+        amount:'',
+      },
+      assetObj: {},
+      msg:""
     };
   },
-  onLoad() {},
+  onLoad() {
+    this.getAsset();
+  },
   methods: {
 
     inputChange(e) {
       const key = e.currentTarget.dataset.key;
-      this[key] = e.detail.value;
+      this.form[key] = e.detail.value;
     },
     navBack() {
       uni.navigateBack();
     },
-    savePassword() {
-      this.logining = true;
-      this.$api.msg("去注册");
+    /**获取资产* */
+    getAsset() {
+      ApiClinet.get(ApiConfig.APP_BASE_API.asset).then((res) => {
+        if (res.data.code == '200') {
+            this.assetObj = res.data.data;
+        }
+      })
     },
+    allGiven(){
+      this.form.amount = this.assetObj.catFood;
+    },
+    savePassword() {
+      if(!this.form.phone){
+        return this.$api.msg('请输入手机号')
+      }
+      if(!this.form.amount){
+        return this.$api.msg('请输入提现金额')
+      }
+      this.$refs.jpPwd.toOpen()
+    },
+    saveData(){
+      ApiClinet.put(ApiConfig.APP_BASE_API.assetTransfer, this.form).then((res) => {
+        if (res.data.code == '200') {
+            this.$refs.jpPwd.toCancel()
+            this.$api.msg('转赠成功！')
+            this.navBack()
+        }else{
+          this.msg = res.data.msg;
+          this.$refs.jpPwd.backs()
+        }
+      })
+    },
+    /***支付弹窗** */
+    completed(e) {
+      this.form.payPwd = e;
+      this.saveData();
+    },
+    forget() {
+      uni.navigateTo({
+        url: "/pages/payment/password",
+      });
+    }
   },
 };
 </script>

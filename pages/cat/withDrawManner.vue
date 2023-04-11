@@ -29,15 +29,15 @@
           @scrolltolower="loadData"
         >
           <view class="list-item-content">
-                <view class="list-item" v-for="(item, index) in tabItem.orderList" :key="index">
+                <view class="list-item" v-for="(item, index) in orderList" :key="index">
                 <view class="list-left">
                     <view class="list-item-title">{{item.title}}</view>
-                    <view class="list-item-date">{{item.date}}</view>
+                    <view class="list-item-date">{{formatDate(item.createTime*1)}}</view>
                 </view>
                 <view class="list-right">
-                    <view class="list-item-price">{{item.price}}</view>
-                    <view :style="{color: statusDiv(item.status).stateTipColor}" class="list-item-status">{{statusDiv(item.status).statusName}}</view>
-                    <view class="list-item-tips">{{item.content}}</view>
+                    <view class="list-item-price">{{item.amount}}</view>
+                    <view :style="{color: statusDiv(item.state).stateTipColor}" class="list-item-status">{{statusDiv(item.state).statusName}}</view>
+                    <view class="list-item-tips">{{item.reason}}</view>
                 </view>
             </view>
           </view>
@@ -46,10 +46,10 @@
             v-if="tabItem.loaded === true && tabItem.orderList.length === 0"
           ></empty> -->
           <empty
-            v-if="tabItem.orderList.length === 0"
+            v-if="orderList.length === 0"
           ></empty>
-
-          <uni-load-more :status="tabItem.loadingType"></uni-load-more>
+          <view v-if="showTotal" class="showTotal">没有更多数据了~</view>
+          <!-- <uni-load-more :status="tabItem.loadingType"></uni-load-more> -->
         </scroll-view>
       </swiper-item>
     </swiper>
@@ -59,6 +59,10 @@
 <script>
 import uniLoadMore from "@/components/uni-load-more/uni-load-more.vue";
 import empty from "@/components/empty";
+import { formatDate } from "@/utils/prototype/date"
+let statusList = ['audit', 'finish', 'reject']
+import ApiClinet from "@/services/api-clinet";
+import ApiConfig from "@/config/api.config";
 export default {
   components: {
     uniLoadMore,
@@ -70,62 +74,73 @@ export default {
       orderList:[
            {
               title: "平台购入",
-              date: "2023-03-21 16:35:26",
-              price: "+999",
-              status: '1',
+              createTime: "1681179629177",
+              amount: "+999",
+              state: 'audit',
             },
             {
               title: "预约消耗",
-              date: "2023-03-21 16:35:26",
-              price: "-100",
-              status: '2',
-              content:"失败原因"
+             createTime: "1681179629177",
+              amount: "-100",
+              state: 'finish',
             },
             {
               title: "转赠给+19909876547",
-              date: "2023-03-21 16:35:26",
-              price: "-88",
-              status: '3',
-            },
-            {
-              title: "猫超订单",
-              date: "2023-03-21 16:35:26",
-              price: "-10",
-              status: '1',
-            },
-            {
-              title: "提现",
-              date: "2023-03-21 16:35:26",
-              price: "-99",
-              status: '1',
+              createTime: "1681179629177",
+              amount: "-88",
+              state: 'reject',
+              reason:"失败原因"
             },
       ],
       navList: [
+        // {
+        //   state: 0,
+        //   text: "全部",
+        //   loadingType: "more",
+        //   orderList: [],
+        // },
+        // {
+        //   state: 1,
+        //   text: "审核中",
+        //   loadingType: "more",
+        //   orderList: [],
+        // },
+        // {
+        //   state: 2,
+        //   text: "已到账",
+        //   loadingType: "more",
+        //   orderList: [],
+        // },
+        // {
+        //   state: 3,
+        //   text: "审核失败",
+        //   loadingType: "more",
+        //   orderList: [],
+        // },
         {
           state: 0,
-          text: "全部",
+          text: "待审核",
           loadingType: "more",
-          orderList: [],
         },
         {
           state: 1,
-          text: "审核中",
+          text: "已审核",
           loadingType: "more",
           orderList: [],
         },
         {
           state: 2,
-          text: "已到账",
-          loadingType: "more",
-          orderList: [],
-        },
-        {
-          state: 3,
-          text: "审核失败",
+          text: "已拒绝",
           loadingType: "more",
           orderList: [],
         },
       ],
+      form: {
+        status:"", //audit, finish, reject
+        page: 0,
+        size: 10
+      },
+      showTotal: false,
     };
   },
 
@@ -135,84 +150,65 @@ export default {
      * 替换onLoad下代码即可
      */
     this.tabCurrentIndex = +options.state;
-    // #ifndef MP
-    this.loadData()
-    // // #endif
-    // // #ifdef MP
     if(options.state == 0){
+      this.form.status = statusList[options.state];
     	this.loadData()
     }
     // #endif
   },
 
   methods: {
+    formatDate,
     //获取提现列表
-    loadData(source) {
-      //这里是将订单挂载到tab列表下
-      let index = this.tabCurrentIndex;
-      let navItem = this.navList[index];
-      let state = navItem.state;
+    loadData() {
+      ApiClinet.get(ApiConfig.APP_BASE_API.withdrawList, this.form).then((res) => {
+        if (res.data.code == '200') {
+            this.orderList = this.orderList.concat(res.data.data.records || []);
+            this.total = Math.ceil(res.data.data.total / this.form.size);
+        }
+      })
 
-      if (source === "tabChange" && navItem.loaded === true) {
-        //tab切换只有第一次需要加载数据
-        return;
-      }
-      if (navItem.loadingType === "loading") {
-        //防止重复加载
-        return;
-      }
-
-      navItem.loadingType = "loading";
-
-      setTimeout(() => {
-        	let orderList = this.orderList.filter(item=>{
-        		//演示数据所以自己进行状态筛选
-        		if(state === 0){
-        			//0为全部订单
-        			return item;
-        		}
-        		return item.status == state
-        	});
-            
-        	orderList.forEach(item=>{
-        		navItem.orderList.push(item);
-        	})
-        	//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
-        	this.$set(navItem, 'loaded', true);
-
-        // 	//判断是否还有数据， 有改为 more， 没有改为noMore
-        navItem.loadingType = "more";
-      }, 600);
     },
 
     //swiper 切换
     changeTab(e) {
       this.tabCurrentIndex = e.target.current;
-      this.loadData("tabChange");
+      this.orderList = [];
+      this.form.page = 0;
+      this.form.status = statusList[this.tabCurrentIndex];
+      this.loadData();
     },
     //顶部tab点击
     tabClick(index) {
       this.tabCurrentIndex = index;
     },
-    statusDiv(status){
+    statusDiv(state){
         let statusName = '',
 			stateTipColor = '';
-        switch(status){
-            case "1":
-                statusName = "审核中";
+        switch(state){
+            case "audit":
+                statusName = "待审核";
                 stateTipColor = '#FF8417';
                 break;
-            case "2":
-                statusName = "已到账";
+            case "finish":
+                statusName = "已审核";
                 break;
-            case "3":
-                statusName = "审核失败";
+            case "reject":
+                statusName = "已拒绝";
                 stateTipColor = '#F71616';
                 break;
         }
         return {statusName, stateTipColor}
     }
   },
+  onReachBottom() {
+      if (this.form.page >= this.total) {
+      this.showTotal=true//已经滑到底的提醒
+      return false;
+    }
+    this.form.page ++;
+    this.catFoodList()
+  }
 };
 </script>
 
@@ -435,5 +431,11 @@ page,
   100% {
     opacity: 0.2;
   }
+}
+.showTotal{
+  text-align: center;
+  line-height: 60upx;
+  font-size:28upx;
+  color:#999999;
 }
 </style>

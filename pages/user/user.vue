@@ -6,14 +6,14 @@
 				<view class="user-set-view"></view>
 				<view class="user-set-icon"><text class="yticon icon-xiaoxi font-icon" @click="goNews"><text v-if="isDot" class="xiaoxi-dian"></text></text> <text class="yticon icon-shezhi font-icon" @click="goSet"></text></view>
 			</view>
-			<image class="bg" src="/static/user-bg.jpg"></image>
+			<image class="bg" :src="userInfo.avatar || '/static/user-bg.jpg'"></image>
 			<view class="user-info-box">
 				<view class="portrait-box">
 					<image class="portrait" :src="userInfo.portrait || '/static/missing-face.png'"></image>
 				</view>
 				<view class="info-box">
 					<view class="username">{{userInfo.nickname || '游客'}}</view>
-					<text class="user_id">ID:{{'99878665666'}}</text>
+					<text class="user_id">ID:{{userInfo.idNo}}</text>
 				</view>
 			</view>
 		</view>
@@ -153,11 +153,20 @@
 			this.getCardExist();
 			/**资产** */
 			this.getAsset();
+			/**获取个人信息* */
+			this.memberInfo();
 		},
         // computed: {
 		// 	// ...mapState(['hasLogin','userInfo'])
 		// },
         methods: {
+			memberInfo() {
+				ApiClinet.get(ApiConfig.APP_BASE_API.memberDetail).then((res) => {
+					if (res.data.code == '200') {
+					   this.userInfo = res.data.data;
+					}
+				})
+			},
 			/**获取消息红点* */
 			getNoticeMsg() {
 				ApiClinet.get(ApiConfig.APP_BASE_API.noticeMsg, {}).then((res) => {
@@ -177,7 +186,6 @@
 				ApiClinet.get(ApiConfig.APP_BASE_API.asset).then((res) => {
 					if (res.data.code == '200') {
 					   this.assetObj = res.data.data;
-					   uni.setStorageSync('assetObj', this.assetObj);
 					}
 				})
 			},

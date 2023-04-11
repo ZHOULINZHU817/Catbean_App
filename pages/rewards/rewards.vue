@@ -3,7 +3,7 @@
     <view class="reward-bg">
       <view class="reward-bg2">
         <view class="reward-bg-title">当前奖金(元)</view>
-        <view class="reward-bg-price">689.00</view>
+        <view class="reward-bg-price">{{assetObj.buyReword || 0}}</view>
         <view class="reward-bg-total">总奖励金(元)：9657.00</view>
         <view class="reward-bg-btn" @click="exchange">兑换</view>
       </view>
@@ -18,19 +18,20 @@
         >
           <view class="flex1">
             <view class="record-title">ID：{{ item.title }}</view>
-            <view class="record-date">{{ item.date }}</view>
+            <view class="record-date">{{ item.createTime }}</view>
           </view>
-          <view class="record-price">{{ item.price }}</view>
+          <view class="record-price">{{ item.amount }}</view>
         </view>
       </view>
     </view>
+    <view v-if="showTotal" class="showTotal">没有更多数据了~</view>
     <!-----兑换弹窗----->
     <uni-popup :mask-click="false" ref="rankModal" type="center">
 		<view class="model-wraper">
             <view class="model-wraper-bg">
                 <view class="modal-title">奖励金兑换</view>
                 <view class="modal-content">
-                    <view class="modal-content-title">您当前共有<text>10.00</text>奖励金可兑换</view>
+                    <view class="modal-content-title">您当前共有<text>{{assetObj.buyReword || 0}}</text>奖励金可兑换</view>
                     <view class="modal-content-text">奖励金兑换到余额需扣除5%</view>
                     <view class="modal-content-text">兑换金额10起兑，且为10的整数倍</view>
                     <view class="modal-content-text">一天可以兑换一次，每日0点刷新次数</view>
@@ -44,10 +45,15 @@
             </view>
 		</view>
 	</uni-popup>
+  <!------密码弹窗------->
+  <jp-pwd ref="jpPwd" :contents="''" :msg="msg" @completed="completed" @forget="forget" ></jp-pwd>
   </view>
 </template>  
 <script>
 import uniPopup from '@/components/uni-popup/uni-popup.vue'
+import ApiClinet from "@/services/api-clinet";
+import ApiConfig from "@/config/api.config";
+import { formatDate } from "@/utils/prototype/date";
 export default {
   components: {
     uniPopup
@@ -57,30 +63,38 @@ export default {
         recordList: [
         {
           title: "12348329729717",
-          date: "2023-03-21 16:35:26",
-          price: "+999",
+          createTime: "2023-03-21 16:35:26",
+          amount: "+999",
         },
         {
           title: "12348329729717",
-          date: "2023-03-21 16:35:26",
-          price: "-100",
+          createTime: "2023-03-21 16:35:26",
+          amount: "-100",
         },
         {
           title: "12348329729717",
-          date: "2023-03-21 16:35:26",
-          price: "-88",
+          createTime: "2023-03-21 16:35:26",
+          amount: "-88",
         },
         {
           title: "12348329729717",
-          date: "2023-03-21 16:35:26",
-          price: "-10",
+          createTime: "2023-03-21 16:35:26",
+          amount: "-10",
         },
         {
           title: "12348329729717",
-          date: "2023-03-21 16:35:26",
-          price: "-99",
+          createTime: "2023-03-21 16:35:26",
+          amount: "-99",
         }
       ],
+      form:{
+        page: 0,
+        size: 10,
+        type: 'buy'
+      },
+      assetObj: {},
+      msg:"",
+      showTotal: false,
     };
   },
   onLoad() {
@@ -88,8 +102,30 @@ export default {
       frontColor: "#000000",
       backgroundColor: "#fae2e9",
     });
+    this.getAsset();
+    /**分润列表* */
+    this.getRewardList();
   },
   methods: {
+     /**获取资产* */
+    getAsset() {
+      ApiClinet.get(ApiConfig.APP_BASE_API.asset).then((res) => {
+        if (res.data.code == '200') {
+            this.assetObj = res.data.data;
+        }
+      })
+    },
+    getRewardList(){
+      ApiClinet.get(ApiConfig.APP_BASE_API.rewardList, this.form).then((res) => {
+        if (res.data.code == '200') {
+            // this.recordList = this.recordList.concat(res.data.data.records || []);
+            // this.total = Math.ceil(res.data.data.total / this.form.size);
+            // this.recordList.map(item=>{
+            //   item.createTime = formatDate(item.createTime*1);
+            // })
+        }
+      })
+    },
     exchange(){
         this.$refs['rankModal'].open();
     },
@@ -98,9 +134,48 @@ export default {
         this.$refs['rankModal'].close();
     },
     allExchange() {
-      this.$api.msg('全部兑换')
+      if(!this.assetObj.buyReword){
+        return this.$api.msg('兑换金额错误')
+      }
+      this.$refs.jpPwd.toOpen();
+    },
+    saveData(){
+      let params = {
+        amount: this.assetObj.buyReword,
+        type: 'buy',
+        payPwd: this.payPwd
+      }
+      ApiClinet.put(ApiConfig.APP_BASE_API.assetExchange, params).then((res) => {
+        if (res.data.code == '200') {
+            this.$refs.jpPwd.toCancel()
+            this.cancelRank();
+            this.$api.msg('兑换成功！')
+            this.getAsset()
+        }else{
+          this.msg = res.data.msg;
+          this.$refs.jpPwd.backs()
+        }
+      })
+    },
+    /***支付弹窗** */
+    completed(e) {
+      this.payPwd = e;
+      this.saveData();
+    },
+    forget() {
+      uni.navigateTo({
+        url: "/pages/payment/password",
+      });
     }
   },
+  onReachBottom() {
+      if (this.form.page >= this.total) {
+      this.showTotal=true//已经滑到底的提醒
+      return false;
+    }
+    this.form.page ++;
+    this.getRewardList()
+  }
 };
 </script>  
 <style lang='scss'>
@@ -269,5 +344,11 @@ page {
             height: 56upx;
         }
     }
+}
+.showTotal{
+  text-align: center;
+  line-height: 60upx;
+  font-size:28upx;
+  color:#999999;
 }
 </style>

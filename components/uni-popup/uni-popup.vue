@@ -167,7 +167,7 @@
 		left: 0;
 		right: 0;
 		/* #ifndef APP-NVUE */
-		z-index: 1008;
+		z-index: 998;
 		/* #endif */
 	}
 
