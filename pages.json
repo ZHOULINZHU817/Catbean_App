@@ -91,19 +91,7 @@
 		{
 			"path": "pages/strokeCat/strokeCat",
 			"style": {
-				"navigationBarTitleText": "撸猫",
-				"app-plus": {
-					"titleNView": {
-						"buttons": [
-							{
-								"text":"抢购订单",
-                                "type":"none",
-                                "color":"#000",
-                                "fontSize":"14px"
-							}
-						]
-					}
-				}
+				"navigationBarTitleText": "撸猫"
 			}
 		},
 		{

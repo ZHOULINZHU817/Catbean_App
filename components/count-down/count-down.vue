@@ -43,13 +43,13 @@
 						sec = sec < 10 ? "0" + sec : sec;
 						let format = '';
 						if(day > 0){
-							format = `${day}天${hour}小时${min}分${sec}秒`;
+							format = `${day}:${hour}:${min}:${sec}`;
 						}
 						if(day <= 0 && hour > 0 ){
-							format = `${hour}小时${min}分${sec}秒`;
+							format = `${hour}:${min}:${sec}`;
 						}
 						if(day <= 0 && hour <= 0){
-							format =`${min}分${sec}秒`;
+							format =`${min}:${sec}`;
 						}
 						self.content = format;
 					}else{

@@ -6,13 +6,13 @@
 				<view class="user-set-view"></view>
 				<view class="user-set-icon"><text class="yticon icon-xiaoxi font-icon" @click="goNews"><text v-if="isDot" class="xiaoxi-dian"></text></text> <text class="yticon icon-shezhi font-icon" @click="goSet"></text></view>
 			</view>
-			<image class="bg" :src="userInfo.avatar || '/static/user-bg.jpg'"></image>
+			<image class="bg" src="/static/user-bg.jpg"></image>
 			<view class="user-info-box">
 				<view class="portrait-box">
-					<image class="portrait" :src="userInfo.portrait || '/static/missing-face.png'"></image>
+					<image class="portrait" :src="userInfo.avatar || '/static/missing-face.png'"></image>
 				</view>
 				<view class="info-box">
-					<view class="username">{{userInfo.nickname || '游客'}}</view>
+					<view class="username">{{userInfo.nickName || '游客'}}</view>
 					<text class="user_id">ID:{{userInfo.idNo}}</text>
 				</view>
 			</view>
@@ -43,23 +43,23 @@
 			<view class="order-section-content">
 				<list-cell iconColor="#5fcda2" title="抢购订单" tips="查看全部" border="1" @eventClick="navTo('/pages/panicBuy/panicBuyOrder?state=0')"></list-cell>
 				<view class="order-section">
-					<view class="order-item" @click="navTo('/pages/panicBuy/panicBuyOrder?state=0')" hover-class="common-hover"  :hover-stay-time="50">
+					<view class="order-item" @click="navTo('/pages/panicBuy/panicBuyOrder?state=1')" hover-class="common-hover"  :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/user_order1_1.jpg"></image>
 						<text>已抢中</text>
 					</view>
-					<view class="order-item" @click="navTo('/pages/panicBuy/panicBuyOrder?state=1')"  hover-class="common-hover" :hover-stay-time="50">
+					<view class="order-item" @click="navTo('/pages/panicBuy/panicBuyOrder?state=2')"  hover-class="common-hover" :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/user_order1_2.jpg"></image>
 						<text>已支付</text>
 					</view>
-					<view class="order-item" @click="navTo('/pages/panicBuy/panicBuyOrder?state=2')" hover-class="common-hover"  :hover-stay-time="50">
+					<view class="order-item" @click="navTo('/pages/panicBuy/panicBuyOrder?state=3')" hover-class="common-hover"  :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/user_order1_3.jpg"></image>
 						<text>转卖中</text>
 					</view>
-					<view class="order-item" @click="navTo('/pages/panicBuy/panicBuyOrder?state=3')" hover-class="common-hover"  :hover-stay-time="50">
+					<view class="order-item" @click="navTo('/pages/panicBuy/panicBuyOrder?state=4')" hover-class="common-hover"  :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/user_order1_4.jpg"></image>
 						<text>已违约</text>
 					</view>
-					<view class="order-item" @click="navTo('/pages/panicBuy/panicBuyOrder?state=4')" hover-class="common-hover"  :hover-stay-time="50">
+					<view class="order-item" @click="navTo('/pages/panicBuy/panicBuyOrder?state=5')" hover-class="common-hover"  :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/user_order1_5.jpg"></image>
 						<text>已完成</text>
 					</view>

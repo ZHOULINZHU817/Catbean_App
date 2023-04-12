@@ -22,11 +22,11 @@
 					<empty v-if="panicBuyList.length === 0"></empty>
 					
 					<!-- 订单列表 -->
-					<view class="order-content">
+					<view class="order-content" v-if="form.status">
 						<view 
 							v-for="(item,index) in panicBuyList" :key="index"
 							class="order-item"
-						>
+						> 
 							<view class="order-item-f">
 								<view class="order-item-fl"><text>订单编号：</text>{{item.id}}</view>
 								<view class="order-item-fr" :style="{color:orderStatusNameExp(item.status).stateTipColor}">{{orderStatusNameExp(item.status).stateTip}}</view>
@@ -53,11 +53,27 @@
 							</view>
 						</view>
 					</view>
+					<view class="order-content" v-else>
+						<view 
+							v-for="(item,index) in panicBuyList" :key="index"
+							class="order-item"
+						> 
+							<view class="order-item-f">
+								<view class="order-item-fl"><text>订单编号：</text>{{item.id}}</view>
+								<view class="order-item-fr" :style="{color:orderStatus(item.status).stateTipColor}">{{orderStatus(item.status).stateTip}}</view>
+							</view>
+							<view class="order-item-text"><text>预约时间：</text>{{item.handlerDate}}</view>
+							<view class="order-item-text"><text>场次：</text>{{item.session}}</view>
+							<view class="order-item-text"><text>价格：</text>{{item.price}}</view>
+						</view>
+					</view>
 					<!-- <uni-load-more :status="tabItem.loadingType"></uni-load-more> -->
 					<view v-if="showTotal" class="showTotal">没有更多数据了~</view>
 				</scroll-view>
 			</swiper-item>
 		</swiper>
+		<!------密码弹窗------->
+        <jp-pwd ref="jpPwd" :contents="''" :msg="msg" @completed="completed" @forget="forget" ></jp-pwd>
 	</view>
 </template> 
 
@@ -66,7 +82,7 @@
 	import empty from "@/components/empty";
 	// import Json from '@/Json';
 	import { formatDate } from "@/utils/prototype/date";
-	let statusList = ["buying", "paid", "resell", "breach", "finish"];
+	let statusList = ["","buying", "paid", "resell", "breach", "finish"];
 	import ApiClinet from "@/services/api-clinet";
 	import ApiConfig from "@/config/api.config";
 	import AppConfig from "@/config/app.config";
@@ -139,30 +155,36 @@
 				navList: [
 					{
 						state: 0,
-						text: '已抢中',
+						text: '已预约',
 						loadingType: 'more',
 						orderList: []
 					},
 					{
 						state: 1,
-						text: '已支付',
+						text: '已抢中',
 						loadingType: 'more',
 						orderList: []
 					},
 					{
 						state: 2,
-						text: '转卖中',
+						text: '已支付',
 						loadingType: 'more',
 						orderList: []
 					},
 					{
 						state: 3,
-						text: '已违约',
+						text: '转卖中',
 						loadingType: 'more',
 						orderList: []
 					},
 					{
 						state: 4,
+						text: '已违约',
+						loadingType: 'more',
+						orderList: []
+					},
+					{
+						state: 5,
 						text: '已完成',
 						loadingType: 'more',
 						orderList: []
@@ -174,6 +196,7 @@
 					size: 10,
 				},
 				showTotal: false,
+				msg:""
 			};
 		},
 		
@@ -184,7 +207,11 @@
 			 */
 			this.tabCurrentIndex = +options.state;
 			this.form.status = statusList[options.state];
-            this.loadData();
+			if(this.form.status){
+				this.loadData();
+			}else{
+				this.loadAppointmentData();
+			}
 			// #endif
 			
 		},
@@ -200,14 +227,26 @@
 					}
 				})
 			}, 
-
+            //获取预约订单
+			loadAppointmentData(){
+				ApiClinet.get(ApiConfig.APP_BASE_API.reserveList, this.form).then((res) => {
+					if (res.data.code == '200') {
+						this.panicBuyList = this.panicBuyList.concat(res.data.data.records || []);
+						this.total = Math.ceil(res.data.data.total / this.form.size);
+					}
+				})
+			},
 			//swiper 切换
 			changeTab(e){
 				this.tabCurrentIndex = e.target.current;
 				this.panicBuyList = [];
 				this.form.page = 0;
 				this.form.status = statusList[this.tabCurrentIndex];
-				this.loadData();
+				if(this.form.status){
+					this.loadData();
+				}else{
+					this.loadAppointmentData();
+				}
 			},
 			//顶部tab点击
 			tabClick(index){
@@ -238,35 +277,105 @@
 				}
 				return {stateTip, stateTipColor};
 			},
+			/**预约字段值修改* */
+			orderStatus(state){
+				//	let statusList = ["buying", "paid", "resell", "breach", "finish"];
+				//未分配 未中奖 已中奖
+				let stateTip = '',
+					stateTipColor = '#666666';
+				switch(state){
+					case 'no_begin':
+						stateTip = '未分配'; 
+						break;
+					case 'no_win':
+						stateTip = '未中奖'; 
+						break;
+					case 'winning':
+						stateTip = '已中奖'; 
+						stateTipColor = '#FF478C';
+						break;
+				}
+				return {stateTip, stateTipColor};
+			},
 			//支付
 			payOrder(item) {
-				ApiClinet.post(`${AppConfig.ANDROID_URL}/api/app/order/pay/${item.id}`).then((res) => {
+				this.row = item;
+				this.type = 'pay';
+				this.$refs.jpPwd.toOpen()
+			},
+			payOrderData(params){
+				ApiClinet.post(`${AppConfig.ANDROID_URL}/api/app/order/pay`, params).then((res) => {
 					if (res.data.code == '200') {
 						this.panicBuyList = [];
 						this.form.page = 0;
+						this.$refs.jpPwd.toCancel()
 						this.loadData();
+					}else{
+						this.msg = res.data.msg;
+						this.$refs.jpPwd.backs()
 					}
 				})
 			},
 			//转卖
 			resellOrder(item) { 
-				ApiClinet.post(`${AppConfig.ANDROID_URL}/api/app/order/sale/${item.id}`).then((res) => {
+				this.row = item;
+				this.type = 'resell';
+				this.$refs.jpPwd.toOpen()
+			},
+			resellOrderData(params){
+				ApiClinet.post(`${AppConfig.ANDROID_URL}/api/app/order/sale`, params).then((res) => {
 					if (res.data.code == '200') {
 						this.panicBuyList = [];
 						this.form.page = 0;
+						this.$refs.jpPwd.toCancel()
 						this.loadData();
+					}else{
+						this.msg = res.data.msg;
+						this.$refs.jpPwd.backs()
 					}
 				})
 			},
 			//提货
 			pickOrder(item) { 
-				ApiClinet.post(`${AppConfig.ANDROID_URL}/api/app/order/pickUp/${item.id}`).then((res) => {
-				if (res.data.code == '200') {
-					this.panicBuyList = [];
-					this.form.page = 0;
-					this.loadData();
+				this.row = item;
+				this.type = 'pick';
+				this.$refs.jpPwd.toOpen()
+			},
+			pickOrderData(params){
+				ApiClinet.post(`${AppConfig.ANDROID_URL}/api/app/order/pickUp`, params).then((res) => {
+					if (res.data.code == '200') {
+						this.panicBuyList = [];
+						this.form.page = 0;
+						this.$refs.jpPwd.toCancel()
+						this.loadData();
+					}else{
+						this.msg = res.data.msg;
+						this.$refs.jpPwd.backs()
+					}
+				})
+			},
+			/***支付弹窗** */
+			completed(e) {
+				this.form.payPwd = e;
+				let params = {
+					id: this.row.id,
+					payPwd: e
 				}
-			})
+				if(this.type == 'pay'){
+					this.payOrderData(params);
+				}
+				if(this.type == 'resell'){
+					this.resellOrderData(params);
+				}
+				if(this.type == 'pick'){
+					this.pickOrderData(params);
+				}
+				// this.saveData();
+			},
+			forget() {
+				uni.navigateTo({
+					url: "/pages/payment/password",
+				});
 			}
 		},
 		onReachBottom() {

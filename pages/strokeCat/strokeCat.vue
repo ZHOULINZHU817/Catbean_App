@@ -1,16 +1,23 @@
 <template>
   <view class="stroke-cat">
     <view class="stroke-cat-time">
-      <view class="cat-time-item">场次：12:00</view>
+      <view class="cat-time-item1">
+        <view class="cat-time-item1-title">撸猫场次</view>
+        <view class="cat-time-item1-type">{{stadiumText}}</view>
+      </view>
       <view class="cat-time-item"
         >本场次预计倒计时：<count-down
+          class="down"
           :endTime="endTime"
           :endText="endText"
           @changeText="changeText"
       /></view>
     </view>
     <view class="stroke-fot">
-      <view class="stroke-btn" @click="appointment">{{ btnText }}</view>
+      <!-- <view class="stroke-btn" @click="appointment">{{ btnText }}</view> -->
+      <view class="stroke_order" @click="goOrder"></view>
+      <view class="stroke_1" @click="appointment"></view>
+      <view class="stroke_rule" @click="goRule"></view>
     </view>
     <!-----预约弹窗----->
     <uni-popup :mask-click="false" ref="rankModal" type="center">
@@ -35,7 +42,7 @@
           </view>
         </view>
         <view class="rank-btn" @click="cancelRank">
-          <img src="@/static/user/close-bg.jpg" />
+          <img src="../../static/user/close-bg.jpg" />
         </view>
       </view>
     </uni-popup>
@@ -44,21 +51,32 @@
 
 <script>
 import uniPopup from "@/components/uni-popup/uni-popup.vue";
+import ApiClinet from "@/services/api-clinet";
+import ApiConfig from "@/config/api.config";
+import AppConfig from "@/config/app.config";
 export default {
   components: {
     uniPopup,
   },
   data() {
     return {
-      endTime: new Date("2023/04/23 17:57:00").getTime() / 1000 + " ",
+      endTime: '',
       //  console.log(endTime)=>得到毫秒  1658030420 可在方法里面放入后台数据,new Date('放后台数据').getTime() / 1000 +  ' ',但要记得调用方法
       endText: "活动已结束",
       btnText: "预约",
       list: [1, 5, 10, 20, 30, 50, 100],
       active: null,
+      timeDate:'',
+      stadiumText:'12:00场',
+      form: {
+        type:"",
+        cnt:"",
+      }
     };
   },
-  onLoad() {},
+  onShow() {
+    this.dateHandle();
+  },
   methods: {
     onNavigationBarButtonTap() {
       this.$api.msg("点击");
@@ -66,27 +84,22 @@ export default {
         url: "/pages/panicBuy/panicBuyOrder?state=0",
       });
     },
+    goOrder(){
+      uni.navigateTo({
+        url: "/pages/panicBuy/panicBuyOrder?state=0",
+      });
+    },
     changeText() {
-      this.btnText = "立即抢购";
+      // this.btnText = "立即抢购";
     },
     appointment() {
-      console.log("this.btnText", this.btnText);
-      switch (this.btnText) {
-        case "预约":
-          this.getAppointment();
-          break;
-        case "立即抢购":
-          this.panicBuy();
-          break;
-      }
-    },
-    getAppointment() {
       this.$refs.rankModal.open();
     },
     panicBuy() {},
     /***选中预约时间* */
     selectTime(val, idx) {
       this.active = idx;
+      this.form.cnt = val;
     },
     /***关闭弹窗* */
     cancelRank() {
@@ -94,26 +107,130 @@ export default {
     },
     /***确认预约* */
     saveAppointment() {
-        uni.navigateTo({
-            url: "/pages/strokeCat/rule",
-        });
+      if(!this.form.cnt){
+        return this.$api.msg('请选择预约次数')
+      }
+      ApiClinet.post(`${AppConfig.ANDROID_URL}/api/app/order/reserve`, this.form).then((res) => {
+        if (res.data.code == '200') {
+            uni.navigateTo({
+              url: "/pages/panicBuy/panicBuyOrder?state=0",
+            });
+        }else{
+           this.$api.msg(res.data.msg)
+        }
+      })
     },
+    goRule(){
+      uni.navigateTo({
+          url: "/pages/strokeCat/rule",
+      });
+    },
+    getDate(count){
+      var date = new Date();
+      date.setDate(date.getDate()+count);//获取AddDayCount天后的日期
+      var y = date.getFullYear();
+      var m = date.getMonth()+1;//获取当前月份的日期
+      var d = date.getDate();
+      return y + '-' + this.add0(m) + '-' + this.add0(d)
+    },
+    add0(m) {
+      return m < 10 ? '0' + m : m
+    },
+    dateHandle(){
+      let time = new Date(new Date()).getTime();
+      let time1 = new Date(`${this.getDate(0)} 12:00:00`).getTime();
+      let time2 = new Date(`${this.getDate(0)} 16:00:00`).getTime();
+      let time3 = new Date(`${this.getDate(0)} 20:00:00`).getTime();
+      let time4 = new Date(`${this.getDate(1)} 12:00:00`).getTime();
+      if(time <=time1){
+        this.timeDate = time1;
+        this.stadiumText = '12:00场'
+        this.form.type = 'twelve';
+        //new Date("2023/04/23 17:57:00").getTime() / 1000 + " "
+        this.endTime = this.timeDate / 1000 + " "
+        return;
+      }
+      if(time1<time<=time2){
+        this.timeDate = time2;
+        this.stadiumText = '16:00场'
+        this.form.type = 'sixteen';
+        this.endTime = this.timeDate / 1000 + " "
+        return;
+      }
+      if(time2<time<=time3){
+        this.timeDate = time3;
+        this.stadiumText = '20:00场'
+        this.form.type = 'twenty';
+        this.endTime = this.timeDate / 1000 + " "
+        return;
+      }
+      if(time3<time<=time4){
+        this.timeDate = time4;
+        this.stadiumText = '12:00场'
+        this.form.type = 'twelve';
+        this.endTime = this.timeDate / 1000 + " "
+      }
+    }
   },
 };
 </script>
 
 <style lang='scss'>
 .stroke-cat {
+  height: 85.9vh;
+  width: 100vw;
+  background: url(@/static/cat_bg.png) 100% no-repeat;
+  background-size: cover;
   .stroke-cat-time {
-    margin: 80upx 30upx;
+    // margin: 80upx 30upx;
     text-align: center;
-    background: #eee;
+    // background: #eee;
+    .cat-time-item1{
+      height: 154upx;
+      width:344upx;
+      background: url(@/static/petcat/session.png) 100% no-repeat;
+      background-size: cover;
+      margin: 0 auto;
+      text-align: center;
+      .cat-time-item1-title{
+        color:#E87700;
+        font-size: 26upx;
+        padding-top: 40upx;
+      }
+      .cat-time-item1-type{
+        color:#E87700;
+        font-size: 46upx;
+      }
+    }
     .cat-time-item {
       height: 120upx;
       line-height: 120upx;
     }
   }
   .stroke-fot {
+    margin-top: 600upx;
+    display: flex;
+    height:130upx;
+    .stroke_1{
+      width: 326upx;
+      height:130upx;
+      background: url(@/static/petcat/appointment.png) 100% no-repeat;
+      background-size: cover;
+       margin-right: 48upx;
+    }
+    .stroke_order{
+      height:130upx;
+      width:122upx;
+      background: url(@/static/petcat/petcat_order.png) 100% no-repeat;
+      background-size: cover;
+      margin: 0 48upx;
+    }
+    .stroke_rule{
+      height:130upx;
+      width:122upx;
+      background: url(@/static/petcat/petcat_rule.png) 100% no-repeat;
+      background-size: cover;
+    }
     .stroke-btn {
       width: 220upx;
       height: 220upx;
@@ -243,5 +360,11 @@ export default {
       height: 56upx;
     }
   }
+}
+.down{
+  background-color: #FFFFFF;
+  padding:2upx 6upx;
+  color:#F25774;
+  font-size: 30upx;
 }
 </style>

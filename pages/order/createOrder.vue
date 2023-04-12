@@ -194,11 +194,15 @@
 					productId: this.id,
 					productNum: this.detailObj.number,
 					receiveAddressId: this.addressData && this.addressData.id,
-					payType: 'catfood'
+					payType: 'cat_food'
 				}
 				ApiClinet.post(ApiConfig.APP_BASE_API.recordGoodBuy, params).then((res) => {
 					if (res.data.code == '200') {
-						
+						uni.navigateTo({
+							url: `/pages/order/order?state=1`
+						})
+					}else{
+						this.$api.msg(res.data.msg)
 					}
 				})
 			},

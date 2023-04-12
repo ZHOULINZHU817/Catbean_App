@@ -54,25 +54,25 @@
               <view class="goods-box-single">
                 <image
                   class="goods-img"
-                  :src="item.image"
+                  :src="item.product && item.product.images"
                   mode="aspectFill"
                 ></image>
                 <view class="centre">
-                  <text class="title">{{ item.title }}</text>
+                  <text class="title">{{ item.product && item.product.name }}</text>
                 </view>
                 <view class="right">
-                  <text class="price">{{ item.price }}</text>
-                  <text class="attr-box">x {{ item.number }}</text>
+                  <text class="price">{{ item.product && item.product.price }}</text>
+                  <text class="attr-box">x {{ item.productNum }}</text>
                 </view>
               </view>
 
               <view class="price-box">
                 <view class="num">商品金额：</view>
-                <view class="price">179<text>.5</text></view>
+                <view class="price">{{item.totalPrice}}<text>.5</text></view>
               </view>
-              <view v-if="item.expressNumber" class="price-box">
+              <view v-if="item.logisticsNum" class="price-box">
                 <view class="num">快递单号：</view>
-                <view>{{ item.expressNumber }}</view>
+                <view>{{ item.logisticsNum }}</view>
               </view>
               <view class="action-box b-t" v-if="item.state == 'init'">
                 <button class="action-btn" @click="cancelOrder(item)">
@@ -83,7 +83,12 @@
                 </button>
                 <button class="action-btn recom" @click="payOrder(item)">立即支付</button>
               </view>
-              <view class="action-box b-t" v-if="item.state == 'paid' || item.state == 'send' || item.state == 'finish'">
+              <view class="action-box b-t" v-if="item.state == 'paid'">
+                <button class="action-btn" @click="deleteOrder(item)">
+                  删除订单
+                </button>
+              </view>
+               <view class="action-box b-t" v-if="item.state == 'send' || item.state == 'finish'">
                 <button class="action-btn" @click="cancelOrder(item)">
                   取消订单
                 </button>
@@ -122,58 +127,7 @@ export default {
   data() {
     return {
       tabCurrentIndex: 0,
-      orderListNew: [
-        {
-          state: 'init',
-          title: "古黛妃 短袖t恤女 春夏装2019新款韩版宽松",
-          price: 179.5,
-          image:
-            "https://img13.360buyimg.com/n8/jfs/t1/30343/20/1029/481370/5c449438Ecb46a15b/2b2adccb6dc742fd.jpg",
-          number: 1,
-          id: "123678900432144",
-          expressNumber: null,
-        },
-        {
-          state: 'paid',
-          title: "古黛妃 短袖t恤女 春夏装2019新款韩版宽松",
-          price: 179.5,
-          image:
-            "https://img13.360buyimg.com/n8/jfs/t1/30343/20/1029/481370/5c449438Ecb46a15b/2b2adccb6dc742fd.jpg",
-          number: 1,
-          id: "123678900432144",
-          expressNumber: "SF68329465396",
-        },
-        {
-          state: 'send',
-          title: "古黛妃 短袖t恤女 春夏装2019新款韩版宽松",
-          price: 179.5,
-          image:
-            "https://img13.360buyimg.com/n8/jfs/t1/30343/20/1029/481370/5c449438Ecb46a15b/2b2adccb6dc742fd.jpg",
-          number: 1,
-          id: "123678900432144",
-          expressNumber: "SF68329465396",
-        },
-        {
-          state: 'finish',
-          title: "古黛妃 短袖t恤女 春夏装2019新款韩版宽松",
-          price: 179.5,
-          image:
-            "https://img13.360buyimg.com/n8/jfs/t1/30343/20/1029/481370/5c449438Ecb46a15b/2b2adccb6dc742fd.jpg",
-          number: 1,
-          id: "123678900432144",
-          expressNumber: "SF68329465396",
-        },
-        {
-          state: 'cancel',
-          title: "古黛妃 短袖t恤女 春夏装2019新款韩版宽松",
-          price: 179.5,
-          image:
-            "https://img13.360buyimg.com/n8/jfs/t1/30343/20/1029/481370/5c449438Ecb46a15b/2b2adccb6dc742fd.jpg",
-          number: 1,
-          id: "123678900432144",
-          expressNumber: "SF68329465396",
-        },
-      ],
+      orderListNew: [],
       navList: [
         {
           state: 0,
