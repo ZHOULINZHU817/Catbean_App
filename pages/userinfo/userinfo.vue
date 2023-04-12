@@ -71,22 +71,25 @@ export default {
       },
       logining: false,
       uploadAttachment:[],
-      userInfo: JSON.parse(uni.getStorageSync('userInfo'))
     };
   },
   onLoad() {
-    if(Object.keys(this.userInfo).length>0){
-      // this.form = this.userInfo;
-      this.form.phone = this.userInfo.phone;
-      this.form.qq = this.userInfo.qq;
-      this.form.nickName = this.userInfo.nickName;
-      this.form.avatar = this.userInfo.avatar;
-      this.form.wechatNo = this.userInfo.wechatNo;
-      this.uploadAttachment = this.userInfo.avatar && `['文件｜${this.userInfo.avatar}']`
-    }
+    /**获取个人信息* */
+		this.memberInfo();
   },
   methods: {
-
+    memberInfo() {
+				ApiClinet.get(ApiConfig.APP_BASE_API.memberDetail).then((res) => {
+					if (res.data.code == '200') {
+            const {phone, qq, nickName, avatar, wechatNo} = res.data.data;
+            this.form.phone = phone;
+            this.form.qq = qq;
+            this.form.nickName = nickName;
+            this.form.avatar = avatar;
+            this.form.wechatNo = wechatNo;
+					}
+				})
+		},
     inputChange(e) {
       const key = e.currentTarget.dataset.key;
       this.form[key] = e.detail.value;

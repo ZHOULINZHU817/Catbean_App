@@ -12,6 +12,7 @@
           </view>
         </view>
         <view class="cat-bean-top-fot">
+          <view class="frozen">冻结猫豆:{{assetObj.frozenCatFood}}</view>
           <view @click="navTo('/pages/cat/beangiven')" class="cat-bean-w"
             ><img src="@/static/user/zhuanzeng.jpg" />猫豆转赠</view
           >
@@ -157,6 +158,12 @@ page {
       display: flex;
       height: 90upx;
       align-items: center;
+      .frozen{
+        color: #333333;
+        font-size: 28upx;
+        margin-left:40upx;
+        width: 400upx;
+      }
       .cat-bean-w {
         width: 50%;
         text-align: center;

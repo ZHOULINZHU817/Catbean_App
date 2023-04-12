@@ -102,6 +102,8 @@
 						 uni.navigateTo({
 							url: `/pages/address/address`
 						 })
+						}else{
+							this.$api.msg(res.data.msg)
 						}
 					})
 				}else{
@@ -111,6 +113,8 @@
 						 uni.navigateTo({
 							url: `/pages/address/address`
 						 })
+						}else{
+							this.$api.msg(res.data.msg)
 						}
 					})
 				}

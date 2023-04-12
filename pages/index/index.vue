@@ -233,7 +233,7 @@
 					<image :src="item.images[0]" mode="aspectFill"></image>
 				</view>
 				<text class="title clamp">{{item.name}}-{{item.detail}}</text>
-				<text class="price">￥{{item.price}}</text>
+				<text class="price">￥{{toStringHandle(item.price)}}</text>
 			</view>
 		</view>
 		<view v-if="showTotal" class="showTotal">没有更多数据了~</view>
@@ -246,7 +246,7 @@
 <script>
 	import ApiClinet from "@/services/api-clinet";
 	import ApiConfig from "@/config/api.config";
-
+    import { toStringHandle } from "@/utils/price.js";
 	export default {
 
 		data() {
@@ -269,6 +269,7 @@
 			this.productList();
 		},
 		methods: {
+			toStringHandle,
 			/**
 			 * 请求静态数据只是为了代码不那么乱
 			 * 分次请求未作整合

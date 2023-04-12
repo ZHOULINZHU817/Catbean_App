@@ -29,7 +29,7 @@
 					<text class="title clamp">{{detailObj.name}}-{{detailObj.detail}}</text>
 				</view>
 				<view class="price-box">
-					<view class="price">￥{{detailObj.price}}</view>
+					<view class="price">￥{{toStringHandle(detailObj.price)}}</view>
 					<view class="number">x {{detailObj.number}}</view>
 				</view>
 			</view>
@@ -70,7 +70,7 @@
 		<view class="yt-list">
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">商品金额</text>
-				<text class="cell-tip">￥{{detailObj.price}}</text>
+				<text class="cell-tip">￥{{toStringHandle(detailObj.price)}}</text>
 			</view>
 			<!-- <view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">优惠金额</text>
@@ -91,7 +91,7 @@
 			<view class="price-content">
 				<text>合计：</text>
 				<text class="price-tip">￥</text>
-				<text class="price">{{allPrice}}</text>
+				<text class="price">{{toStringHandle(allPrice)}}</text>
 			</view>
 			<text class="submit" @click="submit">提交订单</text>
 		</view>
@@ -125,6 +125,7 @@
     import ApiClinet from "@/services/api-clinet";
 	import ApiConfig from "@/config/api.config";
 	import AppConfig from "@/config/app.config";
+	import { toStringHandle } from "@/utils/price.js";
 	export default {
 		data() {
 			return {
@@ -174,6 +175,7 @@
 			}
 		},
 		methods: {
+			toStringHandle,
 			//显示优惠券面板
 			toggleMask(type){
 				let timer = type === 'show' ? 10 : 300;

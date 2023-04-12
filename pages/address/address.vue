@@ -30,18 +30,7 @@
 		data() {
 			return {
 				source: 0,
-				addressList: [
-					{
-						receiver: '刘晓晓',
-						phone: '18666666666',
-						address: '河南省信阳市羊山新区101',
-						area: '羊山新区',
-						province:'河南省',
-						city:'信阳市',
-						first: true,
-						id:'1'
-					}
-				]
+				addressList: []
 			}
 		},
 		onLoad(option){

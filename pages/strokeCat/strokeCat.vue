@@ -54,6 +54,7 @@ import uniPopup from "@/components/uni-popup/uni-popup.vue";
 import ApiClinet from "@/services/api-clinet";
 import ApiConfig from "@/config/api.config";
 import AppConfig from "@/config/app.config";
+import { formatDate } from "@/utils/prototype/date"
 export default {
   components: {
     uniPopup,
@@ -137,7 +138,7 @@ export default {
       return m < 10 ? '0' + m : m
     },
     dateHandle(){
-      let time = new Date(new Date()).getTime();
+      let time = new Date().getTime();
       let time1 = new Date(`${this.getDate(0)} 12:00:00`).getTime();
       let time2 = new Date(`${this.getDate(0)} 16:00:00`).getTime();
       let time3 = new Date(`${this.getDate(0)} 20:00:00`).getTime();
@@ -150,21 +151,21 @@ export default {
         this.endTime = this.timeDate / 1000 + " "
         return;
       }
-      if(time1<time<=time2){
+      if(time1<time && time <= time2){
         this.timeDate = time2;
         this.stadiumText = '16:00场'
         this.form.type = 'sixteen';
         this.endTime = this.timeDate / 1000 + " "
         return;
       }
-      if(time2<time<=time3){
+      if(time2 < time && time<= time3){
         this.timeDate = time3;
         this.stadiumText = '20:00场'
         this.form.type = 'twenty';
         this.endTime = this.timeDate / 1000 + " "
         return;
       }
-      if(time3<time<=time4){
+      if(time3 < time && time<= time4){
         this.timeDate = time4;
         this.stadiumText = '12:00场'
         this.form.type = 'twelve';

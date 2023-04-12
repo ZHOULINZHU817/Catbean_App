@@ -17,7 +17,7 @@
 		<view class="introduce-section">
 			<view class="price-box">
 				<text class="price-tip">¥</text>
-				<text class="price">{{detailObj.price}}</text>
+				<text class="price">{{toStringHandle(detailObj.price)}}</text>
 				<!-- <text class="m-price">¥488</text> -->
 				<!-- <text class="coupon-tip">7折</text> -->
 			</view>
@@ -197,6 +197,7 @@
 	import ApiClinet from "@/services/api-clinet";
 	// import ApiConfig from "@/config/api.config";
 	import AppConfig from "@/config/app.config";
+	import { toStringHandle } from "@/utils/price.js";
 	export default{
 		components: {
 			share,
@@ -212,72 +213,6 @@
 				imgList: [
 					
 				],
-				desc: `
-					<div style="width:100%">
-						<img style="width:100%;display:block;" src="https://gd3.alicdn.com/imgextra/i4/479184430/O1CN01nCpuLc1iaz4bcSN17_!!479184430.jpg_400x400.jpg" />
-						<img style="width:100%;display:block;" src="https://gd2.alicdn.com/imgextra/i2/479184430/O1CN01gwbN931iaz4TzqzmG_!!479184430.jpg_400x400.jpg" />
-						<img style="width:100%;display:block;" src="https://gd3.alicdn.com/imgextra/i3/479184430/O1CN018wVjQh1iaz4aupv1A_!!479184430.jpg_400x400.jpg" />
-						<img style="width:100%;display:block;" src="https://gd4.alicdn.com/imgextra/i4/479184430/O1CN01tWg4Us1iaz4auqelt_!!479184430.jpg_400x400.jpg" />
-						<img style="width:100%;display:block;" src="https://gd1.alicdn.com/imgextra/i1/479184430/O1CN01Tnm1rU1iaz4aVKcwP_!!479184430.jpg_400x400.jpg" />
-					</div>
-				`,
-				// specList: [
-				// 	{
-				// 		id: 1,
-				// 		name: '尺寸',
-				// 	},
-				// 	{	
-				// 		id: 2,
-				// 		name: '颜色',
-				// 	},
-				// ],
-				// specChildList: [
-				// 	{
-				// 		id: 1,
-				// 		pid: 1,
-				// 		name: 'XS',
-				// 	},
-				// 	{
-				// 		id: 2,
-				// 		pid: 1,
-				// 		name: 'S',
-				// 	},
-				// 	{
-				// 		id: 3,
-				// 		pid: 1,
-				// 		name: 'M',
-				// 	},
-				// 	{
-				// 		id: 4,
-				// 		pid: 1,
-				// 		name: 'L',
-				// 	},
-				// 	{
-				// 		id: 5,
-				// 		pid: 1,
-				// 		name: 'XL',
-				// 	},
-				// 	{
-				// 		id: 6,
-				// 		pid: 1,
-				// 		name: 'XXL',
-				// 	},
-				// 	{
-				// 		id: 7,
-				// 		pid: 2,
-				// 		name: '白色',
-				// 	},
-				// 	{
-				// 		id: 8,
-				// 		pid: 2,
-				// 		name: '珊瑚粉',
-				// 	},
-				// 	{
-				// 		id: 9,
-				// 		pid: 2,
-				// 		name: '草木绿',
-				// 	},
-				// ]
 				detailObj: {
 					number: 1
 				},
@@ -287,20 +222,9 @@
 			//接收传值,id里面放的是标题，因为测试数据并没写id 
 			this.id = options.id;
 			this.getGoodDetail(this.id)
-			
-			//规格 默认选中第一条
-			// this.specList.forEach(item=>{
-			// 	for(let cItem of this.specChildList){
-			// 		if(cItem.pid === item.id){
-			// 			this.$set(cItem, 'selected', true);
-			// 			this.specSelected.push(cItem);
-			// 			break; //forEach不能使用break
-			// 		}
-			// 	}
-			// })
-			// this.shareList = await this.$api.json('shareList');
 		},
 		methods:{
+			toStringHandle,
 			getGoodDetail(id){
 				ApiClinet.get(`${AppConfig.ANDROID_URL}/api/app/product/${id}`, {}).then((res) => {
 					if (res.data.code == '200') {

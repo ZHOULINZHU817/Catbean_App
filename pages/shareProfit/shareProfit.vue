@@ -9,11 +9,11 @@
       <view class="profit-middle">
         <view class="profit-middle-left">
           <view class="middle-left-title">今日分润</view>
-          <view class="middle-left-price">999.00</view>
+          <view class="middle-left-price">{{assetObj.todayTeamReward || 0}}</view>
         </view>
         <view class="profit-middle-right">
           <view class="middle-left-title">昨日分润</view>
-          <view class="middle-left-price">888.00</view>
+          <view class="middle-left-price">{{assetObj.yesterdayTeamReward || 0}}</view>
         </view>
       </view>
       <view class="profit-tab">

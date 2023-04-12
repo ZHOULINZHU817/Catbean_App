@@ -152,7 +152,6 @@ export default {
     this.tabCurrentIndex = +options.state;
     this.form.status = statusList[options.state];
     this.loadData()
-    // #endif
   },
 
   methods: {

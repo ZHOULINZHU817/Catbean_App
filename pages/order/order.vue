@@ -37,6 +37,7 @@
               v-for="(item, index) in orderListNew"
               :key="index"
               class="order-item"
+              @click="goOrderDetail(item)"
             >
               <view class="i-top b-b">
                 <text class="time"
@@ -61,14 +62,14 @@
                   <text class="title">{{ item.product && item.product.name }}</text>
                 </view>
                 <view class="right">
-                  <text class="price">{{ item.product && item.product.price }}</text>
+                  <text class="price">{{ toStringHandle(item.product && item.product.price)}}</text>
                   <text class="attr-box">x {{ item.productNum }}</text>
                 </view>
               </view>
 
               <view class="price-box">
                 <view class="num">商品金额：</view>
-                <view class="price">{{item.totalPrice}}<text>.5</text></view>
+                <view class="price">{{toStringHandle(item.totalPrice)}}</view>
               </view>
               <view v-if="item.logisticsNum" class="price-box">
                 <view class="num">快递单号：</view>
@@ -119,6 +120,7 @@ let statusList = ["init", "paid", "send", "finish", "cancel"];
 import ApiClinet from "@/services/api-clinet";
 import ApiConfig from "@/config/api.config";
 import AppConfig from "@/config/app.config";
+import { toStringHandle } from "@/utils/price.js";
 export default {
   components: {
     uniLoadMore,
@@ -177,11 +179,11 @@ export default {
     this.tabCurrentIndex = +options.state;
     this.form.state = statusList[options.state];
     this.loadData();
-    // #endif
   },
 
   methods: {
      formatDate,
+     toStringHandle,
     //获取订单列表
     loadData(source) {
       ApiClinet.get(ApiConfig.APP_BASE_API.recordGoodList, this.form).then((res) => {
@@ -211,6 +213,8 @@ export default {
             this.orderListNew = [];
             this.form.page = 0;
             this.loadData();
+        }else{
+          this.$api.msg(res.data.msg)
         }
       })
     },
@@ -221,6 +225,8 @@ export default {
             this.orderListNew = [];
             this.form.page = 0;
             this.loadData();
+        }else{
+          this.$api.msg(res.data.msg)
         }
       })
     },
@@ -231,6 +237,8 @@ export default {
             this.orderListNew = [];
             this.form.page = 0;
             this.loadData();
+        }else{
+          this.$api.msg(res.data.msg)
         }
       })
     },
@@ -260,6 +268,11 @@ export default {
       }
       return { stateTip, stateTipColor };
     },
+    goOrderDetail(item){
+      // uni.navigateTo({
+      //   url: `/pages/order/orderDetail?id=${item.id}`
+      // })
+    }
   },
   onReachBottom() {
       if (this.form.page >= this.total) {
