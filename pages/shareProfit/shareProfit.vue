@@ -2,7 +2,13 @@
   <view class="container">
     <view class="profit-bg">
       <view class="profit-bg-text">总分润(元)</view>
-      <view class="profit-bg-price">{{assetObj.teamReward || 0}}</view>
+      <!-- <view class="profit-bg-price">{{assetObj.totalTeamReward || 0}}</view> -->
+      <input
+        class="profit-bg-price"
+        :value="assetObj.totalTeamReward || 0"
+        placeholder="请输入10的整倍数"
+        @input="inputChange"
+      />
       <view class="reward-bg-btn" @click="exchange">兑换</view>
     </view>
     <view class="profit-content">
@@ -29,6 +35,7 @@
         ></v-table>
         <view class="profit-tab-tips">注：分润到账时间：T+1，晚上12点之后到帐</view>
       </view>
+      <view v-if="showTotal" class="showTotal">没有更多数据了~</view>
     </view>
     <!-----兑换弹窗----->
     <uni-popup :mask-click="false" ref="rankModal" type="center">
@@ -36,7 +43,7 @@
               <view class="model-wraper-bg">
                   <view class="modal-title">分润值兑换</view>
                   <view class="modal-content">
-                      <view class="modal-content-title">您当前共有<text>{{assetObj.teamReward || 0}}</text>分润值可兑换</view>
+                      <view class="modal-content-title">您当前共有<text>{{assetObj.totalTeamReward || 0}}</text>分润值可兑换</view>
                       <view class="modal-content-text">分润值兑换到余额需扣除5%</view>
                       <view class="modal-content-text">兑换金额10起兑，且为10的整数倍</view>
                       <view class="modal-content-text">一天可以兑换一次，每日0点刷新次数</view>
@@ -82,7 +89,7 @@ export default {
             },
             {
                 title: '来源',
-                key: 'id',
+                key: 'childNo',
                 width: '20%',
                 listenerClick: true
             },
@@ -96,11 +103,12 @@ export default {
         isLoading: false,
         form:{
           page: 0,
-          size: 200,
+          size: 50,
           type: 'team'
         },
         assetObj: {},
-        msg:""
+        msg:"",
+        showTotal: false,
     };
   },
   onLoad() {
@@ -113,18 +121,22 @@ export default {
     this.getRewardList();
   },
   methods: {
+    inputChange(e){
+      this.$set(this.assetObj, 'totalTeamReward', e.detail.value)
+    },
     /**获取资产* */
     getAsset() {
       ApiClinet.get(ApiConfig.APP_BASE_API.asset).then((res) => {
         if (res.data.code == '200') {
             this.assetObj = res.data.data;
+            this.oldAsset = Object.assign({},res.data.data)
         }
       })
     },
     getRewardList(){
       ApiClinet.get(ApiConfig.APP_BASE_API.rewardList, this.form).then((res) => {
         if (res.data.code == '200') {
-            this.tableList = res.data.data.records || [];
+            this.tableList = this.tableList.concat(res.data.data.records || []);
             this.tableList.map(item=>{
               item.createTime = formatDate(item.createTime*1);
               item.tradeAmount1 = "好友分润";
@@ -133,6 +145,12 @@ export default {
       })
     },
     exchange(){
+        if(!this.assetObj.teamReward || (this.oldAsset.totalTeamReward < this.assetObj.totalTeamReward)){
+          return this.$api.msg('兑换金额不足！');
+        }
+        if((this.assetObj.totalTeamReward%10) != 0){
+          return this.$api.msg('请输入10的整倍数');
+        }
         this.$refs['rankModal'].open();
     },
     //取消
@@ -181,6 +199,14 @@ export default {
       });
     }
   },
+  onReachBottom() {
+      if (this.form.page >= this.total) {
+      this.showTotal=true//已经滑到底的提醒
+      return false;
+    }
+    this.form.page ++;
+    this.getRewardList()
+  }
 };
 </script>  
 <style lang='scss'>
@@ -360,5 +386,15 @@ page {
             height: 56upx;
         }
     }
+    .uni-input-input, .uni-input-placeholder {
+       font-size: 32upx;
+       color:#ffffff;
+    }
+}
+.showTotal{
+  text-align: center;
+  line-height: 60upx;
+  font-size:28upx;
+  color:#999999;
 }
 </style>

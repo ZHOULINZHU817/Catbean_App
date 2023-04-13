@@ -3,7 +3,13 @@
     <view class="reward-bg">
       <view class="reward-bg2">
         <view class="reward-bg-title">分享值金额</view>
-        <view class="reward-bg-price">{{assetObj.childReward || 0}}</view>
+        <!-- <view class="reward-bg-price">{{assetObj.childReward || 0}}</view> -->
+         <input
+          class="reward-bg-price"
+          :value="assetObj.childReward || 0"
+          placeholder="请输入10的整倍数"
+          @input="inputChange"
+        />
         <view class="reward-bg-btn" @click="exchange">兑换</view>
       </view>
     </view>
@@ -80,11 +86,15 @@ export default {
     this.getRewardList();
   },
   methods: {
+    inputChange(e){
+      this.$set(this.assetObj, 'childReward', e.detail.value)
+    },
      /**获取资产* */
     getAsset() {
       ApiClinet.get(ApiConfig.APP_BASE_API.asset).then((res) => {
         if (res.data.code == '200') {
             this.assetObj = res.data.data;
+            this.oldAsset = Object.assign({},res.data.data)
         }
       })
     },
@@ -100,6 +110,12 @@ export default {
       })
     },
     exchange(){
+        if(!this.assetObj.childReward || (this.oldAsset.childReward < this.assetObj.childReward)){
+          return this.$api.msg('兑换金额不足！');
+        }
+        if((this.assetObj.childReward%10) != 0){
+          return this.$api.msg('请输入10的整倍数');
+        }
         this.$refs['rankModal'].open();
     },
     //取消
@@ -318,7 +334,11 @@ page {
             width: 56upx;
             height: 56upx;
         }
-    }
+  }
+  .uni-input-input, .uni-input-placeholder {
+      font-size: 32upx;
+      color:#333333;
+  }
 }
 .showTotal{
   text-align: center;
