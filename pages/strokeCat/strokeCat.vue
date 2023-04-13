@@ -143,6 +143,7 @@ export default {
       let time2 = new Date(`${this.getDate(0)} 16:00:00`).getTime();
       let time3 = new Date(`${this.getDate(0)} 20:00:00`).getTime();
       let time4 = new Date(`${this.getDate(1)} 12:00:00`).getTime();
+      
       if(time <=time1){
         this.timeDate = time1;
         this.stadiumText = '12:00场'

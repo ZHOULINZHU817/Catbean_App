@@ -31,7 +31,7 @@
           <view class="list-item-content">
                 <view class="list-item" v-for="(item, index) in orderList" :key="index">
                 <view class="list-left">
-                    <view class="list-item-title">{{item.title}}</view>
+                    <view class="list-item-title">{{withdrawType[item.payType]}}</view>
                     <view class="list-item-date">{{formatDate(item.createTime*1)}}</view>
                 </view>
                 <view class="list-right">
@@ -63,6 +63,11 @@ import { formatDate } from "@/utils/prototype/date"
 let statusList = ['audit', 'finish', 'reject']
 import ApiClinet from "@/services/api-clinet";
 import ApiConfig from "@/config/api.config";
+let withdrawType = {
+  ali:'提现到支付宝',
+  wx:'提现到微信',
+  bank:'提现到银行卡'
+}
 export default {
   components: {
     uniLoadMore,
@@ -72,65 +77,41 @@ export default {
     return {
       tabCurrentIndex: 0,
       orderList:[
-           {
-              title: "平台购入",
-              createTime: "1681179629177",
-              amount: "+999",
-              state: 'audit',
-            },
-            {
-              title: "预约消耗",
-             createTime: "1681179629177",
-              amount: "-100",
-              state: 'finish',
-            },
-            {
-              title: "转赠给+19909876547",
-              createTime: "1681179629177",
-              amount: "-88",
-              state: 'reject',
-              reason:"失败原因"
-            },
+          //  {
+          //     title: "平台购入",
+          //     createTime: "1681179629177",
+          //     amount: "+999",
+          //     state: 'audit',
+          //   },
+          //   {
+          //     title: "预约消耗",
+          //    createTime: "1681179629177",
+          //     amount: "-100",
+          //     state: 'finish',
+          //   },
+          //   {
+          //     title: "转赠给+19909876547",
+          //     createTime: "1681179629177",
+          //     amount: "-88",
+          //     state: 'reject',
+          //     reason:"失败原因"
+            // },
       ],
       navList: [
-        // {
-        //   state: 0,
-        //   text: "全部",
-        //   loadingType: "more",
-        //   orderList: [],
-        // },
-        // {
-        //   state: 1,
-        //   text: "审核中",
-        //   loadingType: "more",
-        //   orderList: [],
-        // },
-        // {
-        //   state: 2,
-        //   text: "已到账",
-        //   loadingType: "more",
-        //   orderList: [],
-        // },
-        // {
-        //   state: 3,
-        //   text: "审核失败",
-        //   loadingType: "more",
-        //   orderList: [],
-        // },
         {
           state: 0,
-          text: "待审核",
+          text: "审核中",
           loadingType: "more",
         },
         {
           state: 1,
-          text: "已审核",
+          text: "已到账",
           loadingType: "more",
           orderList: [],
         },
         {
           state: 2,
-          text: "已拒绝",
+          text: "审核失败",
           loadingType: "more",
           orderList: [],
         },
@@ -141,6 +122,7 @@ export default {
         size: 10
       },
       showTotal: false,
+      withdrawType: withdrawType
     };
   },
 
@@ -184,14 +166,14 @@ export default {
 			stateTipColor = '';
         switch(state){
             case "audit":
-                statusName = "待审核";
+                statusName = "审核中";
                 stateTipColor = '#FF8417';
                 break;
             case "finish":
-                statusName = "已审核";
+                statusName = "已到账";
                 break;
             case "reject":
-                statusName = "已拒绝";
+                statusName = "审核失败";
                 stateTipColor = '#F71616';
                 break;
         }

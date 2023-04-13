@@ -30,10 +30,10 @@
           :key="index"
         >
           <view class="flex1">
-            <view class="record-title">{{ item.title }}</view>
+            <view class="record-title">{{ catBean[item.type] }}</view>
             <view class="record-date">{{ formatDate(item.createTime*1) }}</view>
           </view>
-          <view class="record-price">{{ item.amount }}</view>
+          <view class="record-price">{{item.type == 'into'?'+':'-'}}{{ item.amount }}</view>
         </view>
       </view>
       <view v-if="showTotal" class="showTotal">没有更多数据了~</view>
@@ -45,45 +45,30 @@
 import ApiClinet from "@/services/api-clinet";
 import ApiConfig from "@/config/api.config";
 import { formatDate } from "@/utils/prototype/date"
+let catBean = {
+  out:'转出',
+  recharge: '充值',
+  exchange: '兑换',
+  breach: '违约',
+  order: '猫超订单',
+  into: '转入',
+  reserve: "预约",
+  withdraw: "提现"
+}
 export default {
   data() {
     return {
-      recordList: [
-        {
-          title: "平台购入",
-          createTime: "1681179629177",
-          amount: "+999",
-        },
-        {
-          title: "预约消耗",
-          createTime: "1681179629177",
-          amount: "-100",
-        },
-        {
-          title: "转赠给+19909876547",
-          createTime:  "1681179629177",
-          amount: "-88",
-        },
-        {
-          title: "猫超订单",
-          createTime:  "1681179629177",
-          amount: "-10",
-        },
-        {
-          title: "提现",
-          createTime:  "1681179629177",
-          amount: "-99",
-        },
-      ],
+      recordList: [],
       assetObj: {},
       params:{
         page: 0,
         size: 10
         },
       showTotal: false,
+      catBean: catBean,
     };
   },
-  onLoad(){
+  onShow(){
     this.catFoodList();
     this.getAsset();
   },
@@ -100,7 +85,7 @@ export default {
     catFoodList(){
       ApiClinet.get(ApiConfig.APP_BASE_API.catFoodList, this.params).then((res) => {
         if (res.data.code == '200') {
-            // this.recordList = this.recordList.concat(res.data.data.records || []);
+            this.recordList = this.recordList.concat(res.data.data.records || []);
             this.total = Math.ceil(res.data.total / this.params.size);
         }
       })

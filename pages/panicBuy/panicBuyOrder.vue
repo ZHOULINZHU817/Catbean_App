@@ -45,7 +45,7 @@
 							</view>
 							<view v-if="item.status=='paid'" class="order-item-btn">
 								<view class="flex1"></view>
-								<view class="order-item-btn2" @click="resellOrder(item)">立即转卖</view>
+								<view :class="resellTime(item)?'order-item-btn':'order-item-btn2'" @click="resellOrder(item)">立即转卖</view>
 							</view>
 							<view v-if="item.status=='resell'" class="order-item-btn">
 								<view class="flex1"></view>
@@ -62,9 +62,10 @@
 								<view class="order-item-fl"><text>订单编号：</text>{{item.id}}</view>
 								<view class="order-item-fr" :style="{color:orderStatus(item.status).stateTipColor}">{{orderStatus(item.status).stateTip}}</view>
 							</view>
-							<view class="order-item-text"><text>预约时间：</text>{{item.handlerDate}}</view>
-							<view class="order-item-text"><text>场次：</text>{{item.session}}</view>
-							<view class="order-item-text"><text>价格：</text>{{item.price}}</view>
+							<view class="order-item-text"><text>预约时间：</text>{{formatDate(item.reserveDate)}}</view>
+							<view class="order-item-text"><text>场次：</text>{{typeList[item.type]}}</view>
+							<view class="order-item-text"><text>预约次数：</text>{{item.cnt}}</view>
+							<view class="order-item-text"><text>抢中数量：</text>{{item.buyNum}}</view>
 						</view>
 					</view>
 					<!-- <uni-load-more :status="tabItem.loadingType"></uni-load-more> -->
@@ -86,6 +87,12 @@
 	import ApiClinet from "@/services/api-clinet";
 	import ApiConfig from "@/config/api.config";
 	import AppConfig from "@/config/app.config";
+	//twelve sixteen twelve
+	let typeList = {
+		twelve: '12:00场',
+		sixteen: '16:00场',
+		twenty: '20:00场',
+	}
 	export default {
 		components: {
 			uniLoadMore,
@@ -196,7 +203,8 @@
 					size: 10,
 				},
 				showTotal: false,
-				msg:""
+				msg:"",
+				typeList: typeList,
 			};
 		},
 		
@@ -212,7 +220,6 @@
 			}else{
 				this.loadAppointmentData();
 			}
-			// #endif
 			
 		},
 		 
@@ -301,6 +308,7 @@
 			payOrder(item) {
 				this.row = item;
 				this.type = 'pay';
+				this.msg = "";
 				this.$refs.jpPwd.toOpen()
 			},
 			payOrderData(params){
@@ -318,8 +326,12 @@
 			},
 			//转卖
 			resellOrder(item) { 
+				if(!this.resellTime(item)){
+					return;
+				}
 				this.row = item;
 				this.type = 'resell';
+				this.msg = "";
 				this.$refs.jpPwd.toOpen()
 			},
 			resellOrderData(params){
@@ -339,6 +351,7 @@
 			pickOrder(item) { 
 				this.row = item;
 				this.type = 'pick';
+				this.msg = "";
 				this.$refs.jpPwd.toOpen()
 			},
 			pickOrderData(params){
@@ -376,6 +389,15 @@
 				uni.navigateTo({
 					url: "/pages/payment/password",
 				});
+			},
+			/**转卖按钮时间控制* */
+			resellTime(item) {
+				let time = new Date().getTime();
+				if(time>item.actPaidTime+24*60*60*1000){
+					return true;
+				}else{
+					return false;
+				}
 			}
 		},
 		onReachBottom() {

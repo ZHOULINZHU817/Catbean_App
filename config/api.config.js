@@ -70,6 +70,10 @@ export default {
        assetExchange:`${ANDROID_URL}/api/app/asset/exchange`, //兑换
        assetReserve:`${ANDROID_URL}/api/app/asset/reserve`, //预约
        assetTransfer:`${ANDROID_URL}/api/app/asset/transfer`, //转赠
+       withdraw:`${ANDROID_URL}/api/app/asset/withdraw`,
+
+       /**系统信息* */
+       appInfo:`${ANDROID_URL}/api/app/info`, //转赠
 
 
 

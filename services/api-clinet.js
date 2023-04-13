@@ -42,9 +42,9 @@ class ApiClient {
 								icon: "none",
 							});
 
-							// uni.redirectTo({
-							// 	url: '../public/login'
-							// })
+							uni.redirectTo({
+								url: '../public/login'
+							})
 							// uni.redirectTo({
 							// 	url: '../../public/login'
 							// })
@@ -77,7 +77,7 @@ class ApiClient {
 								// uni.navigateTo({
 								//   url: 'login'
 								// });
-
+                                uni.removeStorageSync('userInfo');
 								err.message = "未授权，请重新登录(401)";
 								store.dispatch("auth/logout");
 								store

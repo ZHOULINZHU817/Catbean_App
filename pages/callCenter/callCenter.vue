@@ -26,11 +26,16 @@
 		},
 		onLoad(){
 			/**获取个人信息* */
-			
+			this.getAppInfo()
 		},
 		methods:{
-			
-
+      getAppInfo(){
+        ApiClinet.get(ApiConfig.APP_BASE_API.appInfo).then((res) => {
+            if (res.data.code == '200') {
+              
+            }
+        })
+      }
 		}
 	}
 </script>

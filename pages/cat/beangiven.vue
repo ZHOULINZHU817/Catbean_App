@@ -80,6 +80,7 @@ export default {
       if(!this.form.amount){
         return this.$api.msg('请输入提现金额')
       }
+      this.msg = "";
       this.$refs.jpPwd.toOpen()
     },
     saveData(){

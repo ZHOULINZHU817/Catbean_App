@@ -17,10 +17,10 @@
           :key="index"
         >
           <view class="flex1">
-            <view class="record-title">ID：{{ item.title }}</view>
+            <view class="record-title">ID：{{ item.id }}</view>
             <view class="record-date">{{ item.createTime }}</view>
           </view>
-          <view class="record-price">{{ item.amount }}</view>
+          <view class="record-price">+{{ item.amount }}</view>
         </view>
       </view>
     </view>
@@ -60,33 +60,7 @@ export default {
   },
   data() {
     return {
-        recordList: [
-        {
-          title: "12348329729717",
-          createTime: "2023-03-21 16:35:26",
-          amount: "+999",
-        },
-        {
-          title: "12348329729717",
-          createTime: "2023-03-21 16:35:26",
-          amount: "-100",
-        },
-        {
-          title: "12348329729717",
-          createTime: "2023-03-21 16:35:26",
-          amount: "-88",
-        },
-        {
-          title: "12348329729717",
-          createTime: "2023-03-21 16:35:26",
-          amount: "-10",
-        },
-        {
-          title: "12348329729717",
-          createTime: "2023-03-21 16:35:26",
-          amount: "-99",
-        }
-      ],
+        recordList: [],
       form:{
         page: 0,
         size: 10,
@@ -118,11 +92,11 @@ export default {
     getRewardList(){
       ApiClinet.get(ApiConfig.APP_BASE_API.rewardList, this.form).then((res) => {
         if (res.data.code == '200') {
-            // this.recordList = this.recordList.concat(res.data.data.records || []);
-            // this.total = Math.ceil(res.data.data.total / this.form.size);
-            // this.recordList.map(item=>{
-            //   item.createTime = formatDate(item.createTime*1);
-            // })
+            this.recordList = this.recordList.concat(res.data.data.records || []);
+            this.total = Math.ceil(res.data.data.total / this.form.size);
+            this.recordList.map(item=>{
+              item.createTime = formatDate(item.createTime*1);
+            })
         }
       })
     },
@@ -137,6 +111,7 @@ export default {
       if(!this.assetObj.buyReword){
         return this.$api.msg('兑换金额错误')
       }
+      this.msg = "";
       this.$refs.jpPwd.toOpen();
     },
     saveData(){

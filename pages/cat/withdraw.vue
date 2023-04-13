@@ -135,10 +135,11 @@ export default {
       if(!this.form.amount){
         return this.$api.msg('请输入提现金额')
       }
+      this.msg = "";
       this.$refs.jpPwd.toOpen()
     },
     saveData(){
-      ApiClinet.post(ApiConfig.APP_BASE_API.asset, this.form).then((res) => {
+      ApiClinet.post(ApiConfig.APP_BASE_API.withdraw, this.form).then((res) => {
         if (res.data.code == '200') {
             this.$refs.jpPwd.toCancel()
             this.$api.msg('提现成功！')

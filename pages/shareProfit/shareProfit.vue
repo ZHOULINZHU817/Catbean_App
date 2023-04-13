@@ -67,41 +67,22 @@ export default {
   },
   data() {
     return {
-        tableList:[
-            {
-                createTime:'2023-02-08 20:33',
-                tradeAmount1:'好友分润',
-                estimatedIncomes:"44867654",
-                amount:"0.76"
-            },
-            {
-                createTime:'2023-02-08 20:33',
-                tradeAmount1:'好友分润',
-                estimatedIncomes:"44867654",
-                amount:"0.76"
-            },
-            {
-                createTime:'2023-02-08 20:33',
-                tradeAmount1:'好友分润',
-                estimatedIncomes:"44867654",
-                amount:"0.76"
-            }
-        ],
+        tableList:[],
         columns: [{
                 title: "日期",
                 key: "createTime",
-                width: '30%',
+                width: '34%',
                 listenerClick: true
             },
             {
                 title: '行为',
                 key: 'tradeAmount1',
-                width: '30%',
+                width: '26%',
                 listenerClick: true
             },
             {
                 title: '来源',
-                key: 'estimatedIncomes',
+                key: 'id',
                 width: '20%',
                 listenerClick: true
             },
@@ -143,10 +124,11 @@ export default {
     getRewardList(){
       ApiClinet.get(ApiConfig.APP_BASE_API.rewardList, this.form).then((res) => {
         if (res.data.code == '200') {
-            // this.tableList = res.data.data.records || [];
-            // this.tableList.map(item=>{
-            //   item.createTime = formatDate(item.createTime*1);
-            // })
+            this.tableList = res.data.data.records || [];
+            this.tableList.map(item=>{
+              item.createTime = formatDate(item.createTime*1);
+              item.tradeAmount1 = "好友分润";
+            })
         }
       })
     },
@@ -167,7 +149,7 @@ export default {
     saveData(){
       let params = {
         amount: this.assetObj.teamReward,
-        type: 'child',
+        type: 'team',
         payPwd: this.payPwd
       }
       ApiClinet.put(ApiConfig.APP_BASE_API.assetExchange, params).then((res) => {

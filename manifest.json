@@ -105,16 +105,16 @@
             "mode" : "history",
             "base" : "./"
         },
-        "devServer": {
-            "port": 8080,
-            "disableHostCheck": true,
-            "proxy": {
-                "/api": {
-                    "target": "https://mc.hongfeigg.com/",
-                    "changeOrigin": true,
-                    "secure": true,
-                    "pathRewrite":{
-                        "^/api":"/api"
+        "devServer" : {
+            "port" : 8080,
+            "disableHostCheck" : true,
+            "proxy" : {
+                "/api" : {
+                    "target" : "https://mc.hongfeigg.com/",
+                    "changeOrigin" : true,
+                    "secure" : true,
+                    "pathRewrite" : {
+                        "^/api" : "/api"
                     }
                 }
             }
