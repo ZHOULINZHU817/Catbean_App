@@ -240,7 +240,7 @@
                                 "type":"none",
                                 "color":"#000",
                                 "fontSize":"14px",
-								"float":"right"
+								"width":"80px"
 							}
 						]
 					}

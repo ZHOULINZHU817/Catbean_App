@@ -33,14 +33,13 @@
 
 <style lang='scss'>
 page{
-    background: $page-color-base;
+  background: url(@/static/kefu.png) 100% no-repeat;
+  background-size: 100% 100%;
 }
 .container{
   position: relative;
   width: 100vw;
   height: 93vh;
-  background: url(@/static/kefu.png) 100% no-repeat;
-  background-size: 100% 100%;
   .qrcode{
     position: absolute;
     right:20%;

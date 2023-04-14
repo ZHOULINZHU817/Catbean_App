@@ -158,6 +158,7 @@
 	}
 	.row-center{
 	   align-items: center;
+	   display: flex;
 	   .tit{
 			flex-shrink: 0;
 			font-size: 26upx;
@@ -180,7 +181,7 @@
 			font-size:20upx;
 			color:rgb(184, 180, 180);
 			height:45upx;
-			border-bottom: 1upx solid #E4E7ED;
+			// border-bottom: 1upx solid #E4E7ED;
 		}
 		.address-outside{
 		   padding-top:30upx;
@@ -207,5 +208,8 @@
 	}
 	.flex1{
 		flex: 1;
+	}
+	.padding-lr-30 {
+		padding: 0 15px;
 	}
 </style>
