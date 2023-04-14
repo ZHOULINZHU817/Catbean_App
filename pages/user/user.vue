@@ -4,7 +4,7 @@
 		<view class="user-section">
 			<view class="user-set">
 				<view class="user-set-view"></view>
-				<view class="user-set-icon"><text class="yticon icon-xiaoxi font-icon" @click="goNews"><text v-if="isDot" class="xiaoxi-dian"></text></text> <text class="yticon icon-shezhi font-icon" @click="goSet"></text></view>
+				<view class="user-set-icon"><view class="yticon icon-xiaoxi font-icon" @click="goNews"><text v-if="isDot" class="xiaoxi-dian"></text></view> <view class="yticon icon-shezhi font-icon" @click="goSet"></view></view>
 			</view>
 			<image class="bg" src="/static/user-bg.jpg"></image>
 			<view class="user-info-box">
@@ -269,7 +269,7 @@ page{
 
 	.user-section{
 		height: 740upx;
-		padding: 100upx 30upx 0;
+		padding: 120upx 30upx 0;
 		position:relative;
 		.bg{
 			position:absolute;
@@ -289,13 +289,14 @@ page{
 				flex: 1;
 			}
 			.user-set-icon{
-				width:80upx;
+				display: flex;
+				// width:80upx;
 				color:#000000;
 			}
 			.font-icon{
 				font-size:38upx;
 				color:#000000;
-				padding-right:20upx;
+				padding:20upx;
 			}
 			.icon-xiaoxi{
 				position: relative;

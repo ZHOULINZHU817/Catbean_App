@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<view class="padding-lr-30 bg-white">
+		<view class="bg-white">
             <view class="row b-b">
 				<text class="tit">收货人</text>
 				<input class="input" type="text" v-model="addressData.receiver" placeholder="收货人姓名" placeholder-class="placeholder" />
@@ -136,7 +136,7 @@
 		position: relative;
 		height: 100upx;
 		background: #fff;
-		
+		padding: 0 15px;
 		.tit{
 			flex-shrink: 0;
 			width: 160upx;

@@ -178,11 +178,13 @@ export default {
 </script>
 
 <style lang='scss'>
-.stroke-cat {
-  height: 85.9vh;
-  width: 100vw;
+page{
   background: url(@/static/cat_bg.png) 100% no-repeat;
   background-size: cover;
+}
+.stroke-cat {
+  // height: 85.9vh;
+  width: 100vw;
   .stroke-cat-time {
     // margin: 80upx 30upx;
     text-align: center;
