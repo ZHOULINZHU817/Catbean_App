@@ -47,7 +47,7 @@
                 </view>
             </view>
 		    <view class="rank-btn" @click="cancelRank">
-                <img src="@/static/user/close-bg.jpg"/>
+                <view class="close"></view>
             </view>
 		</view>
 	</uni-popup>
@@ -231,6 +231,9 @@ page {
         display: flex;
         padding: 24upx;
         align-items: center;
+        .flex1{
+          flex: 1;
+        }
         .record-title {
           font-size: 30upx;
           color: #333333;
@@ -330,9 +333,11 @@ page {
         padding-top:80upx;
         display: flex;
         justify-content: center;
-        img{
-            width: 56upx;
-            height: 56upx;
+        .close{
+          width: 56upx;
+          height: 56upx;
+          background: url(@/static/user/close-bg.jpg) 100% no-repeat;
+          background-size: 100% 100%;
         }
     }
     .uni-input-input, .uni-input-placeholder {

@@ -5,28 +5,137 @@
 	import {
 		mapMutations
 	} from 'vuex';
+
+	import ApiClinet from "@/services/api-clinet";
+	import ApiConfig from "@/config/api.config";
 	export default {
 		methods: {
-			...mapMutations(['login'])
+
+			// 版本更新方法
+			wgtUrlupload(){
+				let _this = this;
+				//系统版本升级判断接口（后台获取服务器）
+				// var urlfun = 你自己后台服务器的接口方法  判断是否需要升级
+					/** 锁定屏幕方向 */
+					// plus.screen.lockOrientation('portrait-primary');
+					//     console.log("onLaunch锁定屏幕方向")
+					// /** 检测升级 */
+					// // 取得版本号
+					// plus.runtime.getProperty(plus.runtime.appid, function(info) {
+					// 	// 版本号变量持久化存储
+					// 	console.log('info', info)
+					// 	getApp().globalData.editionnum = info.version; //版本号持久化存储做其它备用
+					// 	// console.log("当前应用版本：" + info.version + "---" + plus.runtime.version);
+					// 	// console.log("appid：" +plus.runtime.appid);
+					// 	// console.log("appid基座版本号：" +plus.runtime.version);
+					// 	// uni.request({
+					// 	//     url: urlfun, 	//接口地址。url
+					// 	// 	method:"POST",		//传输类型
+					// 	//     data: {
+					// 	// 		"appid": plus.runtime.appid,
+					// 	// 		"version": plus.runtime.version,
+					// 	// 		"system":uni.getStorageSync('systemname'),
+					// 	// 		"editionnum":info.version,
+					// 	// 	},		//必要参数
+					// 	// 	// header: data.header,	//https 请求头参数
+					// 	//     success: (res) => {
+					// 	//         console.log("AJAX数据请求接口--返回状态--"+JSON.stringify(res.data));
+					// 	// 		var data = res.data;
+					// 	// 		var status = data.status;
+					// 	// 		// 判断返回结果,调用升级方法
+					// 	// 		if(status == 200){
+					// 	// 			// 开始调用  data = 服务器返回的数据里面有 新的版本号，下载地址
+					// 	// 			_this.checkVersionToLoadUpdate(info.version,data);
+					// 	// 		}else{
+					// 	// 			uni.showToast({
+					// 	// 				title: data.msg, 
+					// 	// 				duration: 1500  
+					// 	// 			}); 
+					// 	// 		}
+					// 	//     }
+					// 	// });
+					// 	const typeFiler = uni.getSystemInfoSync().platform
+					// 	let params = {
+					// 		type: typeFiler == 'ios'? 'ipa':'apk',
+					// 	}
+					// 	ApiClinet.get(ApiConfig.APP_BASE_API.versionLast, params).then((res) => {
+					// 		if (res.data.code == '200') {
+					// 			_this.checkVersionToLoadUpdate(info.version,res.data.data);
+					// 		}
+					// 	})
+
+
+
+					// })
+				
+			},
+
+			/**
+			 * 进行版本型号的比对 以及下载更新请求
+			 * @param {Object} server_version 服务器最新 应用版本号
+			 * @param {Object} curr_version 当前应用版本号
+			 */
+			checkVersionToLoadUpdate:function(server_version,data){
+				if(server_version !== data.number && data.forced){
+					//TODO 此处判断是否为 WIFI连接状态
+					if(plus.networkinfo.getCurrentType()!=3){
+						uni.showToast({  
+							title: '有新的版本发布，检测到您目前非Wifi连接，为节约您的流量，程序已停止自动更新，将在您连接WIFI之后重新检测更新',  
+							mask: true,  
+							duration: 5000,
+							icon:"none"
+						});  
+						return;  
+					}else{
+						uni.showModal({
+							title: "版本更新",
+							content: '有新的版本发布，检测到您当前为Wifi连接，是否立即进行新版本下载？',
+							confirmText:'立即更新',
+							cancelText:'稍后进行',
+							success: function (res) {
+								if (res.confirm) {
+									uni.showToast({
+										icon:"none",
+										mask: true,
+										title: '有新的版本发布，检测到您目前为Wifi连接，程序已启动自动更新。新版本下载完成后将自动弹出安装程序',  
+										duration: 5000,  
+									}); 
+									//设置 最新版本apk的下载链接
+									var downloadApkUrl = data.url;
+									var dtask = plus.downloader.createDownload( downloadApkUrl, {}, function ( d, status ) {  
+											// 下载完成  
+											if ( status == 200 ) {   
+												plus.runtime.install(plus.io.convertLocalFileSystemURL(d.filename),{},{},function(error){  
+													uni.showToast({  
+														title: '安装失败', 
+														duration: 1500  
+													});  
+												})
+											} else {  
+												 uni.showToast({  
+													title: '更新失败',
+													duration: 1500  
+												 });  
+											}    
+										});  
+									dtask.start();
+								} else if (res.cancel) {
+									console.log('稍后更新');
+								}
+							}
+						});
+					}
+				}
+			}
 		},
 		onLaunch: function() {
-			let userInfo = uni.getStorageSync('userInfo') || '';
-			if(userInfo.id){
-				//更新登陆状态
-				uni.getStorage({
-					key: 'userInfo',
-					success: (res) => {
-						// this.login(res.data);
-					}
-				});
-			}
-			
+			this.wgtUrlupload();
 		},
 		onShow: function() {
-			console.log('App Show')
+			
 		},
 		onHide: function() {
-			console.log('App Hide')
+			// console.log('App Hide')
 		},
 	}
 </script>

@@ -5,7 +5,7 @@
       <!-- <view class="profit-bg-price">{{assetObj.totalTeamReward || 0}}</view> -->
       <input
         class="profit-bg-price"
-        :value="assetObj.totalTeamReward || 0"
+        :value="assetObj.teamReward || 0"
         placeholder="请输入10的整倍数"
         @input="inputChange"
       />
@@ -43,7 +43,7 @@
               <view class="model-wraper-bg">
                   <view class="modal-title">分润值兑换</view>
                   <view class="modal-content">
-                      <view class="modal-content-title">您当前共有<text>{{assetObj.totalTeamReward || 0}}</text>分润值可兑换</view>
+                      <view class="modal-content-title">您当前共有<text>{{assetObj.teamReward || 0}}</text>分润值可兑换</view>
                       <view class="modal-content-text">分润值兑换到余额需扣除5%</view>
                       <view class="modal-content-text">兑换金额10起兑，且为10的整数倍</view>
                       <view class="modal-content-text">一天可以兑换一次，每日0点刷新次数</view>
@@ -53,7 +53,7 @@
                   </view>
               </view>
           <view class="rank-btn" @click="cancelRank">
-                  <img src="../../static/user/close-bg.jpg"/>
+                  <view class="close"></view>
               </view>
       </view>
     </uni-popup>
@@ -122,7 +122,7 @@ export default {
   },
   methods: {
     inputChange(e){
-      this.$set(this.assetObj, 'totalTeamReward', e.detail.value)
+      this.$set(this.assetObj, 'teamReward', e.detail.value)
     },
     /**获取资产* */
     getAsset() {
@@ -145,10 +145,10 @@ export default {
       })
     },
     exchange(){
-        if(!this.assetObj.teamReward || (this.oldAsset.totalTeamReward < this.assetObj.totalTeamReward)){
+        if(!this.assetObj.teamReward || (this.oldAsset.teamReward < this.assetObj.teamReward)){
           return this.$api.msg('兑换金额不足！');
         }
-        if((this.assetObj.totalTeamReward%10) != 0){
+        if((this.assetObj.teamReward%10) != 0){
           return this.$api.msg('请输入10的整倍数');
         }
         this.$refs['rankModal'].open();
@@ -381,9 +381,11 @@ page {
         padding-top:80upx;
         display: flex;
         justify-content: center;
-        img{
-            width: 56upx;
-            height: 56upx;
+        .close{
+          width: 56upx;
+          height: 56upx;
+          background: url(@/static/user/close-bg.jpg) 100% no-repeat;
+          background-size: 100% 100%;
         }
     }
     .uni-input-input, .uni-input-placeholder {

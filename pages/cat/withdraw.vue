@@ -92,7 +92,6 @@ export default {
   },
   methods: {
     onNavigationBarButtonTap() {
-      this.$api.msg("点击");
       uni.navigateTo({
         url: "/pages/cat/withDrawManner?state=0",
       });

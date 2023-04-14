@@ -15,6 +15,7 @@
             placeholder="请输入手机号码"
             maxlength="11"
             data-key="phone"
+            disabled
             @input="inputChange"
           />
         </view>
@@ -96,9 +97,12 @@ export default {
       iconSrc: "../../static/tab/close.png", //图标眼睛
       codeTxt: "获取验证码",
       iconSrcNew: "../../static/tab/close.png", //图标眼睛
+      userInfo: JSON.parse(uni.getStorageSync('userInfo'))
     };
   },
-  onLoad() {},
+  onLoad() {
+    this.form.phone = this.userInfo.phone;
+  },
   methods: {
     inputChange(e) {
       const key = e.currentTarget.dataset.key;

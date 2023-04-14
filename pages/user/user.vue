@@ -23,19 +23,19 @@
 		>
 			<view class="tj-sction">
 				<view class="tj-item"  @click="navTo('/pages/cat/catbean')">
-					<text class="num">{{assetObj.catFood || 0}}</text>
+					<text class="num">{{userInfo.catFood || 0}}</text>
 					<text>猫豆</text> 
 				</view>
 				<view class="tj-item"  @click="navTo('/pages/shareProfit/shareProfit')">
-					<text class="num">{{assetObj.teamReward || 0}}</text>
+					<text class="num">{{userInfo.teamReward || 0}}</text>
 					<text>分润</text>
 				</view>
 				<view class="tj-item" @click="navTo('/pages/rewards/rewards')">
-					<text class="num">{{assetObj.buyReword || 0}}</text>
+					<text class="num">{{userInfo.buyReword || 0}}</text>
 					<text>奖励金</text>
 				</view>
 				<view class="tj-item" @click="navTo('/pages/shareValue/shareValue')">
-					<text class="num">{{assetObj.childReward || 0}}</text>
+					<text class="num">{{userInfo.childReward || 0}}</text>
 					<text>分享值</text>
 				</view>
 			</view>
@@ -152,7 +152,7 @@
 			/**是否消息认证* */
 			this.getCardExist();
 			/**资产** */
-			this.getAsset();
+			// this.getAsset();
 			/**获取个人信息* */
 			this.memberInfo();
 		},
@@ -182,13 +182,13 @@
 					}
 				})
 			},
-			getAsset() {
-				ApiClinet.get(ApiConfig.APP_BASE_API.asset).then((res) => {
-					if (res.data.code == '200') {
-					   this.assetObj = res.data.data;
-					}
-				})
-			},
+			// getAsset() {
+			// 	ApiClinet.get(ApiConfig.APP_BASE_API.asset).then((res) => {
+			// 		if (res.data.code == '200') {
+			// 		   this.assetObj = res.data.data;
+			// 		}
+			// 	})
+			// },
             goNews(){
 				uni.navigateTo({
 					url: '/pages/notice/notice'
@@ -247,8 +247,11 @@
     }  
 </script>  
 <style lang='scss'>
-.container{
+page{
 	background-color: rgba(246, 246, 246, 1);
+}
+.container{
+	// background-color: rgba(246, 246, 246, 1);
 }
 	%flex-center {
 	 display:flex;

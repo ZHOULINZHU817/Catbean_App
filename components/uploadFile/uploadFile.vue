@@ -17,7 +17,7 @@
                     <div class="cover">
                         <img v-if="param.defaultposter" class="defaultposter" :src="param.defaultposter" mode="aspectFit" />
                         <div class="poster" v-else>
-                            <img class="add" src="@/static/user/photo.jpg" />
+                            <view class="add"></view>
                             <span>{{param.label}}</span>
                         </div>
                     </div>
@@ -386,6 +386,8 @@
     position: relative;
     width: 56rpx;
     height: 42rpx;
+	background: url(@/static/user/photo.jpg) 100% no-repeat;
+    background-size: 100% 100%;
 }
 
 .photo-uplaod .core .cover .defaultposter {

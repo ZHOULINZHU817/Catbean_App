@@ -205,4 +205,7 @@
 		background-image: linear-gradient(90deg, rgba(255, 104, 166, 1) 0,rgba(255, 71, 140, 1) 100%);
 		border-radius: 46upx;
 	}
+	.flex1{
+		flex: 1;
+	}
 </style>

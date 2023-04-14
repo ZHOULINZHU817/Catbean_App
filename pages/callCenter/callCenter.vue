@@ -1,6 +1,7 @@
 <template>
 	<view class="container">
-		<w-qrcode class="qrcode" ref="qrcode" :options="options"></w-qrcode>
+		<!-- <w-qrcode class="qrcode" ref="qrcode" :options="options"></w-qrcode> -->
+    <img class="qrcode" :src="callImg" />
 	</view>
 </template>
 
@@ -10,18 +11,7 @@
 	export default {
 		data() {
 			return {
-				options: {
-                    code:'22',
-                    size:'460',
-                    img: {// 二维码log配置 非必传
-                        src: '../../static/cat.png', // 图片地址
-                        size: 100,// 图片大小
-                        degree: 15,// 圆角大小 如果type为round生效
-                        type: 'round',//图片展示类型 默认none 可选值  round圆角  circle圆 如果为round 可以传入degree设置圆角大小 默认 5
-                        color: '#ffffff', //图片周围的白色边框
-                        width: 8 //图片周围白色边框的宽度 默认5
-                    },
-                }
+				callImg:''
 			};
 		},
 		onLoad(){
@@ -32,7 +22,8 @@
       getAppInfo(){
         ApiClinet.get(ApiConfig.APP_BASE_API.appInfo).then((res) => {
             if (res.data.code == '200') {
-              
+              this.callImg = res.data.data.customer_service;
+              console.log('+++++',this.callImg )
             }
         })
       }
@@ -53,7 +44,9 @@ page{
   .qrcode{
     position: absolute;
     right:20%;
-    bottom: 20%;;
+    bottom: 20%;
+    width:460upx;
+    height:460upx;
   }
 }
 

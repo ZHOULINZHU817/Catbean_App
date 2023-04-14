@@ -201,7 +201,7 @@
 				ApiClinet.post(ApiConfig.APP_BASE_API.recordGoodBuy, params).then((res) => {
 					if (res.data.code == '200') {
 						uni.navigateTo({
-							url: `/pages/order/order?state=1`
+							url: `/pages/order/order?state=0`
 						})
 					}else{
 						this.$api.msg(res.data.msg)

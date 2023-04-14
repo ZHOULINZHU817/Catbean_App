@@ -28,24 +28,29 @@
 							class="order-item"
 						> 
 							<view class="order-item-f">
-								<view class="order-item-fl"><text>订单编号：</text>{{item.id}}</view>
+								<view class="order-item-fl"><text>订单编号：</text>{{item.orderNo}}</view>
 								<view class="order-item-fr" :style="{color:orderStatusNameExp(item.status).stateTipColor}">{{orderStatusNameExp(item.status).stateTip}}</view>
 							</view>
-							<view v-if="item.status =='1'" class="order-item-text"><text>预约时间：</text>{{item.handlerDate}}</view>
-							<view class="order-item-text"><text>场次：</text>{{item.session}}</view>
-							<view class="order-item-text"><text>价格：</text>{{item.price}}</view>
-							<view v-if="item.status !='1'" class="order-item-text"><text>流拍次数：</text>{{item.passedIn}}</view>
-							<view v-if="item.status !='1'" class="order-item-text"><text>违约次数：</text>{{item.contractNum}}</view>
-							<view v-if="item.status !='1'" class="order-item-text"><text>抢中时间：</text>{{item.yDate}}</view>
-							<view v-if="item.status=='3' || item.state=='4' || item.state=='5'" class="order-item-text"><text>转卖人：</text>{{item.person}}</view>
-							<view v-if="item.status=='2'" class="order-item-text margin-b-20"><text>可转卖倒计时：</text>{{item.countdown}}</view>
+							<!-- <view class="order-item-text"><text>预约时间：</text>{{item.handlerDate}}</view> -->
+							<view class="order-item-text"><text>场次：</text>{{typeList[item.saleOrder && item.saleOrder.type]}}</view>
+							<view class="order-item-text"><text>价格：</text>{{item.saleOrder && item.saleOrder.price}}</view>
+							<view class="order-item-text"><text>流拍次数：</text>{{item.saleOrder && item.saleOrder.missCnt}}</view>
+							<view class="order-item-text"><text>违约次数：</text>{{item.saleOrder && item.saleOrder.breachCnt}}</view>
+							<view class="order-item-text"><text>抢中时间：</text>{{formatDate(item.actBuyTime)}}</view>
+							<view v-if="item.status=='resell'" class="order-item-text"><text>转卖人：</text>{{item.member && item.member.name}}</view>
+							<view v-if="item.status=='paid'" class="order-item-text margin-b-20"><text>可转卖倒计时：</text>
+							<count-down
+								class="down"
+								:endTime="endTimeData(item.actBuyTime)"
+								:endText="endText"
+							/></view>
 							<view v-if="item.status=='buying'" class="order-item-btn">
 								<view class="flex1"></view>
 								<view class="order-item-btn1" @click="payOrder(item)">立即支付</view>
 							</view>
 							<view v-if="item.status=='paid'" class="order-item-btn">
 								<view class="flex1"></view>
-								<view :class="resellTime(item)?'order-item-btn':'order-item-btn2'" @click="resellOrder(item)">立即转卖</view>
+								<view :class="resellTime(item)?'order-item-btn1':'order-item-btn2'" @click="resellOrder(item)">立即转卖</view>
 							</view>
 							<view v-if="item.status=='resell'" class="order-item-btn">
 								<view class="flex1"></view>
@@ -65,7 +70,7 @@
 							<view class="order-item-text"><text>预约时间：</text>{{formatDate(item.reserveDate)}}</view>
 							<view class="order-item-text"><text>场次：</text>{{typeList[item.type]}}</view>
 							<view class="order-item-text"><text>预约次数：</text>{{item.cnt}}</view>
-							<view class="order-item-text"><text>抢中数量：</text>{{item.buyNum}}</view>
+							<view class="order-item-text"><text>抢中数量：</text>{{item.buyNum|| '--'}}</view>
 						</view>
 					</view>
 					<!-- <uni-load-more :status="tabItem.loadingType"></uni-load-more> -->
@@ -102,62 +107,62 @@
 			return {
 				tabCurrentIndex: 0,
 				panicBuyList: [
-					{
-						status: 'buying', 
-						id:"1236789004321", //订单编号
-						session:'12:00',
-						price:'90',
-						passedIn: 3,
-						contractNum: 5,
-						yDate:"2023年02月02日",
-						person:'18897686654',
-						countdown:'23:00:00',
-						handlerDate:"2023年02月02日",
-					},
-					{
-						status: 'paid', 
-						id:"1236789004321", //订单编号
-						session:'12:00',
-						price:'90',
-						passedIn: 3,
-						contractNum: 5,
-						yDate:"2023年02月02日",
-						person:'18897686654',
-						countdown:'23:00:00',
-					},
-					{
-						status: 'resell', 
-						id:"1236789004321", //订单编号
-						session:'12:00',
-						price:'90',
-						passedIn: 3,
-						contractNum: 5,
-						yDate:"2023年02月02日",
-						person:'18897686654',
-						countdown:'23:00:00',
-					},
-					{
-						status: 'breach', 
-						id:"1236789004321", //订单编号
-						session:'12:00',
-						price:'90',
-						passedIn: 3,
-						contractNum: 5,
-						yDate:"2023年02月02日",
-						person:'18897686654',
-						countdown:'23:00:00',
-					},
-					{
-						status: 'finish', 
-						id:"1236789004321", //订单编号
-						session:'12:00',
-						price:'90',
-						passedIn: 3,
-						contractNum: 5,
-						yDate:"2023年02月02日",
-						person:'18897686654',
-						countdown:'23:00:00',
-					}
+					// {
+					// 	status: 'buying', 
+					// 	id:"1236789004321", //订单编号
+					// 	session:'12:00',
+					// 	price:'90',
+					// 	passedIn: 3,
+					// 	contractNum: 5,
+					// 	yDate:"2023年02月02日",
+					// 	person:'18897686654',
+					// 	countdown:'23:00:00',
+					// 	handlerDate:"2023年02月02日",
+					// },
+					// {
+					// 	status: 'paid', 
+					// 	id:"1236789004321", //订单编号
+					// 	session:'12:00',
+					// 	price:'90',
+					// 	passedIn: 3,
+					// 	contractNum: 5,
+					// 	yDate:"2023年02月02日",
+					// 	person:'18897686654',
+					// 	countdown:'23:00:00',
+					// },
+					// {
+					// 	status: 'resell', 
+					// 	id:"1236789004321", //订单编号
+					// 	session:'12:00',
+					// 	price:'90',
+					// 	passedIn: 3,
+					// 	contractNum: 5,
+					// 	yDate:"2023年02月02日",
+					// 	person:'18897686654',
+					// 	countdown:'23:00:00',
+					// },
+					// {
+					// 	status: 'breach', 
+					// 	id:"1236789004321", //订单编号
+					// 	session:'12:00',
+					// 	price:'90',
+					// 	passedIn: 3,
+					// 	contractNum: 5,
+					// 	yDate:"2023年02月02日",
+					// 	person:'18897686654',
+					// 	countdown:'23:00:00',
+					// },
+					// {
+					// 	status: 'finish', 
+					// 	id:"1236789004321", //订单编号
+					// 	session:'12:00',
+					// 	price:'90',
+					// 	passedIn: 3,
+					// 	contractNum: 5,
+					// 	yDate:"2023年02月02日",
+					// 	person:'18897686654',
+					// 	countdown:'23:00:00',
+					// }
 				],
 				navList: [
 					{
@@ -205,6 +210,8 @@
 				showTotal: false,
 				msg:"",
 				typeList: typeList,
+				endTime: '',
+                endText: "0",
 			};
 		},
 		
@@ -225,6 +232,11 @@
 		 
 		methods: {
 			formatDate,
+			endTimeData(data){
+             let dateNew = data + 24*60*60*1000;
+			 this.endTime = dateNew / 1000 + " "
+             return this.endTime
+			},
 			//获取订单列表
 			loadData(source){
 				ApiClinet.get(ApiConfig.APP_BASE_API.recordBuyList, this.form).then((res) => {
@@ -393,7 +405,7 @@
 			/**转卖按钮时间控制* */
 			resellTime(item) {
 				let time = new Date().getTime();
-				if(time>item.actPaidTime+24*60*60*1000){
+				if(time>item.actBuyTime+24*60*60*1000){
 					return true;
 				}else{
 					return false;
@@ -654,5 +666,8 @@
 		line-height: 60upx;
 		font-size:28upx;
 		color:#999999;
+	}
+	.flex1{
+		flex: 1;
 	}
 </style>

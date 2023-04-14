@@ -10,7 +10,8 @@
 				欢迎回来！
 			</view> -->
       <view class="cat-logo">
-        <img class="cat-logo-img" src="@/static/cat.png" />
+        <!-- <img class="cat-logo-img" src="@/static/cat.png" /> -->
+        <view class="cat-logo-img"></view>
       </view>
       <view class="cat-logo">
         <view class="cat-logo-title">欢迎来到布偶猫舍</view>
@@ -266,6 +267,8 @@ page {
     height: 80upx;
     width: 80upx;
     margin-bottom: 22upx;
+    background: url(@/static/cat.png) 100% no-repeat;
+    background-size: 100% 100%;
   }
   .cat-logo-title {
     font-size: 34upx;

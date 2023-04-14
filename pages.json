@@ -239,7 +239,8 @@
 								"text":"提现记录",
                                 "type":"none",
                                 "color":"#000",
-                                "fontSize":"14px"
+                                "fontSize":"14px",
+								"float":"right"
 							}
 						]
 					}

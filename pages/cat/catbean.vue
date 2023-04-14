@@ -179,6 +179,9 @@ page {
         display: flex;
         padding: 24upx;
         align-items: center;
+        .flex1{
+          flex: 1;
+        }
         .record-title {
           font-size: 30upx;
           color: #333333;

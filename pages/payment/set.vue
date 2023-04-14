@@ -144,7 +144,7 @@ export default {
         if (res.data.code == '200') {
             this.$api.msg('设置成功！')
             this.logining = false;
-            // this.navBack();
+            this.navBack();
         }else{
             this.$api.msg(res.data.msg)
             this.logining = false;

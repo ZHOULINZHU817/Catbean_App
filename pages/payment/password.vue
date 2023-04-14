@@ -82,6 +82,7 @@ export default {
 					if (res.data.code == '200') {
 					   this.$api.msg('支付密码修改成功！')
              this.logining = false;
+             this.navBack();
 					}else{
              this.$api.msg(res.data.msg)
              this.logining = false;

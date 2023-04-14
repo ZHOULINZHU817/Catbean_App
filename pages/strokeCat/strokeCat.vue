@@ -42,7 +42,7 @@
           </view>
         </view>
         <view class="rank-btn" @click="cancelRank">
-          <img src="../../static/user/close-bg.jpg" />
+          <view class="close"></view>
         </view>
       </view>
     </uni-popup>
@@ -357,9 +357,11 @@ export default {
     padding-top: 80upx;
     display: flex;
     justify-content: center;
-    img {
+    .close{
       width: 56upx;
       height: 56upx;
+      background: url(@/static/user/close-bg.jpg) 100% no-repeat;
+      background-size: 100% 100%;
     }
   }
 }
