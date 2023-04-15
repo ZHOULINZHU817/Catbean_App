@@ -11,22 +11,23 @@
 		data() {
 			return {
 				options: {
-                    code:'22',
-                    size:'200',
-                    img: {// 二维码log配置 非必传
-                        src: '../../static/cat.png', // 图片地址
-                        size: 40,// 图片大小
-                        degree: 15,// 圆角大小 如果type为round生效
-                        type: 'round',//图片展示类型 默认none 可选值  round圆角  circle圆 如果为round 可以传入degree设置圆角大小 默认 5
-                        color: '#ffffff', //图片周围的白色边框
-                        width: 8 //图片周围白色边框的宽度 默认5
-                    },
-                }
+            code:'http://192.168.1.103:8080/#/pages/public/signin', //生成二维码的链接
+            size:'200',
+            img: {// 二维码log配置 非必传
+                src: '../../static/cat.png', // 图片地址
+                size: 40,// 图片大小
+                degree: 15,// 圆角大小 如果type为round生效
+                type: 'round',//图片展示类型 默认none 可选值  round圆角  circle圆 如果为round 可以传入degree设置圆角大小 默认 5
+                color: '#ffffff', //图片周围的白色边框
+                width: 8 //图片周围白色边框的宽度 默认5
+            },
+        },
+        userInfo: JSON.parse(uni.getStorageSync('userInfo'))
 			};
 		},
 		onLoad(){
 			/**获取个人信息* */
-			
+			this.options.code = `http://192.168.1.103:8080/#/pages/public/signin?code=${this.userInfo.inviteCode}`
 		},
 		methods:{
 			

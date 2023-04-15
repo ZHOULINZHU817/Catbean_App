@@ -55,14 +55,14 @@
 					// 	//     }
 					// 	// });
 					// 	const typeFiler = uni.getSystemInfoSync().platform
-					// 	let params = {
-					// 		type: typeFiler == 'ios'? 'ipa':'apk',
-					// 	}
-					// 	ApiClinet.get(ApiConfig.APP_BASE_API.versionLast, params).then((res) => {
-					// 		if (res.data.code == '200') {
-					// 			_this.checkVersionToLoadUpdate(info.version,res.data.data);
-					// 		}
-					// 	})
+						// let params = {
+						// 	type: typeFiler == 'ios'? 'ipa':'apk',
+						// }
+						// ApiClinet.get(ApiConfig.APP_BASE_API.versionLast, params).then((res) => {
+						// 	if (res.data.code == '200') {
+						// 		_this.checkVersionToLoadUpdate(info.version,res.data.data);
+						// 	}
+						// })
 
 
 

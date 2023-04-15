@@ -54,7 +54,7 @@
         <view class="input-item">
           <input
             :value="form.inviteCode"
-            placeholder="请输入邀请码（选填）"
+            placeholder="请输入邀请码（必填）"
             data-key="inviteCode"
             @input="inputChange"
           />
@@ -85,8 +85,9 @@ export default {
       },
     };
   },
-  onLoad() {
-    
+  onLoad(options) {
+    this.form.inviteCode = options && options.code;
+    document.querySelector('.uni-page-head-hd').style.display = 'none'
   },
   methods: {
     inputChange(e) {
@@ -97,11 +98,17 @@ export default {
       uni.navigateBack();
     },
     toRegist() {
+      if(!this.form.inviteCode){
+        return this.$api.msg('请填写邀请码')
+      }
       ApiClinet.post(ApiConfig.APP_BASE_API.register, this.form, {
 					loading: true
 				}).then((res) => {
 					if (res.data.code == '200') {
 					   this.$api.msg('注册成功！')
+             uni.redirectTo({
+              url: `/pages/cat/download`,
+            });
 					}else{
              this.$api.msg(res.data.msg)
           }
