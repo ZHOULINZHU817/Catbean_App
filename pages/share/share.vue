@@ -31,7 +31,7 @@
 		},
 		onLoad(){
 			/**获取个人信息* */
-			this.options.code = `https://mc.hongfeigg.com/#/pages/public/signin?code=${this.userInfo.inviteCode}`
+			this.options.code = `https://mc.hongfeigg.com/h5/#/pages/public/signin?code=${this.userInfo.inviteCode}`
 		},
 		methods:{
       hello(res) {
