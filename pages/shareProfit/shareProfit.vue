@@ -388,7 +388,7 @@ page {
           background-size: 100% 100%;
         }
     }
-    .uni-input-input, .uni-input-placeholder {
+    .uni-input-placeholder {
        font-size: 32upx;
        color:#ffffff;
     }
