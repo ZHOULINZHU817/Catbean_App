@@ -272,10 +272,11 @@ page{
       .stroke-select{
         display: flex;
         flex-flow:row wrap;
+        padding-left: 20upx;
         .stroke-select-item{
             width: 20%;
             height:60upx;
-            line-height: 60upx;
+            line-height: 50upx;
             border:1upx solid #CFCFCF;
             border-radius: 10upx;
             text-align: center;

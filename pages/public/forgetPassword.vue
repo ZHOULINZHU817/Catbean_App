@@ -97,7 +97,7 @@ export default {
       iconSrc: "../../static/tab/close.png", //图标眼睛
       codeTxt: "获取验证码",
       iconSrcNew: "../../static/tab/close.png", //图标眼睛
-      userInfo: JSON.parse(uni.getStorageSync('userInfo'))
+      userInfo:  uni.getStorageSync('userInfo') && JSON.parse(uni.getStorageSync('userInfo'))
     };
   },
   onLoad() {
@@ -156,7 +156,7 @@ export default {
     //   }
     // },
     changeIcon() {
-      if (this.pwd) {
+      if (this.form.pwd) {
         this.isShowPassword = !this.isShowPassword;
         this.isShowPassword
           ? (this.iconSrc = "../../static/tab/close.png")
@@ -310,6 +310,7 @@ page {
   position: relative;
 }
 .pass-icon {
+  padding: 20upx;
   position: absolute;
   right: 0;
   top: 50%;

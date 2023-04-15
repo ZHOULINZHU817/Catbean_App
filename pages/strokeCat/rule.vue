@@ -47,12 +47,12 @@ export default {
 <style lang='scss'>
 page {
   background: url(@/static/petcat/rule_bg.jpg) 100% no-repeat;
-  background-size: 100% 100%;
-  height: 100vh;
-  padding: 60upx 24upx;
+  background-size: cover;
+  padding: 60upx 0;
 }
 .container {
   padding-bottom: 30upx;
+  margin:0 24upx;
   .rule-bg-content {
     background-color: #ffffff;
     border-radius: 16upx;
