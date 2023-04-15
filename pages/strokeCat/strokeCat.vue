@@ -212,7 +212,9 @@ page{
     }
   }
   .stroke-fot {
-    margin-top: 90%;
+    position: absolute;
+    bottom: 150upx;
+    left:0;
     display: flex;
     height:130upx;
     .stroke_1{

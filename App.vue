@@ -57,10 +57,10 @@
 						let params = {
 							type: typeFiler == 'ios'? 'ipa':'apk',
 						}
-
+                        let downloadApkUrl = typeFiler == 'ios' ? 'http://fir.hongfeigg.com/IosCatSupermarket' : 'http://fir.hongfeigg.com/CatSupermarket';
 						ApiClinet.get(ApiConfig.APP_BASE_API.versionLast, params).then((res) => {
 							if (res.data.code == '200') {
-								_this.checkVersionToLoadUpdate(info.version,res.data.data);
+								_this.checkVersionToLoadUpdate(info.version,res.data.data, downloadApkUrl);
 							}
 						})
 
@@ -75,7 +75,7 @@
 			 * @param {Object} server_version 服务器最新 应用版本号
 			 * @param {Object} curr_version 当前应用版本号
 			 */
-			checkVersionToLoadUpdate:function(server_version,data){
+			checkVersionToLoadUpdate:function(server_version,data, url){
 				if(server_version !== data.number && data.forced){
 					//TODO 此处判断是否为 WIFI连接状态
 					if(plus.networkinfo.getCurrentType()!=3){
@@ -101,7 +101,7 @@
 										duration: 5000,  
 									}); 
 									//设置 最新版本apk的下载链接
-									var downloadApkUrl = data.url;
+									var downloadApkUrl = url;
 									var dtask = plus.downloader.createDownload( downloadApkUrl, {}, function ( d, status ) {  
 											// 下载完成  
 											if ( status == 200 ) {   
