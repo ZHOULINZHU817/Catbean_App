@@ -17,56 +17,57 @@
 				//系统版本升级判断接口（后台获取服务器）
 				// var urlfun = 你自己后台服务器的接口方法  判断是否需要升级
 					/** 锁定屏幕方向 */
-					// plus.screen.lockOrientation('portrait-primary');
-					//     console.log("onLaunch锁定屏幕方向")
-					// /** 检测升级 */
-					// // 取得版本号
-					// plus.runtime.getProperty(plus.runtime.appid, function(info) {
-					// 	// 版本号变量持久化存储
-					// 	console.log('info', info)
-					// 	getApp().globalData.editionnum = info.version; //版本号持久化存储做其它备用
-					// 	// console.log("当前应用版本：" + info.version + "---" + plus.runtime.version);
-					// 	// console.log("appid：" +plus.runtime.appid);
-					// 	// console.log("appid基座版本号：" +plus.runtime.version);
-					// 	// uni.request({
-					// 	//     url: urlfun, 	//接口地址。url
-					// 	// 	method:"POST",		//传输类型
-					// 	//     data: {
-					// 	// 		"appid": plus.runtime.appid,
-					// 	// 		"version": plus.runtime.version,
-					// 	// 		"system":uni.getStorageSync('systemname'),
-					// 	// 		"editionnum":info.version,
-					// 	// 	},		//必要参数
-					// 	// 	// header: data.header,	//https 请求头参数
-					// 	//     success: (res) => {
-					// 	//         console.log("AJAX数据请求接口--返回状态--"+JSON.stringify(res.data));
-					// 	// 		var data = res.data;
-					// 	// 		var status = data.status;
-					// 	// 		// 判断返回结果,调用升级方法
-					// 	// 		if(status == 200){
-					// 	// 			// 开始调用  data = 服务器返回的数据里面有 新的版本号，下载地址
-					// 	// 			_this.checkVersionToLoadUpdate(info.version,data);
-					// 	// 		}else{
-					// 	// 			uni.showToast({
-					// 	// 				title: data.msg, 
-					// 	// 				duration: 1500  
-					// 	// 			}); 
-					// 	// 		}
-					// 	//     }
-					// 	// });
-					// 	const typeFiler = uni.getSystemInfoSync().platform
-						// let params = {
-						// 	type: typeFiler == 'ios'? 'ipa':'apk',
-						// }
-						// ApiClinet.get(ApiConfig.APP_BASE_API.versionLast, params).then((res) => {
-						// 	if (res.data.code == '200') {
-						// 		_this.checkVersionToLoadUpdate(info.version,res.data.data);
-						// 	}
-						// })
+					plus.screen.lockOrientation('portrait-primary');
+					    console.log("onLaunch锁定屏幕方向")
+					/** 检测升级 */
+					// 取得版本号
+					plus.runtime.getProperty(plus.runtime.appid, function(info) {
+						// 版本号变量持久化存储
+						getApp().globalData.editionnum = info.version; //版本号持久化存储做其它备用
+						// console.log("当前应用版本：" + info.version + "---" + plus.runtime.version);
+						// console.log("appid：" +plus.runtime.appid);
+						// console.log("appid基座版本号：" +plus.runtime.version);
+						// uni.request({
+						//     url: urlfun, 	//接口地址。url
+						// 	method:"POST",		//传输类型
+						//     data: {
+						// 		"appid": plus.runtime.appid,
+						// 		"version": plus.runtime.version,
+						// 		"system":uni.getStorageSync('systemname'),
+						// 		"editionnum":info.version,
+						// 	},		//必要参数
+						// 	// header: data.header,	//https 请求头参数
+						//     success: (res) => {
+						//         console.log("AJAX数据请求接口--返回状态--"+JSON.stringify(res.data));
+						// 		var data = res.data;
+						// 		var status = data.status;
+						// 		// 判断返回结果,调用升级方法
+						// 		if(status == 200){
+						// 			// 开始调用  data = 服务器返回的数据里面有 新的版本号，下载地址
+						// 			_this.checkVersionToLoadUpdate(info.version,data);
+						// 		}else{
+						// 			uni.showToast({
+						// 				title: data.msg, 
+						// 				duration: 1500  
+						// 			}); 
+						// 		}
+						//     }
+						// });
+						const typeFiler = uni.getSystemInfoSync().platform
+						let params = {
+							type: typeFiler == 'ios'? 'ipa':'apk',
+						}
+
+						ApiClinet.get(ApiConfig.APP_BASE_API.versionLast, params).then((res) => {
+							if (res.data.code == '200') {
+								this.$api.msg(info.version)
+								_this.checkVersionToLoadUpdate(info.version,res.data.data);
+							}
+						})
 
 
 
-					// })
+					})
 				
 			},
 
