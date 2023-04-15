@@ -75,6 +75,9 @@ export default {
        /**系统信息* */
        appInfo:`${ANDROID_URL}/api/app/info`, //转赠
 
+       registerH5:`/api/app/member/register`, //注册
+       codeH5:`/api/common/code`, //获取验证码
+
 
 
 

@@ -14,7 +14,7 @@
 		data() {
 			return {
 				options: {
-            code:'http://192.168.1.103:8080/#/pages/public/signin', //生成二维码的链接
+            code:'', //生成二维码的链接
             size:'200',
             img: {// 二维码log配置 非必传
                 src: '../../static/cat.png', // 图片地址
@@ -31,7 +31,7 @@
 		},
 		onLoad(){
 			/**获取个人信息* */
-			this.options.code = `http://192.168.1.103:8080/#/pages/public/signin?code=${this.userInfo.inviteCode}`
+			this.options.code = `https://mc.hongfeigg.com/#/pages/public/signin?code=${this.userInfo.inviteCode}`
 		},
 		methods:{
       hello(res) {

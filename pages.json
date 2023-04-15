@@ -48,12 +48,6 @@
 			}
 		},
 		{
-			"path": "pages/cart/cart",
-			"style": {
-				"navigationBarTitleText": "购物车"
-			}
-		},
-		{
 			"path": "pages/public/login",
 			"style": {
 				"navigationBarTitleText": "登录"
@@ -138,17 +132,6 @@
 			}
 		},
 		{
-			"path": "pages/detail/detail",
-			"style": {
-				"navigationBarTitleText": "",
-				"app-plus": {
-					"titleNView": {
-						"type": "transparent"
-					}
-				}
-			}
-		},
-		{
 			"path": "pages/order/order",
 			"style": {
 				"navigationBarTitleText": "猫超订单",
@@ -201,15 +184,6 @@
 			"path": "pages/notice/notice",
 			"style": {
 				"navigationBarTitleText": "消息中心"
-			}
-		},
-		{
-			"path": "pages/category/category",
-			"style": {
-				"navigationBarTitleText": "分类",
-				"app-plus": {
-					"bounce": "none"
-				}
 			}
 		},
 		{

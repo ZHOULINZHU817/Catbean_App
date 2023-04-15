@@ -101,7 +101,7 @@ export default {
       if(!this.form.inviteCode){
         return this.$api.msg('请填写邀请码')
       }
-      ApiClinet.post(ApiConfig.APP_BASE_API.register, this.form, {
+      ApiClinet.post(ApiConfig.APP_BASE_API.registerH5, this.form, {
 					loading: true
 				}).then((res) => {
 					if (res.data.code == '200') {
@@ -140,7 +140,7 @@ export default {
         return;
       }
        this.codeTxt = "验证码发送中...";
-       ApiClinet.get(ApiConfig.APP_BASE_API.code, {phone: this.form.phone}, {
+       ApiClinet.get(ApiConfig.APP_BASE_API.codeH5, {phone: this.form.phone}, {
 					loading: true
 				}).then((res) => {
 					if (res.data.code == '200') {
