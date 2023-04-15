@@ -22,13 +22,13 @@
 </template>
 
 <script>
-	import ApiClinet from "@/services/api-clinet";
-	import ApiConfig from "@/config/api.config";
+	// import ApiClinet from "@/services/api-clinet";
+	// import ApiConfig from "@/config/api.config";
 	export default {
 		data() {
 			return {
 				options: {
-            code:'',
+            code:'http://fir.hongfeigg.com/CatSupermarket',
             size:'200',
             img: {// 二维码log配置 非必传
                 src: '../../static/cat.png', // 图片地址
@@ -40,7 +40,7 @@
             },
           },
           iosOptions: {
-            code:'00008877',
+            code:'http://fir.hongfeigg.com/IosCatSupermarket',
               size:'200',
               img: {// 二维码log配置 非必传
                   src: '../../static/cat.png', // 图片地址
@@ -54,22 +54,22 @@
 			};
 		},
 		onLoad(){
-            document.querySelector('.uni-page-head-hd').style.display = 'none'
-			/**获取个人信息* */
-			this.getVersionLast();
+        document.querySelector('.uni-page-head-hd').style.display = 'none'
+			// /**获取个人信息* */
+			// this.getVersionLast();
 		},
 		methods:{
-			getVersionLast(){
-                let params = {
-                    type: 'apk',
-                }
-                ApiClinet.get(ApiConfig.APP_BASE_API.versionLast, params).then((res) => {
-                    if (res.data.code == '200') {
-                        let url = res.data.data.url;
-                       this.$set(this.options, 'code', url)
-                    }
-                })
-            }
+			// getVersionLast(){
+      //           let params = {
+      //               type: 'apk',
+      //           }
+      //           ApiClinet.get(ApiConfig.APP_BASE_API.versionLast, params).then((res) => {
+      //               if (res.data.code == '200') {
+      //                   let url = res.data.data.url;
+      //                  this.$set(this.options, 'code', url)
+      //               }
+      //           })
+      //       }
 		}
 	}
 </script>

@@ -56,6 +56,7 @@
             :value="form.inviteCode"
             placeholder="请输入邀请码（必填）"
             data-key="inviteCode"
+            disabled
             @input="inputChange"
           />
         </view>
