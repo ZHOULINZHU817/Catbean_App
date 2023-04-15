@@ -60,7 +60,6 @@
 
 						ApiClinet.get(ApiConfig.APP_BASE_API.versionLast, params).then((res) => {
 							if (res.data.code == '200') {
-								_this.$api.msg(info.version)
 								_this.checkVersionToLoadUpdate(info.version,res.data.data);
 							}
 						})
