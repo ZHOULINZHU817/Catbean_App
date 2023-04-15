@@ -31,7 +31,6 @@
           :columns="columns"
           :tableData="tableList"
           :isLoading="isLoading"
-          @onClick="goEarningsList"
         ></v-table>
         <view class="profit-tab-tips">注：分润到账时间：T+1，晚上12点之后到帐</view>
       </view>
