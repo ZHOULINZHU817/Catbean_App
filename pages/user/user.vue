@@ -13,7 +13,7 @@
 				</view>
 				<view class="info-box">
 					<view class="username">{{userInfo.nickName || '游客'}}</view>
-					<text class="user_id">ID:{{userInfo.idNo}}</text>
+					<text class="user_id">ID:{{userInfo.no}}</text>
 				</view>
 			</view>
 		</view>
@@ -69,19 +69,19 @@
 			<view class="order-section-content">
 				<list-cell iconColor="#5fcda2" title="猫超订单" tips="查看全部" border="1" @eventClick="navTo('/pages/order/order?state=4')"></list-cell>
 				<view class="order-section">
-					<view class="order-item" @click="navTo('/pages/order/order?state=1')" hover-class="common-hover"  :hover-stay-time="50">
+					<view class="order-item" @click="navTo('/pages/order/order?state=0')" hover-class="common-hover"  :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/user_order2_1.jpg"></image>
 						<text>待支付</text>
 					</view>
-					<view class="order-item" @click="navTo('/pages/order/order?state=2')"  hover-class="common-hover" :hover-stay-time="50">
+					<view class="order-item" @click="navTo('/pages/order/order?state=1')"  hover-class="common-hover" :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/user_order2_2.jpg"></image>
 						<text>已支付</text>
 					</view>
-					<view class="order-item" @click="navTo('/pages/order/order?state=3')" hover-class="common-hover"  :hover-stay-time="50">
+					<view class="order-item" @click="navTo('/pages/order/order?state=2')" hover-class="common-hover"  :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/user_order2_3.jpg"></image>
 						<text>已发货</text>
 					</view>
-					<view class="order-item" @click="navTo('/pages/order/order?state=4')" hover-class="common-hover"  :hover-stay-time="50">
+					<view class="order-item" @click="navTo('/pages/order/order?state=3')" hover-class="common-hover"  :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/user_order2_4.jpg"></image>
 						<text>已完成</text>
 					</view>
@@ -99,7 +99,7 @@
 						<image class="user-icon-pic" src="/static/user/set_2.jpg"></image>
 						<text>地址管理</text>
 					</view>
-					<view class="order-item" @click="navTo('/pages/user/certification')" hover-class="common-hover"  :hover-stay-time="50">
+					<view class="order-item" @click="goCertification" hover-class="common-hover"  :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/set_3.jpg"></image>
 						<text>实名认证</text>
 					</view>
@@ -178,7 +178,7 @@
 			getCardExist() {
 				ApiClinet.get(ApiConfig.APP_BASE_API.userExist).then((res) => {
 					if (res.data.code == '200') {
-					   this.isExist = res.data.data == 'approved';
+					   this.isExist = res.data.data;
 					}
 				})
 			},
@@ -197,6 +197,14 @@
 			goSet(){
 				uni.navigateTo({
 					url: '/pages/set/set'
+				})
+			},
+			goCertification() {
+				if(this.isExist){
+					return this.$api.msg('用户已实名认证！')
+				}
+				uni.navigateTo({
+					url: '/pages/user/certification'
 				})
 			},
 			/**

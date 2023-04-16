@@ -8,11 +8,13 @@
     "app-plus" : {
         /* 5+App特有相关 */
         "usingComponents" : true,
+        "bounce": "none",
         "splashscreen" : {
-            "alwaysShowBeforeRender" : true,
-            "waiting" : true,
-            "autoclose" : true,
+            "alwaysShowBeforeRender" : false,
+            "waiting" : false,
+            "autoclose" : false,
             "delay" : 0
+            
         },
         "modules" : {
             "Camera" : {}

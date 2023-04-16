@@ -16,7 +16,7 @@
           <text class="tit">转赠金额</text>
           <input
             :value="form.amount"
-            placeholder="可转赠金额为999"
+            :placeholder="`可转赠金额为${assetObj.catFood}`"
             data-key="amount"
             @input="inputChange"
           />

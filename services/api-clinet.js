@@ -35,12 +35,12 @@ class ApiClient {
 				.then((res) => {
 					if (res.statusCode == 200) {
 						if (res.data.code == "401" || res.data.code == '40103') {
-							uni.showToast({
-								mask:true,
-								title: "请重新登录",
-								duration: 2000,
-								icon: "none",
-							});
+							// uni.showToast({
+							// 	mask:true,
+							// 	title: "请重新登录",
+							// 	duration: 2000,
+							// 	icon: "none",
+							// });
 
 							uni.redirectTo({
 								url: '../public/login'

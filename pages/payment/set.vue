@@ -113,7 +113,7 @@ export default {
       logining: false,
       wechatUrlList:[],
       alipayUrlList: [],
-      userInfo: JSON.parse(uni.getStorageSync('userInfo'))
+      userInfo: uni.getStorageSync('userInfo') && JSON.parse(uni.getStorageSync('userInfo'))
     };
   },
   onLoad() {
@@ -123,8 +123,8 @@ export default {
       this.form.idNo = this.userInfo.idNo;
       this.form.name = this.userInfo.name;
       this.form.phone = this.userInfo.phone;
-      this.alipayUrlList = this.userInfo.alipayUrl && `['文件｜${this.userInfo.alipayUrl}']`
-      this.wechatUrlList = this.userInfo.wechatUrl && `['文件｜${this.userInfo.wechatUrl}']`
+      // this.alipayUrlList = this.userInfo.alipayUrl && `['文件｜${this.userInfo.alipayUrl}']`
+      // this.wechatUrlList = this.userInfo.wechatUrl && `['文件｜${this.userInfo.wechatUrl}']`
     }
   },
   methods: {

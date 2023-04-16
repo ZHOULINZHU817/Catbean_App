@@ -33,7 +33,7 @@
             <view class="record-title">{{ catBean[item.type] }}</view>
             <view class="record-date">{{ formatDate(item.createTime*1) }}</view>
           </view>
-          <view class="record-price">{{item.type == 'into'?'+':'-'}}{{ item.amount }}</view>
+          <view class="record-price">{{item.type == 'into' || item.type == 'recharge'?'+':'-'}}{{ item.amount }}</view>
         </view>
       </view>
       <view v-if="showTotal" class="showTotal">没有更多数据了~</view>

@@ -2,7 +2,7 @@
 	<view>
 		<!-- 地址 -->
 		<navigator url="/pages/address/address?source=1" class="address-section">
-			<view class="order-content">
+			<view class="order-content" v-if="!!addressList.length">
 				<!-- <text class="yticon icon-shouhuodizhi"></text> -->
 				<view class="cen">
 					<view class="top">
@@ -14,6 +14,7 @@
 				</view>
 				<text class="yticon icon-you"></text>
 			</view>
+			<view v-else class="jia_address"><text style="margin-right: 20upx;" class="yticon icon-jia1"></text>添加收货地址</view>
 
 		</navigator>
 
@@ -147,17 +148,13 @@
 					}
 				],
 				addressData: {
-					name: '许小星',
-					mobile: '13853989563',
-					addressName: '金九大道',
-					address: '山东省济南市历城区',
-					area: '149号',
-					default: false,
+					
 				},
 				detailObj: {
 					number: 1
 				},
 				allPrice: 0,
+				addressList: []
 			}
 		},
 		onLoad(options){
@@ -169,10 +166,12 @@
 				this.number = options.number*1;
 				this.getGoodDetail(this.id);
 				/**获取收货地址* */
-				this.getAddressList();
 			}else{
 				this.getOrderDetail(this.id)
 			}
+		},
+		onShow(){
+			this.getAddressList();
 		},
 		methods: {
 			toStringHandle,
@@ -192,6 +191,9 @@
 			// 	this.payType = type;
 			// },
 			submit(){
+				if(!this.addressData.id){
+                   return this.$api.msg('请添加收货地址')
+				}
 				let params = {
 					productId: this.id,
 					productNum: this.detailObj.number,
@@ -254,6 +256,11 @@
 			align-items: center;
 			padding:24upx;
 			border-radius: 16upx;
+		}
+		.jia_address{
+			background: #fff;
+			border-radius: 16upx;
+			padding: 24upx;
 		}
 
 		.icon-shouhuodizhi {
