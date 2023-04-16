@@ -34,6 +34,7 @@ export default {
        realAuth:`${ANDROID_URL}/api/app/member/real/auth`, //实名认证
        receiveAccount:`${ANDROID_URL}/api/app/member/receive/account`, //设置收款账号 
        settingInfo:`${ANDROID_URL}/api/app/member/setting/info`, //设置用户信息
+       logoff: `${ANDROID_URL}/api/app/member/logoff`, //注销账号
 
        /**消息中心--公告* */
        noticeDetail:`${ANDROID_URL}/api/app/notice/detail`, //获取公告详情

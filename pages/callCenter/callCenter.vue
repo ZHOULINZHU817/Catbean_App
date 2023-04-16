@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<!-- <w-qrcode class="qrcode" ref="qrcode" :options="options"></w-qrcode> -->
-    <img class="qrcode" :src="callImg" />
+    <image class="qrcode" :src="callImg" ></image>
 	</view>
 </template>
 

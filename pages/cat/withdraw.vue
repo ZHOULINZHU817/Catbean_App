@@ -40,17 +40,17 @@
       <view slot="modalInfo">
         <view class="withdraw-content">
           <view class="draw-m-title"
-            >选择提现方式<img @click="closeModal" src="@/static/user/close.png"
-          /></view>
+            >选择提现方式<image @click="closeModal" src="@/static/user/close.png"
+          ></image></view>
           <view
             class="draw-m-item b-b"
             v-for="(item, index) in withdrawList"
             :key="index"
             @click="withDrawManner(item, index)"
           >
-            <img :src="item.src" />
+            <image style="width: 30upx;height:30upx;" :src="item.src" ></image>
             <view class="draw-m-item-text flex1">{{ item.name }}</view>
-            <img v-if="activeIndex == index" src="@/static/user/duihao.jpg" />
+            <image style="width: 30upx;height:30upx;" v-if="activeIndex == index" src="@/static/user/duihao.jpg" ></image>
           </view>
         </view>
       </view>
@@ -288,7 +288,7 @@ page {
     font-weight: 700;
     border-bottom: 1upx solid #f6f6f6;
     position: relative;
-    img {
+    image {
       width: 24upx;
       height: 24upx;
       position: absolute;
@@ -339,5 +339,8 @@ page {
 }
 /deep/.uni-input-placeholder {
   color: #b8b8b8;
+}
+.flex1{
+  flex: 1
 }
 </style>

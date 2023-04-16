@@ -48,6 +48,10 @@
 			<text class="cell-tit">联系客服</text>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
+		<view class="list-cell b-b" @click="goLogoff" hover-class="cell-hover" :hover-stay-time="50">
+			<text class="cell-tit">注销账号</text>
+			<text class="cell-more yticon icon-you"></text>
+		</view>
 
 		<view class="list-cell log-out-btn" @click="toLogout">
 			<text class="cell-tit">退出登录</text>
@@ -61,7 +65,7 @@
 	export default {
 		data() {
 			return {
-				 userInfo: {},
+				 userInfo: {}, 
 			};
 		},
 		onShow(){
@@ -80,7 +84,6 @@
 				    content: '确定要退出登录么',
 				    success: (e)=>{
 				    	if(e.confirm){
-							
 				    		uni.removeStorageSync('userInfo');
 							this.$store.dispatch("auth/logout", {}).then(res => {
 								uni.reLaunch({
@@ -103,6 +106,30 @@
 					}
 				})
 			},
+			goLogoff(){
+				uni.showModal({
+				    content: '确定注销账户吗？',
+				    success: (e)=>{
+				    	if(e.confirm){
+							this.goLogoffData();
+				    	}
+				    }
+				});
+			},
+			goLogoffData() {
+				ApiClinet.post(ApiConfig.APP_BASE_API.logoff).then((res) => {
+					if (res.data.code == '200') {
+					    uni.removeStorageSync('userInfo');
+						this.$store.dispatch("auth/logout", {}).then(res => {
+							uni.reLaunch({
+								url: '/pages/public/login'
+							});
+						})
+					}else{
+						this.$api.msg(res.data.msg)
+					}
+				})
+			}
 
 		}
 	}

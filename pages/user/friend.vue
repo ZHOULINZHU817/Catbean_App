@@ -82,9 +82,10 @@ page {
     padding: 0 20upx;
     margin-bottom: 20upx;
     align-items: center;
-    img{
+    .user-icon-pic{
         width:80upx;
         height:80upx;
+        border-radius: 80upx;
         margin-right:20upx;
     }
     .friend-text{

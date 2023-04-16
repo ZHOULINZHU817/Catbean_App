@@ -2,13 +2,13 @@
   <view class="container">
     <view class="profit-bg">
       <view class="profit-bg-text">总分润(元)</view>
-      <!-- <view class="profit-bg-price">{{assetObj.totalTeamReward || 0}}</view> -->
-      <input
+      <view class="profit-bg-price">{{assetObj.teamReward || 0}}</view>
+      <!-- <input
         class="profit-bg-price"
         :value="assetObj.teamReward || 0"
         placeholder="请输入10的整倍数"
         @input="inputChange"
-      />
+      /> -->
       <view class="reward-bg-btn" @click="exchange">兑换</view>
     </view>
     <view class="profit-content">
@@ -45,7 +45,13 @@
                       <view class="modal-content-title">您当前共有<text>{{assetObj.teamReward || 0}}</text>分润值可兑换</view>
                       <view class="modal-content-text">分润值兑换到余额需扣除5%</view>
                       <view class="modal-content-text">兑换金额10起兑，且为10的整数倍</view>
-                      <view class="modal-content-text">一天可以兑换一次，每日0点刷新次数</view>
+                      <view class="modal-content-text b-b">一天可以兑换一次，每日0点刷新次数</view>
+                      <input
+                        class="reward-input"
+                        :value="inputVal"
+                        placeholder="请输入兑换金额"
+                        @input="inputChange"
+                      />
                   </view>
                   <view class="confirm-btn-content">
                       <view class="confirm-btn" @click="allExchange">全部兑换</view>
@@ -108,6 +114,7 @@ export default {
         assetObj: {},
         msg:"",
         showTotal: false,
+        inputVal:""
     };
   },
   onLoad() {
@@ -121,13 +128,14 @@ export default {
   },
   methods: {
     inputChange(e){
-      this.$set(this.assetObj, 'teamReward', e.detail.value)
+      this.inputVal = e.detail.value;
     },
     /**获取资产* */
     getAsset() {
       ApiClinet.get(ApiConfig.APP_BASE_API.asset).then((res) => {
         if (res.data.code == '200') {
             this.assetObj = res.data.data;
+            this.assetObj.teamReward =  this.assetObj.teamReward || 0;
             this.oldAsset = Object.assign({},res.data.data)
         }
       })
@@ -144,12 +152,7 @@ export default {
       })
     },
     exchange(){
-        if(!this.assetObj.teamReward || (this.oldAsset.teamReward < this.assetObj.teamReward)){
-          return this.$api.msg('兑换金额不足！');
-        }
-        if((this.assetObj.teamReward%10) != 0){
-          return this.$api.msg('请输入10的整倍数');
-        }
+        this.inputVal = "";
         this.$refs['rankModal'].open();
     },
     //取消
@@ -157,15 +160,50 @@ export default {
         this.$refs['rankModal'].close();
     },
     allExchange() {
-      if(!this.assetObj.teamReward){
-        return this.$api.msg('兑换金额错误')
-      }
+
+      // if(!this.assetObj.teamReward){
+      //   return this.$api.msg('兑换金额错误')
+      // }
     //   this.$refs['rankModal'].close();
-      this.$refs.jpPwd.toOpen();
+
+      if(!this.inputVal || this.inputVal == 0){
+        return this.$api.msg('请输入兑换金额')
+      }
+      if(!this.inputVal || this.inputVal ==0 || this.inputVal > this.assetObj.teamReward){
+        return this.$api.msg('兑换金额不足！');
+      }
+      if((this.inputVal%10) != 0){
+        return this.$api.msg('请输入10的整倍数');
+      }
+      this.msg = "";
+      this.getPayExist();
+    },
+    getPayExist() {
+      ApiClinet.get(ApiConfig.APP_BASE_API.payExist).then((res) => {
+        if (res.data.code == '200') {
+           let payExist = res.data.data;
+           if(payExist){
+             this.$refs.jpPwd.toOpen();
+           }else{
+             uni.showModal({
+                content: '用户未设置支付密码，前去设置支付密码?',
+                success: (e)=>{
+                  if(e.confirm){
+                    uni.navigateTo({
+                      url: "/pages/payment/password",
+                    });
+                  }
+                }
+            });
+           }
+        }else{
+          this.$api.msg(res.data.msg)
+        }
+      })
     },
     saveData(){
       let params = {
-        amount: this.assetObj.teamReward,
+        amount: this.inputVal,
         type: 'team',
         payPwd: this.payPwd
       }
@@ -313,12 +351,12 @@ page {
     .model-wraper-bg{
         background: url(@/static/user/rewards-bg3.jpg) 100% no-repeat;
         background-size: 100% 100%;
-        height:630upx;
+        height:700upx;
         width:596upx;
         padding:0 44upx;
         .modal-content{
             width:100%;
-            height:318upx;
+            height:388upx;
             background-color: #ffffff;
             border-radius: 16upx;
             padding: 54upx 30upx;
@@ -387,15 +425,19 @@ page {
           background-size: 100% 100%;
         }
     }
-    .uni-input-placeholder {
-       font-size: 32upx;
-       color:#ffffff;
-    }
 }
 .showTotal{
   text-align: center;
   line-height: 60upx;
   font-size:28upx;
   color:#999999;
+}
+.reward-input{
+  font-size:30upx;
+  margin-top: 20upx;
+}
+.uni-input-placeholder {
+    font-size: 30upx;
+    color:#333333;
 }
 </style>
