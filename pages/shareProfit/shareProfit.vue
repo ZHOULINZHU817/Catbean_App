@@ -111,10 +111,10 @@ export default {
     };
   },
   onLoad() {
-    uni.setNavigationBarColor({
-      frontColor: "#ffffff",
-      backgroundColor: "#ff5b9c",
-    });
+    // uni.setNavigationBarColor({
+    //   frontColor: "#ffffff",
+    //   backgroundColor: "#ff5a9b",
+    // });
     this.getAsset();
     /**分润列表* */
     this.getRewardList();

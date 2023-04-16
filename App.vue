@@ -76,6 +76,7 @@
 			 * @param {Object} curr_version 当前应用版本号
 			 */
 			checkVersionToLoadUpdate:function(server_version,data, url){
+				this.$api.msg(data.number);
 				if(server_version !== data.number && data.forced){
 					//TODO 此处判断是否为 WIFI连接状态
 					if(plus.networkinfo.getCurrentType()!=3){

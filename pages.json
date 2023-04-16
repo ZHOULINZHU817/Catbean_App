@@ -75,18 +75,9 @@
 		{
 			"path": "pages/user/user",
 			"style": {
-				"navigationBarTitleText": "我的",
-				// #ifdef MP
-				"navigationStyle": "custom",
-				// #endif
-				"app-plus": {
-					"titleNView": {
-						"type": "transparent",
-						"buttons": [
-							
-						]
-					}
-				}
+				"navigationBarBackgroundColor": "#fdedf3",
+				"enablePullDownRefresh": true,
+				"navigationBarTitleText": "我的"
 			}
 		},
 		{
@@ -239,6 +230,8 @@
 			"path": "pages/shareProfit/shareProfit",
 			"style": {
 				"enablePullDownRefresh": true,
+				"navigationBarBackgroundColor": "#ff5a9b",
+				"navigationBarTextStyle": "white",
 				"navigationBarTitleText": "分润"
 			}
 		},
@@ -246,6 +239,8 @@
 			"path": "pages/rewards/rewards",
 			"style": {
 				"enablePullDownRefresh": true,
+				"navigationBarBackgroundColor": "#fae2e9",
+				"navigationBarTextStyle": "black",
 				"navigationBarTitleText": "奖励金"
 			}
 		},
@@ -253,6 +248,8 @@
 			"path": "pages/shareValue/shareValue",
 			"style": {
 				"enablePullDownRefresh": true,
+				"navigationBarBackgroundColor": "#ff6fa5",
+				"navigationBarTextStyle": "white",
 				"navigationBarTitleText": "分享值"
 			}
 		},
