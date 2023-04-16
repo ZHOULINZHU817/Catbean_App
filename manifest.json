@@ -2,19 +2,17 @@
     "name" : "猫超商城",
     "appid" : "__UNI__7CF2E87",
     "description" : "",
-    "versionName" : "1.0.4",
+    "versionName" : "1.0.6",
     "versionCode" : "100",
     "transformPx" : false,
     "app-plus" : {
         /* 5+App特有相关 */
         "usingComponents" : true,
-        "bounce": "none",
         "splashscreen" : {
-            "alwaysShowBeforeRender" : false,
-            "waiting" : false,
-            "autoclose" : false,
+            "alwaysShowBeforeRender" : true,
+            "waiting" : true,
+            "autoclose" : true,
             "delay" : 0
-            
         },
         "modules" : {
             "Camera" : {}
