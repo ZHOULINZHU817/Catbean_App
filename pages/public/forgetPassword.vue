@@ -113,6 +113,12 @@ export default {
     },
     savePwd() {
       this.logining = true;
+      if(!this.form.code){
+        return this.$api.msg('请输入验证码')
+      }
+      if(!this.form.pwd){
+        return this.$api.msg('请输入密码')
+      }
       ApiClinet.put(ApiConfig.APP_BASE_API.resetPwd, this.form, {
         loading: true
       }).then((res) => {
@@ -180,11 +186,11 @@ export default {
      */
     getPhoneCode() {
       var rePhone = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
-      if (!this.phone) {
+      if (!this.form.phone) {
         this.$api.msg("请先输入手机号");
         return;
       }
-      if (!rePhone.test(this.phone)) {
+      if (!rePhone.test(this.form.phone)) {
         this.$api.msg("请输入正确的手机号");
         return;
       }

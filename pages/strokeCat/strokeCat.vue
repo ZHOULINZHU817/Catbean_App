@@ -278,7 +278,7 @@ page{
         .stroke-select-item{
             width: 20%;
             height:60upx;
-            line-height: 50upx;
+            line-height: 60upx;
             border:1upx solid #CFCFCF;
             border-radius: 10upx;
             text-align: center;

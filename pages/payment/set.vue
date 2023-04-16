@@ -113,10 +113,12 @@ export default {
       logining: false,
       wechatUrlList:[],
       alipayUrlList: [],
-      userInfo: uni.getStorageSync('userInfo') && JSON.parse(uni.getStorageSync('userInfo'))
+      // userInfo: {}
     };
   },
   onLoad() {
+     /**获取个人信息* */
+		this.memberInfo();
     if(Object.keys(this.userInfo).length>0){
       this.form.bankName = this.userInfo.bankName;
       this.form.bankNo = this.userInfo.bankNo;
@@ -125,10 +127,25 @@ export default {
       this.form.phone = this.userInfo.phone;
       // this.alipayUrlList = this.userInfo.alipayUrl && `['文件｜${this.userInfo.alipayUrl}']`
       // this.wechatUrlList = this.userInfo.wechatUrl && `['文件｜${this.userInfo.wechatUrl}']`
+      this.alipayUrlList = [`文件|${this.userInfo.alipayUrl}`]
+      this.wechatUrlList = [`文件|${this.userInfo.wechatUrl}`]
     }
   },
   methods: {
-
+    memberInfo() {
+				ApiClinet.get(ApiConfig.APP_BASE_API.memberDetail).then((res) => {
+					if (res.data.code == '200') {
+            const {bank, cardNo, idNo, name, phone, alipayUrl, wechatUrl} = res.data.data;
+            this.form.bankName = bank;
+            this.form.bankNo = cardNo;
+            this.form.idNo = idNo;
+            this.form.name = name;
+            this.form.phone = phone;
+            this.alipayUrlList = [`文件|${alipayUrl}`]
+            this.wechatUrlList = [`文件|${wechatUrl}`]
+					}
+				})
+		},
     inputChange(e) {
       const key = e.currentTarget.dataset.key;
       this.form[key] = e.detail.value;

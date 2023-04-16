@@ -38,7 +38,12 @@
 			</view>
 		</view>
 		<view v-if="showTotal" class="showTotal">没有更多数据了~</view>
-		<view v-if="!goodsList.length" class="noTotal">～暂无数据~</view>
+		<!-- <view v-if="!goodsList.length" class="noTotal">～暂无数据~</view> -->
+		<!--no_data--->
+		<view v-if="!goodsList.length" class="no_data_content" >
+			<view class="no_data_img"></view>
+			<view class="no_data_text">暂无数据</view>
+		</view>
 		
 
 	</view>
@@ -582,5 +587,21 @@
 		color:#999999;
 	}
 	
-
+.no_data_content{
+  width: 328upx;
+  height:auto;
+  margin: 160upx auto;
+  text-align: center;
+  .no_data_img{
+    width:100%;
+    height:228upx;
+    margin-bottom: 20upx;
+    background: url(@/static/no_data.png) 100% no-repeat;
+    background-size: cover;
+  }
+  .no_data_text{
+    font-size: 24upx;
+    color:#666666;
+  }
+}
 </style>

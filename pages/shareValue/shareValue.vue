@@ -15,7 +15,7 @@
     </view>
     <view class="record-content">
       <view class="record-text">分享值明细</view>
-      <view class="record-list-content">
+      <view class="record-list-content" v-if="!!recordList.length">
         <view
           class="record-list-item"
           v-for="(item, index) in recordList"
@@ -27,6 +27,11 @@
           </view>
           <view class="record-price">+{{ item.amount }}</view>
         </view>
+      </view>
+      <!--no_data--->
+      <view class="no_data_content" v-else>
+        <view class="no_data_img"></view>
+        <view class="no_data_text">暂无数据</view>
       </view>
     </view>
     <view v-if="showTotal" class="showTotal">没有更多数据了~</view>
@@ -350,5 +355,22 @@ page {
   line-height: 60upx;
   font-size:28upx;
   color:#999999;
+}
+.no_data_content{
+  width: 328upx;
+  height:auto;
+  margin: 160upx auto;
+  text-align: center;
+  .no_data_img{
+    width:100%;
+    height:228upx;
+    margin-bottom: 20upx;
+    background: url(@/static/no_data.png) 100% no-repeat;
+    background-size: cover;
+  }
+  .no_data_text{
+    font-size: 24upx;
+    color:#666666;
+  }
 }
 </style>

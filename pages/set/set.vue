@@ -8,7 +8,8 @@
 		<view class="list-title">个人信息</view>
 		<view class="list-cell b-b m-t" @click="navTo('/pages/userinfo/userinfo')" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">图像</text>
-			<img :src="userInfo.avatar || '/static/user/friend.jpg'"/>
+			<!-- <img  :src="userInfo.avatar || '/static/user/friend.jpg'"/> -->
+			<image class="user-icon-pic" :src="userInfo.avatar || '/static/user/friend.jpg'"></image>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
 		<view class="list-cell b-b" @click="navTo('/pages/userinfo/userinfo')" hover-class="cell-hover" :hover-stay-time="50">
@@ -159,6 +160,11 @@
 		}
 		switch{
 			transform: translateX(16upx) scale(.84);
+		}
+		.user-icon-pic {
+			width: 80upx;
+			height:80upx;
+			border-radius: 80upx;
 		}
 	}
 </style>
