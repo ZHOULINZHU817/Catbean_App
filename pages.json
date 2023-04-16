@@ -76,7 +76,6 @@
 			"path": "pages/user/user",
 			"style": {
 				"navigationBarBackgroundColor": "#fdedf3",
-				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "我的"
 			}
 		},
@@ -180,7 +179,6 @@
 		{
 			"path": "pages/product/list",
 			"style": {
-				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "商品列表"
 			}
 		},
@@ -188,21 +186,18 @@
 			"path": "pages/cat/catbean",
 			"style": {
 				"navigationBarBackgroundColor": "#FFE7F4",
-				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "猫豆"
 			}
 		},
 		{
 			"path": "pages/cat/beangiven",
 			"style": {
-				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "猫豆转赠"
 			}
 		},
 		{
 			"path": "pages/cat/withdraw",
 			"style": {
-				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "猫豆提现",
 				"app-plus": {
 					"titleNView": {
@@ -222,14 +217,12 @@
 		{
 			"path": "pages/cat/withDrawManner",
 			"style": {
-				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "提现记录"
 			}
 		},
 		{
 			"path": "pages/shareProfit/shareProfit",
 			"style": {
-				"enablePullDownRefresh": true,
 				"navigationBarBackgroundColor": "#ff5a9b",
 				"navigationBarTextStyle": "white",
 				"navigationBarTitleText": "分润"
@@ -238,7 +231,6 @@
 		{
 			"path": "pages/rewards/rewards",
 			"style": {
-				"enablePullDownRefresh": true,
 				"navigationBarBackgroundColor": "#fae2e9",
 				"navigationBarTextStyle": "black",
 				"navigationBarTitleText": "奖励金"
@@ -247,7 +239,6 @@
 		{
 			"path": "pages/shareValue/shareValue",
 			"style": {
-				"enablePullDownRefresh": true,
 				"navigationBarBackgroundColor": "#ff6fa5",
 				"navigationBarTextStyle": "white",
 				"navigationBarTitleText": "分享值"
@@ -256,21 +247,18 @@
 		{
 			"path": "pages/share/share",
 			"style": {
-				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "分享好友"
 			}
 		},
 		{
 			"path": "pages/callCenter/callCenter",
 			"style": {
-				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "客服"
 			}
 		},
 		{
 			"path": "pages/cat/download",
 			"style": {
-				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "下载"
 			}
 		}
