@@ -78,6 +78,15 @@ export default {
     },
     savePassword() {
       this.logining = true;
+      if(!this.form.phone){
+        return this.$api.msg('请输入手机号')
+      }
+      if(!this.form.code){
+        return this.$api.msg('请输验证码')
+      }
+      if(!this.form.payPwd){
+        return this.$api.msg('请输入密码')
+      }
       ApiClinet.put(ApiConfig.APP_BASE_API.editPwdPay, this.form).then((res) => {
 					if (res.data.code == '200') {
 					   this.$api.msg('支付密码修改成功！')

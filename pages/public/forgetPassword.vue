@@ -15,7 +15,7 @@
             placeholder="请输入手机号码"
             maxlength="11"
             data-key="phone"
-            disabled
+            :disabled="form.phone"
             @input="inputChange"
           />
         </view>

@@ -7,12 +7,14 @@
             <w-qrcode class="qrcode" ref="qrcode" :options="options"></w-qrcode>
           </view>
           <view class="code-text">Android</view>
+          <button class="code-btn" @click="linkTo('Android')">Android下载</button>
          </view>
          <view class="cont-code-flex">
           <view class="code-flex">
             <w-qrcode class="qrcodeIos" ref="qrcodeIos" :options="iosOptions"></w-qrcode>
           </view>
           <view class="code-text">IOS</view>
+          <button class="code-btn" @click="linkTo('IOS')">IOS下载</button>
          </view>
       </view>
       <view class="code-tips">使用手机浏览器扫码下载</view>
@@ -29,7 +31,8 @@
 			return {
 				options: {
             code:'http://fir.hongfeigg.com/CatSupermarket',
-            size:'200',
+            size:'220',
+            padding: 10, 
             img: {// 二维码log配置 非必传
                 src: '../../static/cat.png', // 图片地址
                 size: 40,// 图片大小
@@ -41,7 +44,8 @@
           },
           iosOptions: {
             code:'http://fir.hongfeigg.com/IosCatSupermarket',
-              size:'200',
+              size:'220',
+              padding: 10, 
               img: {// 二维码log配置 非必传
                   src: '../../static/cat.png', // 图片地址
                   size: 40,// 图片大小
@@ -59,6 +63,9 @@
 			// this.getVersionLast();
 		},
 		methods:{
+      linkTo(item){
+        window.location.href = item=='Android'?'http://fir.hongfeigg.com/CatSupermarket' : 'http://fir.hongfeigg.com/IosCatSupermarket';
+      }
 			// getVersionLast(){
       //           let params = {
       //               type: 'apk',
@@ -118,6 +125,15 @@ page{
       font-size: 28upx;
       color:#666666;
     }
+  }
+  .code-btn{
+    border-radius: 50px;
+    background: #FF68A6;
+    color: #ffffff;
+    width:200upx;
+    height:60upx;
+    line-height: 60upx;
+    font-size: 28upx;
   }
 }
 

@@ -24,7 +24,7 @@
 					</view>
 				</view>
 				<view class="forget_text">
-					<view :style="'color:'+ msgsColor">{{msgs}}</view>
+					<view style="width:80%;text-align: center;" :style="'color:'+ msgsColor">{{msgs}}</view>
 					<view :style="'color:'+ forgetNameColor" @tap="forget">{{forgetName}}</view>
 				</view>
 				<view class="jp_hea" :style="keyImg?'':'background-color: #f5f5f5'">
@@ -91,7 +91,7 @@
 					</view>
 				</view>
 				<view class="forget_text">
-					<view :style="'color:'+ msgsColor">{{msgs}}</view>
+					<view style="width:80%;text-align: center;" :style="'color:'+ msgsColor">{{msgs}}</view>
 					<view :style="'color:'+ forgetNameColor" @tap="forget">{{forgetName}}</view>
 				</view>
 			</view>
