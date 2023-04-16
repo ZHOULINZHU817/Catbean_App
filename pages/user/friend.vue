@@ -1,7 +1,8 @@
 <template>
   <view class="container">
     <view class="friend-item" v-for="(item, index) in list" :key="index">
-        <img src="/static/user/friend.jpg"/>
+        <!-- <img src="/static/user/friend.jpg"/> -->
+        <image class="user-icon-pic" src="/static/user/friend.jpg"></image>
         <view class="friend-text">
             <view class="friend-text-name">{{item.name}}</view>
             <view class="friend-text-phone">手机号：{{item.phone}}</view>
