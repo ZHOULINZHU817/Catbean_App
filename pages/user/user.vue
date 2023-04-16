@@ -314,7 +314,7 @@ page{
 					height:10upx;
 					border-radius: 10upx;
 					background-color: #ff478c;
-					top:0;
+					top:18upx;
 					right: 18upx;
 				}
 			}
