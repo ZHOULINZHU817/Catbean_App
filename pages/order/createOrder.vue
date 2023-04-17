@@ -191,7 +191,7 @@
 			// 	this.payType = type;
 			// },
 			submit(){
-				if(!this.addressData.id){
+				if(!(this.addressData && this.addressData.id)){
                    return this.$api.msg('请添加收货地址')
 				}
 				let params = {

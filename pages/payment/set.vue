@@ -119,17 +119,6 @@ export default {
   onLoad() {
      /**获取个人信息* */
 		this.memberInfo();
-    if(Object.keys(this.userInfo).length>0){
-      this.form.bankName = this.userInfo.bankName;
-      this.form.bankNo = this.userInfo.bankNo;
-      this.form.idNo = this.userInfo.idNo;
-      this.form.name = this.userInfo.name;
-      this.form.phone = this.userInfo.phone;
-      // this.alipayUrlList = this.userInfo.alipayUrl && `['文件｜${this.userInfo.alipayUrl}']`
-      // this.wechatUrlList = this.userInfo.wechatUrl && `['文件｜${this.userInfo.wechatUrl}']`
-      this.alipayUrlList = [`文件|${this.userInfo.alipayUrl}`]
-      this.wechatUrlList = [`文件|${this.userInfo.wechatUrl}`]
-    }
   },
   methods: {
     memberInfo() {
@@ -141,8 +130,8 @@ export default {
             this.form.idNo = idNo;
             this.form.name = name;
             this.form.phone = phone;
-            this.alipayUrlList = [`文件|${alipayUrl}`]
-            this.wechatUrlList = [`文件|${wechatUrl}`]
+            this.alipayUrlList = alipayUrl ? [`文件|${alipayUrl}`] : []
+            this.wechatUrlList = wechatUrl ? [`文件|${wechatUrl}`] : []
 					}
 				})
 		},

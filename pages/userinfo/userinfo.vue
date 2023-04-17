@@ -87,7 +87,7 @@ export default {
             this.form.nickName = nickName;
             this.form.avatar = avatar;
             this.form.wechatNo = wechatNo;
-            this.uploadAttachment = [`文件|${avatar}`]
+            this.uploadAttachment = avatar ? [`文件|${avatar}`] : []
 					}
 				})
 		},

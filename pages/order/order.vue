@@ -26,7 +26,7 @@
         <scroll-view
           class="list-scroll-content"
           scroll-y
-          @scrolltolower="loadData"
+          @scrolltolower="getLoadData"
         >
           <!-- 空白页 -->
           <empty v-if="orderListNew.length === 0"></empty>
@@ -272,15 +272,18 @@ export default {
       // uni.navigateTo({
       //   url: `/pages/order/orderDetail?id=${item.id}`
       // })
+    },
+    getLoadData(){
+      if (this.form.page >= this.total) {
+        this.showTotal=true//已经滑到底的提醒
+        return false;
+      }
+      this.form.page ++;
+      this.loadData()
     }
   },
   onReachBottom() {
-      if (this.form.page >= this.total) {
-      this.showTotal=true//已经滑到底的提醒
-      return false;
-    }
-    this.form.page ++;
-    this.loadData()
+    
   }
 };
 </script>
