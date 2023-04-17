@@ -77,28 +77,12 @@ class ApiClient {
 								// uni.navigateTo({
 								//   url: 'login'
 								// });
-                                uni.removeStorageSync('userInfo');
+								uni.removeStorageSync('userInfo');
 								err.message = "未授权，请重新登录(401)";
 								store.dispatch("auth/logout");
-								store
-									.dispatch("auth/login")
-									.then((res) => {
-										uni.showToast({
-											mask:true,
-											title: "请重新操作",
-											duration: 2000,
-											icon: "none",
-										});
-									})
-									.catch((err) => {
-										uni.showToast({
-											mask:true,
-											title: "账户状态异常",
-											duration: 2000,
-											icon: "none",
-										});
-										console.log(err);
-									});
+								uni.redirectTo({
+									url: '../public/login'
+								})
 								break;
 							case 403:
 								// 403 Token过期
@@ -150,10 +134,10 @@ class ApiClient {
 								err.message = "HTTP版本不受支持(505)";
 								break;
 							default:
-								err.message = `连接到服务器失败`;
+								err.message = `网络不稳定，请重试`;
 						}
 					} else {
-						err.message = "连接到服务器失败";
+						err.message = "网络不稳定，请重试";
 					}
 					if (err.statusCode != 401 || err.statusCode != 403) {
 						uni.showToast({
@@ -162,6 +146,11 @@ class ApiClient {
 							duration: 1500,
 							icon: "none",
 						});
+						uni.removeStorageSync('userInfo');
+						store.dispatch("auth/logout");
+						uni.redirectTo({
+							url: '../public/login'
+						})
 					}
 					return err;
 				});
