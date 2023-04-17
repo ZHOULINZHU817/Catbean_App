@@ -130,7 +130,7 @@ page{
     border-radius: 50px;
     background: #FF68A6;
     color: #ffffff;
-    width:250upx;
+    width:260upx;
     height:60upx;
     line-height: 60upx;
     font-size: 28upx;
