@@ -55,7 +55,7 @@
               <view class="goods-box-single">
                 <image
                   class="goods-img"
-                  :src="item.product && item.product.images"
+                  :src="item.product && item.product.images[0]"
                   mode="aspectFill"
                 ></image>
                 <view class="centre">
@@ -189,6 +189,11 @@ export default {
       ApiClinet.get(ApiConfig.APP_BASE_API.recordGoodList, this.form).then((res) => {
         if (res.data.code == '200') {
             this.orderListNew = this.orderListNew.concat(res.data.data.records || []);
+            this.orderListNew.map(item=>{
+              if(item.product){
+                item.product.images = item.product && typeof(item.product && item.product.images)=='string'?item.product.images.split(','):item.product.images;
+              }
+						})
             this.total = Math.ceil(res.data.data.total / this.form.size);
         }
       })
