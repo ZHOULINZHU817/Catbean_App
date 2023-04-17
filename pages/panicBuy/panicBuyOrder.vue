@@ -16,7 +16,7 @@
 				<scroll-view 
 					class="list-scroll-content" 
 					scroll-y
-					@scrolltolower="loadData"
+					@scrolltolower="getLoadData"
 				>
 					<!-- 空白页 -->
 					<empty v-if="panicBuyList.length === 0"></empty>
@@ -410,15 +410,22 @@
 				}else{
 					return false;
 				}
+			},
+			getLoadData(){
+				if (this.form.page >= this.total) {
+					this.showTotal=true//已经滑到底的提醒
+					return false;
+				}
+				this.form.page ++;
+				if(this.form.status){
+					this.loadData();
+				}else{
+					this.loadAppointmentData();
+				}
 			}
 		},
 		onReachBottom() {
-			if (this.form.page >= this.total) {
-				this.showTotal=true//已经滑到底的提醒
-				return false;
-			}
-			this.form.page ++;
-			this.loadData()
+			
 		}
 	}
 </script>

@@ -74,6 +74,7 @@ export default {
     };
   },
   onShow(){
+    this.recordList = [];
     this.catFoodList();
     this.getAsset();
   },
