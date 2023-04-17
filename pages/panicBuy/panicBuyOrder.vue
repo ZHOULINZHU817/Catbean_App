@@ -41,7 +41,7 @@
 							<view v-if="item.status=='paid'" class="order-item-text margin-b-20"><text>可转卖倒计时：</text>
 							<count-down
 								class="down"
-								:endTime="endTimeData(item.actBuyTime)"
+								:endTime="endTimeData(item.saleOrder && item.saleOrder.endBuyTime)"
 								:endText="endText"
 							/></view>
 							<view v-if="item.status=='buying'" class="order-item-btn">
