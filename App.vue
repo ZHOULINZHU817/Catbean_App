@@ -95,23 +95,31 @@
 							cancelText:'稍后进行',
 							success: function (res) {
 								if (res.confirm) {
-									uni.showToast({
-										icon:"none",
-										mask: true,
-										title: '有新的版本发布，检测到您目前为Wifi连接，程序已启动自动更新。新版本下载完成后将自动弹出安装程序',  
-										duration: 5000,  
-									}); 
+									uni.showLoading({
+										title:"正在更新",
+										mask:true
+									})
 									//设置 最新版本apk的下载链接
 									var downloadApkUrl = url;
-									var dtask = plus.downloader.createDownload( downloadApkUrl, {}, function ( d, status ) {  
+									var dtask = plus.downloader.createDownload( downloadApkUrl, {method: "GET"}, function ( d, status ) {  
 											// 下载完成  
 											if ( status == 200 ) {   
-												plus.runtime.install(plus.io.convertLocalFileSystemURL(d.filename),{},{},function(error){  
-													uni.showToast({  
-														title: '安装失败', 
-														duration: 1500  
-													});  
+												plus.runtime.install(plus.io.convertLocalFileSystemURL(d.filename),{force: false },
+												function() {
+													uni.hideLoading();
+													plus.runtime.restart();
+												},function(error){
+													uni.hideLoading();  
+													uni.showToast({
+														title:"更新失败，将跳转下载页面",
+														icon:"none",
+														duration:2000
+													})
+													setTimeout(function(){
+														plus.runtime.openURL(downloadApkUrl);
+													},2000)
 												})
+												
 											} else {  
 												 uni.showToast({  
 													title: '更新失败',

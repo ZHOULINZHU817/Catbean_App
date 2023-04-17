@@ -92,7 +92,7 @@ export default {
       ApiClinet.get(ApiConfig.APP_BASE_API.catFoodList, this.params).then((res) => {
         if (res.data.code == '200') {
             this.recordList = this.recordList.concat(res.data.data.records || []);
-            this.total = Math.ceil(res.data.total / this.params.size);
+            this.total = Math.ceil(res.data.data.total / this.params.size);
         }
       })
     },

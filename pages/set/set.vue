@@ -40,10 +40,10 @@
 			<text class="cell-tit">修改密码</text>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
-		<view class="list-cell b-b" @click="navTo('/pages/share/share')" hover-class="cell-hover" :hover-stay-time="50">
+		<!-- <view class="list-cell b-b" @click="navTo('/pages/share/share')" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">分享好友</text>
 			<text class="cell-more yticon icon-you"></text>
-		</view>
+		</view> -->
 		<view class="list-cell b-b" @click="navTo('/pages/callCenter/callCenter')" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">联系客服</text>
 			<text class="cell-more yticon icon-you"></text>

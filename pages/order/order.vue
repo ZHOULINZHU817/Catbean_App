@@ -202,6 +202,7 @@ export default {
     //swiper 切换
     changeTab(e) {
       this.tabCurrentIndex = e.target.current;
+      this.showTotal = false;
       this.orderListNew = [];
       this.form.page = 0;
       this.form.state = statusList[this.tabCurrentIndex];
