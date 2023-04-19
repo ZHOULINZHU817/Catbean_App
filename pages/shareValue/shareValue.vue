@@ -117,7 +117,7 @@ export default {
             this.recordList = this.recordList.concat(res.data.data.records || []);
             this.total = Math.ceil(res.data.data.total / this.form.size);
             this.recordList.map(item=>{
-              item.createTime = formatDate(item.createTime*1);
+              item.createTime = formatDate(item.createTime);
             })
         }
       })

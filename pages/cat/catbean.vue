@@ -30,10 +30,10 @@
           :key="index"
         >
           <view class="flex1">
-            <view class="record-title">{{ catBean[item.type] }}</view>
+            <view class="record-title">{{item.type=='into'? (catBean[item.type] + '+' + item.member.phone) : catBean[item.type] }}</view>
             <view class="record-date">{{ formatDate(item.createTime*1) }}</view>
           </view>
-          <view class="record-price">{{item.type == 'into' || item.type == 'recharge'?'+':'-'}}{{ item.amount }}</view>
+          <view class="record-price">{{getItemType(item.type)}}{{ item.amount }}</view>
         </view>
       </view>
       <!--no_data--->
@@ -51,14 +51,19 @@ import ApiClinet from "@/services/api-clinet";
 import ApiConfig from "@/config/api.config";
 import { formatDate } from "@/utils/prototype/date"
 let catBean = {
-  out:'转出',
-  recharge: '充值',
-  exchange: '兑换',
-  breach: '违约',
-  order: '猫超订单',
-  into: '转入',
-  reserve: "预约",
-  withdraw: "提现"
+  out:'转出好友', //-
+  recharge: '平台购入',//+
+  breach: '违约',//-
+  into: '好友转赠', //+
+  withdraw: "猫豆提现",//-
+  payOrder: "预约消耗", //-
+  mallOrder: "猫超订单", //-
+  reserveFrozen: "预约冻结", //-
+  reserveRefund: "预约返还", //+
+  exchangeBuy: "奖励金兑换", //+
+  exchangeTeam: "分润兑换", //+
+  exchangeChild: "分享值兑换", //+
+  saleOrder: "订单售出", //+
 }
 export default {
   data() {
@@ -101,6 +106,33 @@ export default {
         url,
       });
     },
+    getItemType(type){
+      let typeText = '-'
+      switch(type){
+        case 'recharge':
+          typeText = "+"
+          break;
+        case 'into':
+          typeText = "+"
+          break;
+        case 'reserveRefund':
+          typeText = "+"
+          break;
+        case 'exchangeBuy':
+          typeText = "+"
+          break;
+        case 'exchangeTeam':
+          typeText = "+"
+          break;
+        case 'exchangeChild':
+          typeText = "+"
+          break;
+        case 'saleOrder':
+          typeText = "+"
+          break;
+      }
+      return typeText;
+    }
   },
   onReachBottom() {
       if (this.params.page >= this.total) {

@@ -144,9 +144,9 @@ export default {
       ApiClinet.get(ApiConfig.APP_BASE_API.rewardList, this.form).then((res) => {
         if (res.data.code == '200') {
             this.tableList = this.tableList.concat(res.data.data.records || []);
-            this.total = Math.ceil(res.data.data.total / this.params.size);
+            this.total = Math.ceil(res.data.data.total / this.form.size);
             this.tableList.map(item=>{
-              item.createTime = formatDate(item.createTime*1);
+              item.createTime = formatDate(item.createTime);
               item.tradeAmount1 = "好友分润";
             })
         }

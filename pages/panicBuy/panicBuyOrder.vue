@@ -51,12 +51,13 @@
 							</view>
 							<view v-if="item.status=='paid'" class="order-item-btn">
 								<view class="flex1"></view>
+								<view class="order-item-btn1" @click="pickOrder(item)">提货</view>
 								<view :class="resellTime(item)?'order-item-btn1':'order-item-btn2'" @click="resellOrder(item)">立即转卖</view>
 							</view>
-							<view v-if="item.status=='resell'" class="order-item-btn">
+							<!-- <view v-if="item.status=='resell'" class="order-item-btn">
 								<view class="flex1"></view>
 								<view class="order-item-btn1" @click="pickOrder(item)">提货</view>
-							</view>
+							</view> -->
 						</view>
 					</view>
 					<view class="order-content" v-else>
