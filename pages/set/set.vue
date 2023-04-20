@@ -36,7 +36,7 @@
 			<text class="cell-tit">支付密码</text>
 			<text class="cell-more yticon icon-you"></text>
 		</view>
-		<view class="list-cell b-b" @click="navTo('/pages/public/forgetPassword')" hover-class="cell-hover" :hover-stay-time="50">
+		<view class="list-cell b-b" @click="navTo('/pages/public/forgetPassword?edit=true')" hover-class="cell-hover" :hover-stay-time="50">
 			<text class="cell-tit">修改密码</text>
 			<text class="cell-more yticon icon-you"></text>
 		</view>

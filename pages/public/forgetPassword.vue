@@ -15,7 +15,7 @@
             placeholder="请输入手机号码"
             maxlength="11"
             data-key="phone"
-            :disabled="form.phone"
+            :disabled="isDisabled"
             @input="inputChange"
           />
         </view>
@@ -97,10 +97,14 @@ export default {
       iconSrc: "../../static/tab/close.png", //图标眼睛
       codeTxt: "获取验证码",
       iconSrcNew: "../../static/tab/close.png", //图标眼睛
-      userInfo:  uni.getStorageSync('userInfo') && JSON.parse(uni.getStorageSync('userInfo'))
+      userInfo:  uni.getStorageSync('userInfo') && JSON.parse(uni.getStorageSync('userInfo')),
+      isDisabled: false,
     };
   },
-  onLoad() {
+  onLoad(options) {
+    if(options && options.edit){
+      this.isDisabled = true;
+    }
     this.form.phone = this.userInfo.phone;
   },
   methods: {
