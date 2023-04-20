@@ -79,18 +79,18 @@
 				// this.$api.msg(data.number);
 				if(server_version !== data.number && data.forced){
 					//TODO 此处判断是否为 WIFI连接状态
-					if(plus.networkinfo.getCurrentType()!=3){
-						uni.showToast({  
-							title: '有新的版本发布，检测到您目前非Wifi连接，为节约您的流量，程序已停止自动更新，将在您连接WIFI之后重新检测更新',  
-							mask: true,  
-							duration: 5000,
-							icon:"none"
-						});  
-						return;  
-					}else{
+					// if(plus.networkinfo.getCurrentType()!=3){
+					// 	uni.showToast({  
+					// 		title: '有新的版本发布，检测到您目前非Wifi连接，为节约您的流量，程序已停止自动更新，将在您连接WIFI之后重新检测更新',  
+					// 		mask: true,  
+					// 		duration: 5000,
+					// 		icon:"none"
+					// 	});  
+					// 	return;  
+					// }else{
 						uni.showModal({
 							title: "版本更新",
-							content: '有新的版本发布，检测到您当前为Wifi连接，是否立即进行新版本下载？',
+							content: '有新的版本发布，是否立即进行新版本下载？',
 							confirmText:'立即更新',
 							cancelText:'稍后进行',
 							success: function (res) {
@@ -133,7 +133,7 @@
 								}
 							}
 						});
-					}
+					// }
 				}
 			}
 		},

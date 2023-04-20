@@ -3,7 +3,7 @@
     <view class="reward-bg">
       <view class="reward-bg2">
         <view class="reward-bg-title">当前奖金(元)</view>
-        <view class="reward-bg-price">{{assetObj.buyReword || 0}}</view>
+        <view class="reward-bg-price">{{assetObj.buyReward || 0}}</view>
          <!-- <input
           class="reward-bg-price"
           :value="assetObj.buyReword || 0"
@@ -42,7 +42,7 @@
             <view class="model-wraper-bg">
                 <view class="modal-title">奖励金兑换</view>
                 <view class="modal-content">
-                    <view class="modal-content-title">您当前共有<text>{{assetObj.buyReword || 0}}</text>奖励金可兑换</view>
+                    <view class="modal-content-title">您当前共有<text>{{assetObj.buyReward || 0}}</text>奖励金可兑换</view>
                     <view class="modal-content-text">奖励金兑换到余额需扣除5%</view>
                     <view class="modal-content-text">兑换金额10起兑，且为10的整数倍</view>
                     <view class="modal-content-text b-b">一天可以兑换一次，每日0点刷新次数</view>
@@ -107,7 +107,7 @@ export default {
       ApiClinet.get(ApiConfig.APP_BASE_API.asset).then((res) => {
         if (res.data.code == '200') {
             this.assetObj = res.data.data;
-            this.assetObj.buyReword =  this.assetObj.buyReword || 0;
+            this.assetObj.buyReward =  this.assetObj.buyReward || 0;
             this.oldAsset = Object.assign({},res.data.data)
         }
       })
@@ -135,7 +135,7 @@ export default {
       if(!this.inputVal || this.inputVal == 0){
         return this.$api.msg('请输入兑换金额')
       }
-      if(!this.inputVal || this.inputVal ==0 || this.inputVal > this.assetObj.buyReword){
+      if(!this.inputVal || this.inputVal ==0 || this.inputVal > this.assetObj.buyReward){
         return this.$api.msg('兑换金额不足！');
       }
       if((this.inputVal%10) != 0){

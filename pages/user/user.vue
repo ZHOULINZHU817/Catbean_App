@@ -31,7 +31,7 @@
 					<text>分润</text>
 				</view>
 				<view class="tj-item" @click="navTo('/pages/rewards/rewards')">
-					<text class="num">{{userInfo.buyReword || 0}}</text>
+					<text class="num">{{userInfo.buyReward || 0}}</text>
 					<text>奖励金</text>
 				</view>
 				<view class="tj-item" @click="navTo('/pages/shareValue/shareValue')">

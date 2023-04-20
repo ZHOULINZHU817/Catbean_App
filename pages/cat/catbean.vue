@@ -56,7 +56,7 @@ let catBean = {
   breach: '违约',//-
   into: '好友转赠', //+
   withdraw: "猫豆提现",//-
-  payOrder: "预约消耗", //-
+  payOrder: "支付订单", //-
   mallOrder: "猫超订单", //-
   reserveFrozen: "预约冻结", //-
   reserveRefund: "预约返还", //+
