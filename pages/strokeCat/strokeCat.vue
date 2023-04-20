@@ -65,7 +65,7 @@ export default {
       //  console.log(endTime)=>得到毫秒  1658030420 可在方法里面放入后台数据,new Date('放后台数据').getTime() / 1000 +  ' ',但要记得调用方法
       endText: "活动已结束",
       btnText: "预约",
-      list: [1, 5, 10, 20, 30, 50, 100],
+      list: [1, 3, 5, 8, 10, 12, 20, 30, 50, 100],
       active: null,
       timeDate:'',
       stadiumText:'12:00场',
@@ -269,20 +269,21 @@ page{
       height: 318upx;
       background-color: #ffffff;
       border-radius: 16upx;
-      padding: 24upx 30upx;
+      padding: 24upx 5upx;
       margin-top:20upx;
       .stroke-select{
         display: flex;
         flex-flow:row wrap;
-        padding-left: 20upx;
+        padding-left: 30upx;
         .stroke-select-item{
-            width: 20%;
+            width: 15%;
             height:60upx;
             line-height: 60upx;
             border:1upx solid #CFCFCF;
             border-radius: 10upx;
             text-align: center;
             margin:10upx;
+            font-size:28upx;
         }
          .active {
             background: #FFF1F6;
@@ -294,13 +295,14 @@ page{
         font-size: 24upx;
         color: #fe5f90;
         line-height: 40upx;
+        padding-left: 30upx;
       }
       .modal-content-text {
         font-size: 24upx;
         color: #333333;
         line-height: 40upx;
         position: relative;
-        padding-left: 18upx;
+        padding-left: 48upx;
         &::before {
           content: "";
           display: block;
@@ -310,7 +312,7 @@ page{
           border-radius: 50%;
           position: absolute;
           top: 16upx;
-          left: 0;
+          left: 30upx;
         }
       }
     }
