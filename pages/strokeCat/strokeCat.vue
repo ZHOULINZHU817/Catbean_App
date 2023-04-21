@@ -113,6 +113,7 @@ export default {
       }
       ApiClinet.post(`${AppConfig.ANDROID_URL}/api/app/order/reserve`, this.form).then((res) => {
         if (res.data.code == '200') {
+            this.cancelRank();
             uni.navigateTo({
               url: "/pages/panicBuy/panicBuyOrder?state=0",
             });

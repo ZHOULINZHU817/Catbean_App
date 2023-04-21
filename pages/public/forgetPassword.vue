@@ -22,6 +22,7 @@
         <view class="input-item phone-code">
           <input
             :value="form.code"
+            type="number"
             placeholder="请输入验证码"
             placeholder-class="input-empty"
             maxlength="20"

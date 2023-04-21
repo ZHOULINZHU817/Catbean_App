@@ -37,7 +37,7 @@
 							<view class="order-item-text"><text>流拍次数：</text>{{item.saleOrder && item.saleOrder.missCnt}}</view>
 							<view class="order-item-text"><text>违约次数：</text>{{item.saleOrder && item.saleOrder.breachCnt}}</view>
 							<view class="order-item-text"><text>抢中时间：</text>{{formatDate(item.actBuyTime)}}</view>
-							<view v-if="item.status=='resell'" class="order-item-text"><text>转卖人：</text>{{item.member && item.member.name}}</view>
+							<view v-if="item.status=='resell'" class="order-item-text"><text>转卖人：</text>{{item.saleOrder && item.saleOrder.member && item.saleOrder.member.nickName}}</view>
 							<view v-if="item.status=='paid'" class="order-item-text margin-b-20"><text>可转卖时间：{{formatDate(endTimeData(item.saleOrder && item.saleOrder.endBuyTime))}}</text>
 							<!-- <count-down
 								class="down"
