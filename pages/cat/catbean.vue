@@ -80,6 +80,7 @@ export default {
   },
   onShow(){
     this.recordList = [];
+    this.params.page = 0;
     this.catFoodList();
     this.getAsset();
   },
