@@ -79,7 +79,7 @@ export default {
         { name: "微信", value: "wx", src: "../../static/user/weixin.jpg" },
         { name: "银行卡", value: "bank", src: "../../static/user/bank.jpg" },
       ],
-      activeIndex: 0,
+      activeIndex: null,
       form: {
         amount:'',
       },
