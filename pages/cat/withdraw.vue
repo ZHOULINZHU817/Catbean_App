@@ -15,7 +15,7 @@
           <text class="tit">提现金额</text>
           <input
             :value="form.amount"
-            placeholder="可提现金额为999"
+            :placeholder="`可提现金额为${assetObj.catFood}`"
             maxlength="11"
             data-key="amount"
             @input="inputChange"
@@ -84,11 +84,14 @@ export default {
         amount:'',
       },
       assetObj: {},
-      msg:""
+      msg:"",
+      userInfo: {}
     };
   },
   onLoad() {
     this.getAsset();
+     /**获取个人信息* */
+		this.memberInfo();
   },
   methods: {
     onNavigationBarButtonTap() {
@@ -96,6 +99,13 @@ export default {
         url: "/pages/cat/withDrawManner?state=0",
       });
     },
+    memberInfo() {
+				ApiClinet.get(ApiConfig.APP_BASE_API.memberDetail).then((res) => {
+					if (res.data.code == '200') {
+            this.userInfo = res.data.data;
+					}
+				})
+		},
     /**获取资产* */
     getAsset() {
       ApiClinet.get(ApiConfig.APP_BASE_API.asset).then((res) => {
@@ -133,6 +143,15 @@ export default {
       }
       if(!this.form.amount){
         return this.$api.msg('请输入提现金额')
+      }
+      if(!this.userInfo.wechatUrl && this.form.payType == 'wx'){
+        return this.$api.msg('请设置收款账号微信收款码')
+      }
+      if(!this.userInfo.alipayUrl && this.form.payType == 'ali'){
+        return this.$api.msg('请设置收款账号支付宝收款码')
+      }
+      if(!(this.userInfo.cardNo && this.userInfo.bank) && this.form.payType == 'bank'){
+        return this.$api.msg('请设置收款账号收款银行跟银行卡号')
       }
       this.msg = "";
       this.$refs.jpPwd.toOpen()
