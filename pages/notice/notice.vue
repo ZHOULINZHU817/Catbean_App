@@ -103,6 +103,7 @@
 		border-radius: 16upx;
 		margin-bottom: 20upx;
 		.notice-title{
+			display: flex;
 			align-items: center;
 			height:60upx;
 			color: rgba(51, 51, 51, 1);
@@ -132,5 +133,8 @@
 		line-height: 60upx;
 		font-size:28upx;
 		color:#999999;
+	}
+	.flex1{
+		flex: 1;
 	}
 </style>
