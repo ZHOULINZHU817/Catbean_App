@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<view class="notice-item" v-for="(item, index) in newsList" :key="index">
+		<view class="notice-item" v-for="(item, index) in newsList" :key="index" @click="openFile(item)">
 			<view class="notice-title flex">
 				<!-- <img v-if="item.type == '1'" src="https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/c58ce5b782f34b53b0c51ebaeb77a196_mergeImage.png"/>
 				<img v-if="item.type == '3'" src="https://lanhu-dds-backend.oss-cn-beijing.aliyuncs.com/merge_image/imgs/590a2c6aef3040afa32f0f81c570be7d_mergeImage.png"/>
@@ -56,6 +56,26 @@
 					  
 					}
 				})
+			},
+			openFile(item){
+				if(!(item.link&&item.link.includes('http'))){
+					return ;
+				}
+				uni.downloadFile({
+					url: item.link,
+					success: function (res) {
+						var filePath = res.tempFilePath;
+						uni.openDocument({
+							filePath: filePath,
+							success: function (res) {
+							console.log('打开文档成功');
+							}
+						});
+					},
+					fail: function (err) {  
+						plus.runtime.openURL(item.link)
+					},  
+				});
 			}
 		},
 		onReachBottom() {
