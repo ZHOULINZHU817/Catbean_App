@@ -106,7 +106,7 @@ export default {
     appointment() {
       if(!this.isExist){
         uni.showModal({
-            content: '未进行实名认证，前去认证?',
+            content: '用户未进行实名认证，前去认证?',
             success: (e)=>{
               if(e.confirm){
                 uni.navigateTo({
