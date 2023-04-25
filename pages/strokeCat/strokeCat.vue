@@ -72,11 +72,14 @@ export default {
       form: {
         type:"",
         cnt:"",
-      }
+      },
+      isExist: false
     };
   },
   onShow() {
     this.dateHandle();
+    /**是否消息认证* */
+		this.getCardExist();
   },
   methods: {
     onNavigationBarButtonTap() {
@@ -90,10 +93,30 @@ export default {
         url: "/pages/panicBuy/panicBuyOrder?state=0",
       });
     },
+    getCardExist() {
+				ApiClinet.get(ApiConfig.APP_BASE_API.userExist).then((res) => {
+					if (res.data.code == '200') {
+					   this.isExist = res.data.data;
+					}
+				})
+		},
     changeText() {
       // this.btnText = "立即抢购";
     },
     appointment() {
+      if(!this.isExist){
+        uni.showModal({
+            content: '未进行实名认证，前去认证?',
+            success: (e)=>{
+              if(e.confirm){
+                uni.navigateTo({
+                  url: "/pages/user/certification",
+                });
+              }
+            }
+        });
+        return;
+      }
       this.$refs.rankModal.open();
     },
     panicBuy() {},
