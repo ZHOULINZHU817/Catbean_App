@@ -29,34 +29,34 @@
 				</view>
 				<view class="jp_hea" :style="keyImg?'':'background-color: #f5f5f5'">
 					<view :class="keyType=='one'?'jq_key':'jq_key2'">
-						<view @click="inputPwd(list[1])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[1]"
+						<view @touchend="inputPwd(list[1])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[1]"
 						 hover-class="click_hover">{{list[1]}}</view>
-						<view @click="inputPwd(list[2])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[2]"
+						<view @touchend="inputPwd(list[2])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[2]"
 						 hover-class="click_hover">{{list[2]}}</view>
-						<view @click="inputPwd(list[3])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[3]"
+						<view @touchend="inputPwd(list[3])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[3]"
 						 hover-class="click_hover">{{list[3]}}</view>
 					</view>
 					<view :class="keyType=='one'?'jq_key':'jq_key2'">
-						<view @click="inputPwd(list[4])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[4]"
+						<view @touchend="inputPwd(list[4])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[4]"
 						 hover-class="click_hover">{{list[4]}}</view>
-						<view @click="inputPwd(list[5])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[5]"
+						<view @touchend="inputPwd(list[5])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[5]"
 						 hover-class="click_hover">{{list[5]}}</view>
-						<view @click="inputPwd(list[6])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[6]"
+						<view @touchend="inputPwd(list[6])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[6]"
 						 hover-class="click_hover">{{list[6]}}</view>
 					</view>
 					<view :class="keyType=='one'?'jq_key':'jq_key2'">
-						<view @click="inputPwd(list[7])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[7]"
+						<view @touchend="inputPwd(list[7])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[7]"
 						 hover-class="click_hover">{{list[7]}}</view>
-						<view @click="inputPwd(list[8])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[8]"
+						<view @touchend="inputPwd(list[8])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[8]"
 						 hover-class="click_hover">{{list[8]}}</view>
-						<view @click="inputPwd(list[9])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[9]"
+						<view @touchend="inputPwd(list[9])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[9]"
 						 hover-class="click_hover">{{list[9]}}</view>
 					</view>
 					<view :class="keyType=='one'?'jq_key':'jq_key2'">
 						<view class="keyboard" :style="keyImg?'':'background-color: #fff'"></view>
-						<view @click="inputPwd(list[0])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[0]"
+						<view @touchend="inputPwd(list[0])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[0]"
 						 hover-class="click_hover">{{list[0]}}</view>
-						<view @click="backspace()" class="keyboard" :style="keyImg?'':'background-color: #fff'" data-char="×"
+						<view @touchend="backspace()" class="keyboard" :style="keyImg?'':'background-color: #fff'" data-char="×"
 						 hover-class="click_hover">×</view>
 					</view>
 				</view>
@@ -99,34 +99,34 @@
 				<view class="capsule">
 					<view class="jp_hea" :style="keyImg?'':'background-color: #f5f5f5'">
 						<view :class="keyType=='one'?'jq_key':'jq_key2'">
-							<view @click="inputPwd(list[1])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[1]"
+							<view @touchend="inputPwd(list[1])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[1]"
 							 hover-class="click_hover">{{list[1]}}</view>
-							<view @click="inputPwd(list[2])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[2]"
+							<view @touchend="inputPwd(list[2])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[2]"
 							 hover-class="click_hover">{{list[2]}}</view>
-							<view @click="inputPwd(list[3])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[3]"
+							<view @touchend="inputPwd(list[3])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[3]"
 							 hover-class="click_hover">{{list[3]}}</view>
 						</view>
 						<view :class="keyType=='one'?'jq_key':'jq_key2'">
-							<view @click="inputPwd(list[4])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[4]"
+							<view @touchend="inputPwd(list[4])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[4]"
 							 hover-class="click_hover">{{list[4]}}</view>
-							<view @click="inputPwd(list[5])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[5]"
+							<view @touchend="inputPwd(list[5])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[5]"
 							 hover-class="click_hover">{{list[5]}}</view>
-							<view @click="inputPwd(list[6])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[6]"
+							<view @touchend="inputPwd(list[6])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[6]"
 							 hover-class="click_hover">{{list[6]}}</view>
 						</view>
 						<view :class="keyType=='one'?'jq_key':'jq_key2'">
-							<view @click="inputPwd(list[7])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[7]"
+							<view @touchend="inputPwd(list[7])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[7]"
 							 hover-class="click_hover">{{list[7]}}</view>
-							<view @click="inputPwd(list[8])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[8]"
+							<view @touchend="inputPwd(list[8])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[8]"
 							 hover-class="click_hover">{{list[8]}}</view>
-							<view @click="inputPwd(list[9])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[9]"
+							<view @touchend="inputPwd(list[9])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[9]"
 							 hover-class="click_hover">{{list[9]}}</view>
 						</view>
 						<view :class="keyType=='one'?'jq_key':'jq_key2'">
 							<view class="keyboard" :style="keyImg?'':'background-color: #fff'"></view>
-							<view @click="inputPwd(list[0])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[0]"
+							<view @touchend="inputPwd(list[0])" class="keyboard" :style="keyImg?'':'background-color: #fff'" :data-char="list[0]"
 							 hover-class="click_hover">{{list[0]}}</view>
-							<view @click="backspace()" class="keyboard" :style="keyImg?'':'background-color: #fff'" data-char="×"
+							<view @touchend="backspace()" class="keyboard" :style="keyImg?'':'background-color: #fff'" data-char="×"
 							 hover-class="click_hover">×</view>
 						</view>
 					</view>
@@ -443,7 +443,8 @@
 							display: flex;
 							align-items: center;
 							justify-content: center;
-							border: #cececd solid 0.1upx;
+							// border: #cececd solid 1upx;
+							border:2upx solid #cececd;
 							border-radius: 10upx;
 							font-size: 36upx;
 							font-weight: 600;
@@ -626,7 +627,7 @@
 							display: flex;
 							align-items: center;
 							justify-content: center;
-							border: #cececd solid 0.1upx;
+							border:2upx solid #cececd;
 							border-radius: 10upx;
 							font-size: 36upx;
 							font-weight: 600;

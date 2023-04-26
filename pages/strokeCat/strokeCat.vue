@@ -117,6 +117,9 @@ export default {
         });
         return;
       }
+      if(!this.form.type){
+        return this.$api.msg('请稍后再试！')
+      }
       this.$refs.rankModal.open();
     },
     panicBuy() {},
@@ -168,11 +171,10 @@ export default {
       let time3 = new Date(`${this.getDate(0)} 20:00:00`).getTime();
       let time4 = new Date(`${this.getDate(1)} 12:00:00`).getTime();
       
-      if(time <=time1){
+      if(time <= time1){
         this.timeDate = time1;
         this.stadiumText = '12:00场'
         this.form.type = 'twelve';
-        //new Date("2023/04/23 17:57:00").getTime() / 1000 + " "
         this.endTime = this.timeDate / 1000 + " "
         return;
       }
