@@ -24,7 +24,7 @@
         >
           <view class="flex1">
             <view class="record-title">ID：{{ item.id }}</view>
-            <view class="record-date">{{ item.createTime }}</view>
+            <view class="record-date">{{ formatDate(item.createTime) }}</view>
           </view>
           <view class="record-price">+{{ item.amount }}</view>
         </view>
@@ -99,6 +99,7 @@ export default {
     this.getRewardList();
   },
   methods: {
+    formatDate,
     inputChange(e){
       this.inputVal = e.detail.value;
     },
@@ -117,9 +118,9 @@ export default {
         if (res.data.code == '200') {
             this.recordList = this.recordList.concat(res.data.data.records || []);
             this.total = Math.ceil(res.data.data.total / this.form.size);
-            this.recordList.map(item=>{
-              item.createTime = formatDate(item.createTime);
-            })
+            // this.recordList.map(item=>{
+            //   item.createTime = formatDate(item.createTime);
+            // })
         }
       })
     },
