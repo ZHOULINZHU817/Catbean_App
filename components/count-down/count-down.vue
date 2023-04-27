@@ -46,10 +46,10 @@
 							format = `${day}:${hour}:${min}:${sec}`;
 						}
 						if(day <= 0 && hour > 0 ){
-							format = `${hour}:${min}:${sec}`;
+							format = `${hour} : ${min} : ${sec}`;
 						}
 						if(day <= 0 && hour <= 0){
-							format =`${min}:${sec}`;
+							format =`${min} : ${sec}`;
 						}
 						self.content = format;
 					}else{

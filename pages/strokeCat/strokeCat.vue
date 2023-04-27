@@ -159,12 +159,13 @@ export default {
       var y = date.getFullYear();
       var m = date.getMonth()+1;//获取当前月份的日期
       var d = date.getDate();
-      return y + '-' + this.add0(m) + '-' + this.add0(d)
+      return y + '/' + this.add0(m) + '/' + this.add0(d)
     },
     add0(m) {
       return m < 10 ? '0' + m : m
     },
     dateHandle(){
+      console.log('++++', this.getDate(0))
       let time = new Date().getTime();
       let time1 = new Date(`${this.getDate(0)} 12:00:00`).getTime();
       let time2 = new Date(`${this.getDate(0)} 16:00:00`).getTime();
@@ -400,8 +401,9 @@ page{
 }
 .down{
   background-color: #FFFFFF;
-  padding:2upx 6upx;
+  padding:2upx 10upx;
   color:#F25774;
   font-size: 30upx;
+  border-radius: 4upx;
 }
 </style>
