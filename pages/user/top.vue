@@ -97,8 +97,8 @@ page {
           border-radius: 36upx;
           line-height: 36upx;
           text-align: center;
-          margin-right: 20upx;
-          margin-top: 6upx;
+          margin-right: 30upx;
+          // margin-top: 6upx;
         }
         .record-one{
           background-color: #FFD68D;
@@ -115,7 +115,10 @@ page {
         .record-name{
           font-size: 26upx;
           color: #333333;
-          flex:1;
+          width: 150upx;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
         .record-content{
           font-size: 26upx;
