@@ -119,6 +119,10 @@
 						<image class="user-icon-pic" src="/static/user/share_friend.png"></image>
 						<text>分享好友</text>
 					</view>
+					<view class="order-item" v-if="isExist" @click="navTo('/pages/user/top')" hover-class="common-hover"  :hover-stay-time="50">
+						<image class="user-icon-pic" src="/static/user/top.png"></image>
+						<text>排行榜</text>
+					</view>
 				</view>
 			</view>
 		</view>

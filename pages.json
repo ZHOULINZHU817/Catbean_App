@@ -196,6 +196,18 @@
 			}
 		},
 		{
+			"path": "pages/cat/recharge",
+			"style": {
+				"navigationBarTitleText": "猫豆充值"
+			}
+		},
+		{
+			"path": "pages/user/top",
+			"style": {
+				"navigationBarTitleText": "排行榜"
+			}
+		},
+		{
 			"path": "pages/cat/withdraw",
 			"style": {
 				"navigationBarTitleText": "猫豆提现",

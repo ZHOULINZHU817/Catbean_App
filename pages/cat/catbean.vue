@@ -3,18 +3,21 @@
     <view class="cat-bean-top">
       <view class="cat-bean-top-content">
         <view class="cat-bean-top-bg">
-          <view class="margin-b-20">猫豆数量</view>
+          <view class="margin-b-10">猫豆数量</view>
           <view>
             <text class="cat-bean-top-num">{{assetObj.catFood || 0}}</text>
             <text @click="navTo('/pages/cat/withdraw')" class="cat-bean-top-btn"
               >提现</text
             >
+            <view class="frozen">冻结猫豆:{{assetObj.frozenCatFood}}</view>
           </view>
         </view>
         <view class="cat-bean-top-fot">
-          <view class="frozen">冻结猫豆:{{assetObj.frozenCatFood}}</view>
           <view @click="navTo('/pages/cat/beangiven')" class="cat-bean-w"
             ><image src="@/static/user/zhuanzeng.jpg" ></image>猫豆转赠</view
+          >
+          <view @click="navTo('/pages/cat/recharge')" class="cat-bean-w"
+            ><image style="height:40upx;width:40upx;" src="@/static/user/chongzhi.jpg" ></image>购买猫豆</view
           >
           <!-- <view class="cat-bean-w"
             ><img src="@/static/user/chongzhi.jpg" />购买猫豆</view> -->
@@ -190,12 +193,15 @@ page {
       }
       .cat-bean-w {
         width: 50%;
-        text-align: center;
+        // text-align: center;
         color: rgba(255, 71, 140, 1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
         image {
           margin-right: 10upx;
-          height:30upx;
-          width:30upx;
+          height:35upx;
+          width:35upx;
         }
       }
     }

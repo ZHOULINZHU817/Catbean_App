@@ -71,7 +71,7 @@ import vTable from "@/components/table/table.vue";
 import uniPopup from '@/components/uni-popup/uni-popup.vue'
 import ApiClinet from "@/services/api-clinet";
 import ApiConfig from "@/config/api.config";
-import { formatDate } from "@/utils/prototype/date";
+
 export default {
   components: {
     vTable,
@@ -146,7 +146,7 @@ export default {
             this.tableList = this.tableList.concat(res.data.data.records || []);
             this.total = Math.ceil(res.data.data.total / this.form.size);
             this.tableList.map(item=>{
-              item.createTime = formatDate(item.createTime);
+              // item.createTime = formatDate(item.createTime);
               item.tradeAmount1 = "好友分润";
             })
         }
@@ -352,15 +352,15 @@ page {
     .model-wraper-bg{
         background: url(@/static/user/rewards-bg3.jpg) 100% no-repeat;
         background-size: 100% 100%;
-        height:700upx;
+        // height:700upx;
         width:596upx;
-        padding:0 44upx;
+        padding:0 44upx 40upx 44upx;
         .modal-content{
             width:100%;
-            height:388upx;
+            // height:388upx;
             background-color: #ffffff;
             border-radius: 16upx;
-            padding: 54upx 30upx;
+            padding: 26upx 30upx;
             .modal-content-title{
                 font-size:32upx;
                 color:#333333;

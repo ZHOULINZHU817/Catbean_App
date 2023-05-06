@@ -304,15 +304,15 @@ page {
     .model-wraper-bg{
         background: url(@/static/user/rewards-bg3.jpg) 100% no-repeat;
         background-size: 100% 100%;
-        height:700upx; //70
+        // height:700upx; //70
         width:596upx;
-        padding:0 44upx;
+        padding:0 44upx 40upx 44upx;
         .modal-content{
             width:100%;
-            height:388upx;
+            // height:388upx;
             background-color: #ffffff;
             border-radius: 16upx;
-            padding: 54upx 30upx;
+            padding: 26upx 30upx;
             .modal-content-title{
                 font-size:32upx;
                 color:#333333;

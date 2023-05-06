@@ -35,6 +35,7 @@ export default {
        receiveAccount:`${ANDROID_URL}/api/app/member/receive/account`, //设置收款账号 
        settingInfo:`${ANDROID_URL}/api/app/member/setting/info`, //设置用户信息
        logoff: `${ANDROID_URL}/api/app/member/logoff`, //注销账号
+       top: `${ANDROID_URL}/api/app/count/top10`, //排行榜
 
        /**消息中心--公告* */
        noticeDetail:`${ANDROID_URL}/api/app/notice/detail`, //获取公告详情
@@ -71,13 +72,16 @@ export default {
        assetExchange:`${ANDROID_URL}/api/app/asset/exchange`, //兑换
        assetReserve:`${ANDROID_URL}/api/app/asset/reserve`, //预约
        assetTransfer:`${ANDROID_URL}/api/app/asset/transfer`, //转赠
-       withdraw:`${ANDROID_URL}/api/app/asset/withdraw`,
+       withdraw:`${ANDROID_URL}/api/app/asset/withdraw`, //提现
+       recharge: `${ANDROID_URL}/api/app/asset/recharge`,  //充值
 
        /**系统信息* */
        appInfo:`${ANDROID_URL}/api/app/info`, //转赠
 
        registerH5:`/api/app/member/register`, //注册
        codeH5:`/api/common/code`, //获取验证码
+
+
 
 
 
