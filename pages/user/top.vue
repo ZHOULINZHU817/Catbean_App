@@ -128,12 +128,14 @@ page {
         .record-date {
           font-size: 26upx;
           color: #333333;
-          width:30%;
+          width:26%;
         }
         .record-price {
           font-size: 26upx;
           color: #333333;
           font-weight: 700;
+          width:100upx;
+          text-align: right;
         }
       }
     }
