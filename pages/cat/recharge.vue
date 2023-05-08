@@ -8,6 +8,7 @@
       <div class="pay-input">
         <input
           :value="form.amount"
+		      type="number"
           placeholder="输入充值金额"
           data-key="amount"
           @input="inputChange"
@@ -63,7 +64,7 @@ export default {
     },
     savePay() {
       let reg = /^[0-9]*[1-9][0-9]*$/;
-      if (!reg.test(this.form.amount)) {
+      if (!(reg.test(this.form.amount))) {
         this.$api.msg("请输入1的整倍数");
       }
       ApiClinet.post(ApiConfig.APP_BASE_API.recharge, this.form).then((res) => {

@@ -94,7 +94,6 @@
 	import Vue from 'vue'
 	// import tableRender from './table-render'
 	import { toStringHandle } from '@/utils/price.js';
-	import { formatDate } from "@/utils/prototype/date";
 	export default {
 		components: {
 			
@@ -295,9 +294,6 @@
 				}
 				if(col.key == 'tradeAmount' || col.key == 'estimatedIncomes' || col.key == 'platformReward' || col.key == 'netIncomes'){
                     row[col.key] = toStringHandle(row[col.key]);
-				}
-				if(col.key == 'createTime'){
-                    row[col.key] = formatDate(row[col.key]);
 				}
 				let rowKey = row[col.key]
 				if ([null, ''].includes(rowKey)) {

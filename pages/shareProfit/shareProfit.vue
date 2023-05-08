@@ -71,7 +71,7 @@ import vTable from "@/components/table/table.vue";
 import uniPopup from '@/components/uni-popup/uni-popup.vue'
 import ApiClinet from "@/services/api-clinet";
 import ApiConfig from "@/config/api.config";
-
+	import { formatDate } from "@/utils/prototype/date";
 export default {
   components: {
     vTable,
@@ -82,7 +82,7 @@ export default {
         tableList:[],
         columns: [{
                 title: "日期",
-                key: "createTime",
+                key: "createTimes",
                 width: '34%',
                 listenerClick: true
             },
@@ -143,12 +143,12 @@ export default {
     getRewardList(){
       ApiClinet.get(ApiConfig.APP_BASE_API.rewardList, this.form).then((res) => {
         if (res.data.code == '200') {
-            this.tableList = this.tableList.concat(res.data.data.records || []);
-            this.total = Math.ceil(res.data.data.total / this.form.size);
-            this.tableList.map(item=>{
-              // item.createTime = formatDate(item.createTime);
+            res.data.data.records.map(item=>{
+              item.createTimes = formatDate(item.createTime);
               item.tradeAmount1 = "好友分润";
             })
+            this.tableList = this.tableList.concat(res.data.data.records || []);
+            this.total = Math.ceil(res.data.data.total / this.form.size);
         }
       })
     },
