@@ -198,7 +198,26 @@
 		{
 			"path": "pages/cat/recharge",
 			"style": {
-				"navigationBarTitleText": "猫豆充值"
+				"navigationBarTitleText": "猫豆充值",
+				"app-plus": {
+					"titleNView": {
+						"buttons": [
+							{
+								"text":"充值记录",
+                                "type":"none",
+                                "color":"#000",
+                                "fontSize":"14px",
+								"width":"80px"
+							}
+						]
+					}
+				}
+			}
+		},
+		{
+			"path": "pages/cat/payRank",
+			"style": {
+				"navigationBarTitleText": "充值记录"
 			}
 		},
 		{

@@ -40,6 +40,11 @@ export default {
     this.getAppInfo();
   },
   methods: {
+    onNavigationBarButtonTap() {
+      uni.navigateTo({
+        url: "/pages/cat/payRank",
+      });
+    },
     inputChange(e) {
       const key = e.currentTarget.dataset.key;
       this.form[key] = e.detail.value;
