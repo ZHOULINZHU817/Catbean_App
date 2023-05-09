@@ -70,7 +70,7 @@ export default {
     savePay() {
       let reg = /^[0-9]*[1-9][0-9]*$/;
       if (!(reg.test(this.form.amount))) {
-        this.$api.msg("请输入1的整倍数");
+        return this.$api.msg("请输入1的整倍数");
       }
       ApiClinet.post(ApiConfig.APP_BASE_API.recharge, this.form).then((res) => {
         if (res.data.code == "200") {
