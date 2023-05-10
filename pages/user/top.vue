@@ -2,17 +2,24 @@
   <view class="container">
     <div class="top"></div>
     <div class="top-content">
+      <view class="top-title">
+        <view class="flex1">排名</view>
+        <view style="width:35%;">昵称</view>
+        <view style="width:35%;">手机号</view>
+        <view class="flex1">抢单数量</view>
+      </view>
       <view class="record-list-content" v-if="!!recordList.length">
         <view
           class="record-list-item"
           v-for="(item, index) in recordList"
           :key="index"
         >
-          <view class="record-title" :class="{'record-one':index == 0 ,'record-two':index == 1, 'record-three':index == 2}">{{index+1}}</view>
+          <view class="record-title">
+            <view class="record-title1" :class="{'record-one':index == 0 ,'record-two':index == 1, 'record-three':index == 2}">{{index+1}}</view>
+          </view>
           <view class="record-name">{{item.nickname || '--'}}</view>
-          <view class="record-content">{{item.memberId || '--'}}</view>
           <view class="record-date">{{item.phone }}</view>
-          <view class="record-price">+{{item.cnt || 0}}</view>
+          <view class="record-price">{{item.cnt || 0}}</view>
         </view>
       </view>
       <!--no_data--->
@@ -91,14 +98,17 @@ page {
           flex: 1;
         }
         .record-title {
+          flex: 1;
+          display: flex;
+          justify-content: center;
+        }
+        .record-title1{
           font-size: 26upx;
           width: 36upx;
           height: 36upx;
           border-radius: 36upx;
           line-height: 36upx;
           text-align: center;
-          margin-right: 30upx;
-          // margin-top: 6upx;
         }
         .record-one{
           background-color: #FFD68D;
@@ -115,28 +125,42 @@ page {
         .record-name{
           font-size: 26upx;
           color: #333333;
-          width: 150upx;
+          width: 35%;
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
+          text-align: center;
         }
         .record-content{
           font-size: 26upx;
           color: #333333;
           flex:1;
+          text-align: center;
         }
         .record-date {
           font-size: 26upx;
           color: #333333;
-          width:26%;
+          width: 35%;
+          text-align: center;
         }
         .record-price {
           font-size: 26upx;
           color: #333333;
           font-weight: 700;
-          width:100upx;
-          text-align: right;
+          flex: 1;
+          text-align: center;
         }
+      }
+    }
+    .top-title{
+      display: flex;
+      align-items: center;
+      font-size:26upx;
+      color:#333333;
+      text-align: center;
+      padding: 24upx;
+      .flex1{
+        flex: 1;
       }
     }
   }

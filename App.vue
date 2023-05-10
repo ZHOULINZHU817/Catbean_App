@@ -57,7 +57,7 @@
 						let params = {
 							type: typeFiler == 'ios'? 'ipa':'apk',
 						}
-                        let downloadApkUrl = typeFiler == 'ios' ? 'http://fir.hongfeigg.com/IosCatSupermarket' : 'http://fir.hongfeigg.com/CatSupermarket';
+                        let downloadApkUrl = typeFiler == 'ios' ? 'https://www.pgyer.com/IosCatSupermarket' : 'https://www.pgyer.com/CatSupermarket';
 						ApiClinet.get(ApiConfig.APP_BASE_API.versionLast, params).then((res) => {
 							if (res.data.code == '200') {
 								_this.checkVersionToLoadUpdate(info.version,res.data.data, downloadApkUrl);

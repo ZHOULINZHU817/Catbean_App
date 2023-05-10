@@ -30,7 +30,7 @@
 		data() {
 			return {
 				options: {
-            code:'http://fir.hongfeigg.com/CatSupermarket',
+            code:'https://www.pgyer.com/CatSupermarket',
             size:'220',
             padding: 10, 
             img: {// 二维码log配置 非必传
@@ -43,7 +43,7 @@
             },
           },
           iosOptions: {
-            code:'http://fir.hongfeigg.com/IosCatSupermarket',
+            code:'https://www.pgyer.com/IosCatSupermarket',
               size:'220',
               padding: 10, 
               img: {// 二维码log配置 非必传
@@ -64,7 +64,7 @@
 		},
 		methods:{
       linkTo(item){
-        window.location.href = item=='Android'?'http://fir.hongfeigg.com/CatSupermarket' : 'http://fir.hongfeigg.com/IosCatSupermarket';
+        window.location.href = item=='Android'?'https://www.pgyer.com/CatSupermarket' : 'https://www.pgyer.com/IosCatSupermarket';
       }
 			// getVersionLast(){
       //           let params = {
