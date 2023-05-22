@@ -1,16 +1,23 @@
 <template>
   <view class="container">
-    <view class="friend-item" v-for="(item, index) in list" :key="index">
-        <!-- <img src="/static/user/friend.jpg"/> -->
-        <image class="user-icon-pic" src="/static/user/friend.jpg"></image>
-        <view class="friend-text">
-            <view class="friend-text-name">{{item.name}}</view>
-            <view class="friend-text-phone">手机号：{{item.phone}}</view>
-        </view>
-        <view class="friend-text-status">
-            <view class="tag1" v-if="item.isEffect">有效会员</view>
-            <view class="tag2" v-else>无效会员</view>
-        </view>
+    <view class="chain-num">
+      <view>团队有效人数：{{chainEffectiveNum}}</view>
+      <view>团队无效人数：{{chainInvalidNum}}</view>
+    </view>
+    <view class="item-content">
+      <view class="friend-item" v-for="(item, index) in list" :key="index">
+          <!-- <img src="/static/user/friend.jpg"/> -->
+          <image class="user-icon-pic" src="/static/user/friend.jpg"></image>
+          <view class="friend-text">
+              <view class="friend-text-name">{{item.name}}</view>
+              <view class="friend-text-phone">手机号：{{item.phone}}</view>
+          </view>
+          <view class="friend-text-status">
+              <view class="tag1" v-if="item.isEffect">有效会员</view>
+              <view class="tag2" v-else>无效会员</view>
+          </view>
+          <view class="team_num">{{item.teamCount}}</view>
+      </view>
     </view>
     <!-- 空白页 -->
 		<empty v-if="list.length === 0"></empty>
@@ -28,25 +35,9 @@ export default {
   data() {
     return {
       list: [
-        // {
-        //     name:'13424526272aj',
-        //     src:'',
-        //     phone:"13673548656",
-        //     isEffect: 1,
-        // },
-        // {
-        //     name:'13424526272aj',
-        //     src:'',
-        //     phone:"13673548656",
-        //     isEffect: 0,
-        // },
-        // {
-        //     name:'13424526272aj',
-        //     src:'',
-        //     phone:"13673548656",
-        //     isEffect: 0,
-        // }
-      ]
+      ],
+      chainEffectiveNum: null,
+      chainInvalidNum: null,
     };
   },
   onLoad() {
@@ -56,6 +47,8 @@ export default {
     memberChildList(){
       ApiClinet.get(ApiConfig.APP_BASE_API.memberChildList).then((res) => {
         if (res.data.code == '200') {
+            this.chainEffectiveNum = res.data.data.chainEffectiveNum;
+            this.chainInvalidNum = res.data.data.chainInvalidNum;
             this.list = res.data.data.childList || [];
         }
       })
@@ -72,7 +65,22 @@ page {
   position: relative;
   width: 100vw;
   height: 90vh;
-  padding: 24upx 24upx 0 24upx;
+  padding: 0 24upx 0 24upx;
+  .chain-num{
+    padding: 24upx 0;
+    position: fixed;
+    background: #F6F6F6;
+    width:100%;
+    z-index: 200;
+    font-size:30upx;
+    display: flex;
+    view{
+      flex:1;
+    }
+  }
+  .item-content{
+    padding-top:100upx;
+  }
   .friend-item{
     height:146upx;
     width:100%;
@@ -114,6 +122,10 @@ page {
             padding: 4upx 8upx;
             color:#999999;
         }
+    }
+    .team_num{
+      text-align: right;
+      flex:1;
     }
   }
 }

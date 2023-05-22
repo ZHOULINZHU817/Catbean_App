@@ -12,10 +12,11 @@
 					<image class="portrait" :src="userInfo.avatar || '/static/missing-face.png'"></image>
 				</view>
 				<view class="info-box">
-					<view class="username">{{userInfo.nickName || '游客'}}</view>
+					<view class="username">{{userInfo.nickName || '游客'}} </view>
 					<text class="user_id">ID:{{userInfo.no}}</text>
 				</view>
 			</view>
+			<view class="vipName">{{userInfo.vipName}}</view>
 		</view>
 		
 		<view 
@@ -119,10 +120,10 @@
 						<image class="user-icon-pic" src="/static/user/share_friend.png"></image>
 						<text>分享好友</text>
 					</view>
-					<view class="order-item"  @click="navTo('/pages/user/top')" hover-class="common-hover"  :hover-stay-time="50">
+					<!-- <view class="order-item"  @click="navTo('/pages/user/top')" hover-class="common-hover"  :hover-stay-time="50">
 						<image class="user-icon-pic" src="/static/user/top.png"></image>
 						<text>排行榜</text>
-					</view>
+					</view> -->
 				</view>
 			</view>
 		</view>
@@ -327,6 +328,12 @@ page{
 				}
 			}
 		}
+		.vipName{
+			position: absolute;
+			right:30upx;
+			top: 20%;
+			font-size: 30upx;
+		}
 	}
 	.user-info-box{
 		height: 180upx;
@@ -346,6 +353,7 @@ page{
 			margin-left: 30upx;
 			margin-bottom: 20upx;;
 		}
+		
 		.user_id{
 			font-size:28upx;
 			color:#666666;
@@ -382,7 +390,7 @@ page{
 			width:25%;
 		}
 		.num{
-			font-size: 44upx;
+			font-size: 36upx;
 			color: #000000;
 			margin-bottom: 8upx;
 		}
