@@ -15,7 +15,8 @@
 			return {
 				options: {
             code:'', //生成二维码的链接
-            size:'200',
+            size:'240',
+            padding: 20, 
             img: {// 二维码log配置 非必传
                 src: '../../static/cat.png', // 图片地址
                 size: 40,// 图片大小
@@ -37,7 +38,6 @@
       hello(res) {
         console.log(res)
         this.codeSaveImg = res.img.tempFilePath;
-        console.log(this.codeSaveImg, '+++++');
       },
 			capture() {
 				this.$nextTick(function() {
