@@ -10,7 +10,8 @@
 				{{item.text}}
 			</view>
 		</view>
-
+        <view class="one-key-btn" v-if="panicBuyList.length && tabCurrentIndex == '2'" @click="oneKeyResellOrder">一键转卖</view>
+		<view class="one-key-btn" v-if="panicBuyList.length && tabCurrentIndex == '1'" @click="oneKeyPay">一键支付</view>
 		<swiper :current="tabCurrentIndex" class="swiper-box" duration="300" @change="changeTab">
 			<swiper-item class="tab-content" v-for="(tabItem,tabIndex) in navList" :key="tabIndex">
 				<scroll-view 
@@ -28,6 +29,9 @@
 							class="order-item"
 						> 
 							<view class="order-item-f">
+								<checkbox-group v-if="item.status=='buying' || item.status=='paid'" @change="event=>recordCheckboxChange(event, index)">
+									<checkbox :checked="mergeRecord.includes(item.id)" :value="item.id" :disabled="!(resellTime(item)) && item.status=='paid'"></checkbox>
+								</checkbox-group>
 								<view class="order-item-fl"><text>订单编号：</text>{{item.orderNo}}</view>
 								<view class="order-item-fr" :style="{color:orderStatusNameExp(item.status).stateTipColor}">{{orderStatusNameExp(item.status).stateTip}}</view>
 							</view>
@@ -157,6 +161,7 @@
 				typeList: typeList,
 				endTime: '',
                 endText: "0",
+				mergeRecord: []
 			};
 		},
 		
@@ -209,6 +214,7 @@
 				this.panicBuyList = [];
 				this.form.page = 0;
 				this.form.status = statusList[this.tabCurrentIndex];
+				this.mergeRecord = [];
 				if(this.form.status){
 					this.loadData();
 				}else{
@@ -294,8 +300,61 @@
 				this.msg = "";
 				this.$refs.jpPwd.toOpen()
 			},
+			recordCheckboxChange(event, index) {
+				if(event.detail.value[0]){
+					this.mergeRecord.push(event.detail.value[0]);
+				}else{
+					this.mergeRecord.splice(index, 1)
+				}
+			},
+			/**一键转卖** */
+			oneKeyResellOrder() {
+				this.type = 'oneKeyResell';
+				this.msg = "";
+				this.$refs.jpPwd.toOpen()
+			},
+			/**一键支付** */
+			oneKeyPay() {
+				this.type = 'oneKeyPay';
+				this.msg = "";
+				this.$refs.jpPwd.toOpen()
+			},
 			resellOrderData(params){
 				ApiClinet.post(`${AppConfig.ANDROID_URL}/api/app/order/sale`, params).then((res) => {
+					if (res.data.code == '200') {
+						this.panicBuyList = [];
+						this.form.page = 0;
+						this.$refs.jpPwd.toCancel()
+						this.loadData();
+					}else{
+						this.msg = res.data.msg;
+						this.$refs.jpPwd.backs()
+					}
+				})
+			},
+			oneKeyResellOrderData() {
+				let params = {
+					ids: this.mergeRecord,
+					payPwd: this.form.payPwd
+				}
+				ApiClinet.post(`${AppConfig.ANDROID_URL}/api/app/order/batch/sale`, params).then((res) => {
+					if (res.data.code == '200') {
+						this.panicBuyList = [];
+						this.form.page = 0;
+						this.$refs.jpPwd.toCancel()
+						this.loadData();
+					}else{
+						this.msg = res.data.msg;
+						this.$refs.jpPwd.backs()
+					}
+				})
+			},
+			oneKeyPayData(){
+				let params = {
+					ids: this.mergeRecord,
+					payPwd: this.form.payPwd
+				}
+				ApiClinet.post(`${AppConfig.ANDROID_URL}/api/app/order/batch/pay`, params).then((res) => {
 					if (res.data.code == '200') {
 						this.panicBuyList = [];
 						this.form.page = 0;
@@ -331,7 +390,7 @@
 			completed(e) {
 				this.form.payPwd = e;
 				let params = {
-					id: this.row.id,
+					id: this.row && this.row.id,
 					payPwd: e
 				}
 				if(this.type == 'pay'){
@@ -342,6 +401,12 @@
 				}
 				if(this.type == 'pick'){
 					this.pickOrderData(params);
+				}
+				if(this.type == 'oneKeyResell'){
+					this.oneKeyResellOrderData();
+				}
+				if(this.type == 'oneKeyPay'){
+					this.oneKeyPayData();
 				}
 				// this.saveData();
 			},
@@ -624,5 +689,16 @@
 	}
 	.flex1{
 		flex: 1;
+	}
+	.one-key-btn{
+		width:100%;
+		height:60upx;
+		line-height: 60upx;
+		text-align: center;
+		background-color: #FF478C;
+		font-size:28upx;
+		color:#fff;
+		margin-top: 20upx;
+		font-weight: 700;
 	}
 </style>
