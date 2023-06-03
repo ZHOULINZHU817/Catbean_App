@@ -12,7 +12,7 @@
 		</view>
         <view class="one-key-btn" v-if="panicBuyList.length && tabCurrentIndex == '2'" @click="oneKeyResellOrder">一键转卖</view>
 		<view class="one-key-btn" v-if="panicBuyList.length && tabCurrentIndex == '1'" @click="oneKeyPay">一键支付</view>
-		<swiper :current="tabCurrentIndex" class="swiper-box" duration="300" @change="changeTab">
+		<swiper :current="tabCurrentIndex" :class="tabCurrentIndex == '2' || tabCurrentIndex == '1'?'swiper-box':'swiper-box1'" duration="300" @change="changeTab">
 			<swiper-item class="tab-content" v-for="(tabItem,tabIndex) in navList" :key="tabIndex">
 				<scroll-view 
 					class="list-scroll-content" 
@@ -309,12 +309,18 @@
 			},
 			/**一键转卖** */
 			oneKeyResellOrder() {
+				if(this.mergeRecord.length<=0){
+					return this.$api.msg('请选择可以转卖的单据')
+				}
 				this.type = 'oneKeyResell';
 				this.msg = "";
 				this.$refs.jpPwd.toOpen()
 			},
 			/**一键支付** */
 			oneKeyPay() {
+				if(this.mergeRecord.length<=0){
+					return this.$api.msg('请选择要支付单据')
+				}
 				this.type = 'oneKeyPay';
 				this.msg = "";
 				this.$refs.jpPwd.toOpen()
@@ -450,8 +456,11 @@
 	}
 	
 	.swiper-box{
-		height: calc(100% - 40px);
+		height: calc(100% - 80px);
 		
+	}
+	.swiper-box1{
+		height: calc(100% - 40px);
 	}
 	.list-scroll-content{
 		height: 100%;
