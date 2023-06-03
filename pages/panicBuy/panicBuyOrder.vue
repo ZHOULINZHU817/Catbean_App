@@ -346,6 +346,7 @@
 				ApiClinet.post(`${AppConfig.ANDROID_URL}/api/app/order/batch/sale`, params).then((res) => {
 					if (res.data.code == '200') {
 						this.panicBuyList = [];
+						this.mergeRecord = [];
 						this.form.page = 0;
 						this.$refs.jpPwd.toCancel()
 						this.loadData();
@@ -363,6 +364,7 @@
 				ApiClinet.post(`${AppConfig.ANDROID_URL}/api/app/order/batch/pay`, params).then((res) => {
 					if (res.data.code == '200') {
 						this.panicBuyList = [];
+						this.mergeRecord = [];
 						this.form.page = 0;
 						this.$refs.jpPwd.toCancel()
 						this.loadData();
