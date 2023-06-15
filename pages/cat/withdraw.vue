@@ -24,7 +24,7 @@
           <view class="tips">
             <view>1、每天最多提现1次；</view>
             <view>2、最低提现金额不能少于10；</view>
-            <view>3、提现手续费2元1笔+1%；</view>
+            <view>3、提现手续费2元1笔+1.5%；</view>
             <view>4、提现24小时内到账，审核时间为9:00～21:00。</view>
           </view>
         </view>
